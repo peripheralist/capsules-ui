@@ -38,49 +38,49 @@ export default function App() {
             "   CAPSULES",
             "",
             "",
-            "A series of",
-            "10,000 NFTs",
-            "on the Ethereum",
-            "blockchain.",
+            "",
+            "> 10,000 NFTs",
+            "> 105 chars",
+            "> 4 colors",
           ]}
         />
         <Capsule
           size={size}
           scheme="pink"
           note={[
-            "Capsules render",
-            "*on-chain* SVG",
-            "text images,",
-            "which the owner",
-            "can edit at any",
-            "time for a fee",
-            "of 0.01 ETH.",
+            "Capsule =",
+            " ~ on-chain ~",
+            "SVG text image",
+            "",
+            "Owner can edit",
+            "any time for a",
+            "fee of 0.01 ETH",
           ]}
         />
         <Capsule
           size={size}
           scheme="yellow"
           note={[
-            "50% of ETH",
-            "raised at mint",
-            "+ all fees paid",
-            "for Capsule",
-            "editing will be",
-            "locked in the",
-            "contract...",
+            " 50% ETH from",
+            "   minting",
+            "      +",
+            " All ETH paid",
+            "   in edits",
+            "",
+            ">>> Locked <<<",
           ]}
         />
         <Capsule
           size={size}
           scheme="white"
           note={[
+            "",
             "...but can be",
-            "withdrawn if",
-            "Capsule owners",
-            "work together.",
+            "withdrawn when",
+            ">50% agree",
+            "where it goes",
             "",
-            "",
-            "<3",
+            "             ;)",
           ]}
         />
       </div>
@@ -96,7 +96,13 @@ export default function App() {
           paddingBottom: 10,
         }}
       >
-        MINT A CAPSULE
+        <div style={{ fontSize: "0.8rem" }}>
+          ———————————————————————————————————————————
+        </div>
+        <div style={{ fontSize: "1.6rem" }}>MINT A CAPSULE</div>
+        <div style={{ fontSize: "0.8rem" }}>
+          ———————————————————————————————————————————
+        </div>
       </a>
       <div style={{ marginTop: 100 }}>
         <h3>Releasing funds</h3>
