@@ -1,15 +1,19 @@
 import "./App.css";
-import Editor from "./Editor";
+
 import { HashRouter, Route, Switch } from "react-router-dom";
+
 import Capsule from "./Capsule";
+import { isMobile } from "./constants";
 import Mint from "./Mint";
 import Typeface from "./Typeface";
+
+const size = isMobile ? 300 : 400;
 
 export default function App() {
   return (
     <div
       style={{
-        maxWidth: 400,
+        maxWidth: isMobile ? 320 : 400,
         margin: "0 auto",
         paddingBottom: 100,
       }}
@@ -28,7 +32,7 @@ export default function App() {
         }}
       >
         <Capsule
-          size={400}
+          size={size}
           scheme="cyan"
           note={[
             "   CAPSULES",
@@ -41,7 +45,7 @@ export default function App() {
           ]}
         />
         <Capsule
-          size={400}
+          size={size}
           scheme="pink"
           note={[
             "Capsules render",
@@ -54,20 +58,20 @@ export default function App() {
           ]}
         />
         <Capsule
-          size={400}
+          size={size}
           scheme="yellow"
           note={[
             "50% of ETH",
             "raised at mint",
             "+ all fees paid",
-            "to edit Capsule",
-            "texts will be",
+            "for Capsule",
+            "editing will be",
             "locked in the",
             "contract...",
           ]}
         />
         <Capsule
-          size={400}
+          size={size}
           scheme="white"
           note={[
             "...but can be",
