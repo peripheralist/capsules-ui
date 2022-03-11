@@ -7,14 +7,14 @@ import { isMobile } from "./constants";
 import Mint from "./Mint";
 import Typeface from "./Typeface";
 
-const gap = 40;
-const size = isMobile ? window.innerWidth * 0.96 - gap * 2 : 400;
+const gap = isMobile ? 30 : 40;
+const size = isMobile ? window.innerWidth - gap : 400;
 
 export default function App() {
   return (
     <div
       style={{
-        maxWidth: isMobile ? window.innerWidth : 400,
+        maxWidth: size,
         margin: "0 auto",
         paddingBottom: 100,
       }}
