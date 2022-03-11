@@ -7,7 +7,8 @@ import { isMobile } from "./constants";
 import Mint from "./Mint";
 import Typeface from "./Typeface";
 
-const size = isMobile ? window.innerWidth * .96 : 400;
+const gap = 40;
+const size = isMobile ? window.innerWidth * 0.96 - gap * 2 : 400;
 
 export default function App() {
   return (
@@ -27,7 +28,7 @@ export default function App() {
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: 40,
+          gap,
           marginTop: "20vh",
         }}
       >
