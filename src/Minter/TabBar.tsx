@@ -38,7 +38,7 @@ export default function TabBar({
       <div
         style={{
           position: "relative",
-          fontWeight: isSelected ? "bold" : "initial",
+          fontWeight: isSelected ? "bold" : "normal",
           textTransform: "uppercase",
           color: tab === "color" ? color : undefined,
           paddingBottom: ".8rem",
