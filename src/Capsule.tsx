@@ -1,122 +1,125 @@
-import { Scheme } from "./models/schemes";
 import { Lines } from "./models/lines";
-import { useMemo } from "react";
+import { CSSProperties, useMemo } from "react";
 
 export default function Capsule({
-  note,
-  scheme,
+  text,
+  color,
   size,
 }: {
-  note: Lines;
-  scheme: Scheme;
-  size: number;
+  text: Lines;
+  color: string | undefined;
+  size: CSSProperties["width"];
 }) {
-  const x = 18;
-  const y = 52;
+  const x = 10;
+  const y = 48;
+  const r = 1.5;
+  const border = 0;
 
-  const color = (scheme: Scheme) => {
-    switch (scheme) {
-      case "white":
-        return "#fff";
-      case "cyan":
-        return "#0ff";
-      case "pink":
-        return "#f0f";
-      case "yellow":
-        return "#ff0";
-    }
-  };
+  const _color = color ?? "#fff";
 
-  const dots10x1: string = useMemo(() => {
+  const dots1x12: string = useMemo(() => {
     let str = "";
-    for (let i = 0; i < 10; i++) {
-      str += `<circle cx="${4 * i + 2}" cy="2" r="1.5"></circle>`;
+    for (let i = 0; i < 12; i++) {
+      str += `<circle cx="2" cy="${4 * i + 2}" r="${r}"></circle>`;
     }
     return str;
   }, []);
 
-  const dots100x1: string = useMemo(() => {
+  const dots5x12: string = useMemo(() => {
     let str = "";
-    for (let i = 0; i < 10; i++) {
-      str += `<use xlink:href="#dots10x1" transform="translate(${
-        40 * i
+    for (let i = 0; i < 5; i++) {
+      str += `<use xlink:href="#dots1x12" transform="translate(${
+        4 * i
       } 0)"></use>`;
     }
     return str;
   }, []);
 
-  const dots100x10: string = useMemo(() => {
+  const lineWidth: number = useMemo(
+    () =>
+      text.reduce((acc, curr) => (curr.length > acc ? curr.length : acc), 0),
+    [text]
+  );
+
+  const rowId = "row" + lineWidth;
+
+  const width = lineWidth * 6 + 5;
+  const height = text.length * 12 + 2;
+
+  const row: string = useMemo(() => {
     let str = "";
-    for (let i = 0; i < 10; i++) {
-      str += `<use xlink:href="#dots100x1" transform="translate(0 ${
-        4 * i
-      })"></use>`;
+    // 1 for each char
+    let offset = 0;
+    for (let i = 0; i < lineWidth; i++) {
+      str += `<use xlink:href="#dots5x12" transform="translate(${offset} 0)"></use>`;
+      offset += 20;
+    }
+    // 1 between each char, and on edges
+    for (let i = 0; i < lineWidth + 5; i++) {
+      str += `<use xlink:href="#dots1x12" transform="translate(${
+        4 * i + offset
+      } 0)"></use>`;
     }
     return str;
-  }, []);
+  }, [lineWidth]);
 
   const dots: string = useMemo(() => {
+    // Top edge
     let str = "";
-    for (let i = 0; i < 10; i++) {
-      str += `<use xlink:href="#dots100x10" transform="translate(0 ${
-        40 * i
+
+    for (let i = 0; i < text.length; i++) {
+      str += `<use xlink:href="#${rowId}" transform="translate(0 ${
+        y * i
       })"></use>`;
     }
+
+    // Bottom edge
+    for (let i = 0; i < width; i++) {
+      str += `<circle cx="${4 * i + 2}" cy="${
+        text.length * y + 2
+      }"  r="${r}"></circle>`;
+    }
+    for (let i = 0; i < width; i++) {
+      str += `<circle cx="${4 * i + 2}" cy="${
+        text.length * y + 6
+      }"  r="${r}"></circle>`;
+    }
+
     return str;
-  }, []);
+  }, [text.length, rowId, width]);
 
   return (
-    <div>
-      <div style={{ width: size, height: size }}>
-        <svg
-          viewBox={`0 0 400 400`}
-          preserveAspectRatio="xMidYMid slice"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <g id="dots10x1" dangerouslySetInnerHTML={{ __html: dots10x1 }}></g>
-            <g
-              id="dots100x1"
-              dangerouslySetInnerHTML={{ __html: dots100x1 }}
-            ></g>
-            <g
-              id="dots100x10"
-              dangerouslySetInnerHTML={{ __html: dots100x10 }}
-            ></g>
-          </defs>
-          <rect x="0" y="0" width="100%" height="100%" fill="#000"></rect>
-          <g
-            fill={color(scheme)}
-            opacity="0.25"
-            dangerouslySetInnerHTML={{ __html: dots }}
-          ></g>
+    <div style={{ width: size }}>
+      <svg
+        viewBox={`0 0 ${width * 4 + border * 2} ${height * 4 + border * 2}`}
+        preserveAspectRatio="xMidYMid meet"
+        xmlns="http://www.w3.org/2000/svg"
+        width="100%"
+        height="100%"
+      >
+        <defs>
+          <g id="dots1x12" dangerouslySetInnerHTML={{ __html: dots1x12 }}></g>
+          <g id="dots5x12" dangerouslySetInnerHTML={{ __html: dots5x12 }}></g>
+          <g id={rowId} dangerouslySetInnerHTML={{ __html: row }}></g>
+        </defs>
+        <rect x="0" y="0" width="100%" height="100%" fill="#000"></rect>
+        <g
+          fill={_color}
+          opacity="0.25"
+          dangerouslySetInnerHTML={{ __html: dots }}
+          transform={`translate(${border} ${border})`}
+        ></g>
 
-          <g fill={color(scheme)} transform={`translate(${x} 0)`}>
-            <text y={y * 1} className="capsule">
-              {note[0]}
+        <g fill={_color} transform={`translate(${x + border} ${44 + border})`}>
+          {text.map((line, i) => (
+            <text y={y * i} className="capsule" key={i}>
+              {line}
             </text>
-            <text y={y * 2} className="capsule">
-              {note[1]}
-            </text>
-            <text y={y * 3} className="capsule">
-              {note[2]}
-            </text>
-            <text y={y * 4} className="capsule">
-              {note[3]}
-            </text>
-            <text y={y * 5} className="capsule">
-              {note[4]}
-            </text>
-            <text y={y * 6} className="capsule">
-              {note[5]}
-            </text>
-            <text y={y * 7} className="capsule">
-              {note[6]}
-            </text>
-          </g>
+          ))}
+        </g>
 
-          <style>
-            {`.capsule {
+        <style>
+          {`.capsule {
             font-family: Capsule;
             font-size: 40px;
             white-space: pre;
@@ -130,12 +133,11 @@ export default function Capsule({
             font-family: 'Capsule';
             src: url(${fontSrc})
           }`}
-          </style>
-        </svg>
-      </div>
+        </style>
+      </svg>
     </div>
   );
 }
 
 const fontSrc =
-  "data:font/truetype;charset=utf-8;base64,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";
+  "data:font/truetype;charset=utf-8;base64,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";
