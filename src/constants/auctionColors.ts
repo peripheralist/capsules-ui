@@ -1,4 +1,4 @@
-export const auctionColors = [
+export const auctionColors: string[] = [
   "#ff0000",
   "#ffff00",
   "#00ff00",

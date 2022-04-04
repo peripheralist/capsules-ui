@@ -1,14 +1,17 @@
 import { Lines } from "./models/lines";
 import { CSSProperties, useMemo } from "react";
+import { defaultLines } from "./utils";
 
 export default function Capsule({
   text,
   color,
   size,
+  id,
 }: {
   text: Lines;
   color: string | undefined;
   size: CSSProperties["width"];
+  id?: number;
 }) {
   const x = 10;
   const y = 48;
@@ -35,16 +38,20 @@ export default function Capsule({
     return str;
   }, []);
 
+  const _text = text.every((l) => !l.length)
+    ? defaultLines(color, id ?? 0)
+    : text;
+
   const lineWidth: number = useMemo(
     () =>
-      text.reduce((acc, curr) => (curr.length > acc ? curr.length : acc), 0),
-    [text]
+      _text.reduce((acc, curr) => (curr.length > acc ? curr.length : acc), 0),
+    [_text]
   );
 
   const rowId = "row" + lineWidth;
 
   const width = lineWidth * 6 + 5;
-  const height = text.length * 12 + 2;
+  const height = _text.length * 12 + 2;
 
   const row: string = useMemo(() => {
     let str = "";
@@ -67,7 +74,7 @@ export default function Capsule({
     // Top edge
     let str = "";
 
-    for (let i = 0; i < text.length; i++) {
+    for (let i = 0; i < _text.length; i++) {
       str += `<use xlink:href="#${rowId}" transform="translate(0 ${
         y * i
       })"></use>`;
@@ -76,20 +83,26 @@ export default function Capsule({
     // Bottom edge
     for (let i = 0; i < width; i++) {
       str += `<circle cx="${4 * i + 2}" cy="${
-        text.length * y + 2
+        _text.length * y + 2
       }"  r="${r}"></circle>`;
     }
     for (let i = 0; i < width; i++) {
       str += `<circle cx="${4 * i + 2}" cy="${
-        text.length * y + 6
+        _text.length * y + 6
       }"  r="${r}"></circle>`;
     }
 
     return str;
-  }, [text.length, rowId, width]);
+  }, [_text.length, rowId, width]);
 
   return (
-    <div style={{ width: size }}>
+    <div
+      style={{
+        width: size,
+        height: size,
+        overflow: "hidden",
+      }}
+    >
       <svg
         viewBox={`0 0 ${width * 4 + border * 2} ${height * 4 + border * 2}`}
         preserveAspectRatio="xMidYMid meet"
@@ -111,7 +124,7 @@ export default function Capsule({
         ></g>
 
         <g fill={_color} transform={`translate(${x + border} ${44 + border})`}>
-          {text.map((line, i) => (
+          {_text.map((line, i) => (
             <text y={y * i} className="capsule" key={i}>
               {line}
             </text>

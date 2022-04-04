@@ -2,16 +2,15 @@ import "./App.css";
 
 import { HashRouter, Route, Switch } from "react-router-dom";
 
-import Landing from "./Landing";
-import Mint from "./Mint";
 import Typeface from "./Typeface";
+import Minter from "./Minter";
 
 export default function App() {
   return (
     <HashRouter>
       <Switch>
-        <Route exact path="/" component={Landing} />
-        <Route path="/mint" component={Mint} />
+        <Route exact path="/" component={Minter} />
+        <Route path="/claim" component={() => Minter({ useClaim: true })} />
         <Route path="/typeface" component={Typeface} />
       </Switch>
     </HashRouter>

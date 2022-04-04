@@ -11,6 +11,7 @@ import TabBar, { Tab } from "./TabBar";
 
 const screenSize = isMobile ? window.innerWidth : window.innerHeight;
 const spectrumContainerId = "spectrum-container";
+const tabBarHeight = Math.max(window.innerHeight * 0.1, 60);
 
 export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const [spectrumScale, setSpectrumScale] = useState<number>(0);
@@ -42,20 +43,19 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   }, []);
 
   // const scrollSpectrumContainer = useCallback(() => {
-  //   document
-  //     .getElementById(spectrumContainerId)
-  //     ?.scrollTo({ left: Math.max(spectrumSize - window.innerWidth, 0) / -2 });
+  //   const x = Math.max(spectrumSize - window.innerWidth, 0) / -2
+  //   document.getElementById(spectrumContainerId)?.scrollBy(200, 200);
   // }, [spectrumSize, window.innerWidth]);
 
   return (
-    <div>
+    <div style={{ height: "100vh", width: "100vw" }}>
       {selectedTab === "color" && (
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", height: "90%", width: "100%" }}>
           <div
             id={spectrumContainerId}
             style={{
-              height: "90vh",
-              width: "100vw",
+              height: "100%",
+              width: "100%",
               overflow: "auto",
               textAlign: "center",
             }}
@@ -63,7 +63,9 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             <div
               style={{
                 display: "inline-block",
-                paddingTop: "5%",
+                paddingLeft: "5%",
+                paddingRight: "5%",
+                paddingTop: isMobile ? "30%" : "5%",
                 height: spectrumSize,
                 width: spectrumSize,
               }}
@@ -75,7 +77,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
           <div
             style={{
               position: "absolute",
-              bottom: 10,
+              bottom: tabBarHeight * 0.5,
               left: 0,
               right: 0,
               textAlign: "center",
@@ -86,24 +88,19 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
                 style={{
                   display: "inline-flex",
                   justifyContent: "space-between",
-                  width: 50,
+                  width: 120,
                   background: "#000",
                   padding: 15,
                 }}
               >
                 <div
-                  onClick={() => {
-                    setSpectrumScale((scale) => Math.max(scale - 0.25, 0));
-                    // scrollSpectrumContainer();
-                  }}
+                  onClick={() => setSpectrumScale((s) => Math.max(s - 0.2, 0))}
                 >
                   -
                 </div>
+                <div>{Math.round(spectrumScale * 100)}%</div>
                 <div
-                  onClick={() => {
-                    setSpectrumScale((scale) => Math.min(scale + 0.25, 1));
-                    // scrollSpectrumContainer();
-                  }}
+                  onClick={() => setSpectrumScale((s) => Math.min(s + 0.2, 1))}
                 >
                   +
                 </div>
@@ -129,15 +126,20 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
         <div
           style={{
             display: "flex",
-            alignItems: "center",
-            gap: 50,
-            height: screenSize,
-            width: screenSize,
+            justifyContent: "center",
+            alignItems: isMobile ? "flex-end" : "center",
+            flexWrap: "wrap-reverse",
+            overflow: "auto",
+            height: "90%",
+            width: "100%",
+            gap: isMobile ? 30 : 50,
           }}
         >
           <TextEditor lines={lines} setLines={setLines} />
 
-          <Capsule text={lines} color={color} size={360} />
+          <div style={{ padding: isMobile ? 10 : 0 }}>
+            <Capsule text={lines} color={color} size={320} />
+          </div>
         </div>
       )}
 
@@ -149,8 +151,8 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             alignItems: "center",
             justifyContent: "center",
             gap: 50,
-            height: screenSize,
-            width: screenSize,
+            height: "90%",
+            width: "100%",
           }}
         >
           <Capsule text={lines} color={color} size={360} />
@@ -169,14 +171,15 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
 
       <div
         style={{
-          position: "absolute",
+          position: "fixed",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           bottom: 0,
           left: 0,
           right: 0,
-          paddingBottom: 10,
-          width: "100vw",
-          textAlign: "center",
           background: "black",
+          height: tabBarHeight,
         }}
       >
         <TabBar

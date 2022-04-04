@@ -3,6 +3,8 @@ import { maxLineLength, maxLinesCount } from "./constants/lines";
 
 import { Lines } from "./models/lines";
 import { isAllowedChar } from "./utils";
+import { isMobile } from "./constants/isMobile";
+import Button from "./components/Button";
 
 export default function TextEditor({
   lines,
@@ -12,7 +14,7 @@ export default function TextEditor({
   setLines: (lines: Lines | ((lines: Lines) => Lines)) => void;
 }) {
   const gap = 0;
-  const fontSize = 24;
+  const fontSize = isMobile ? 20 : 24;
   const charWidth = fontSize * 0.6;
 
   const textInputs = useMemo(() => {
@@ -24,17 +26,14 @@ export default function TextEditor({
     }
 
     for (let i = 0; i < maxLinesCount; i++) {
-      const nextInput = document.getElementById(
-        `input${i + 1}`
-      ) as HTMLInputElement | null;
-      const prevInput = document.getElementById(
-        `input${i - 1}`
-      ) as HTMLInputElement | null;
+      const nextInput = () =>
+        document.getElementById(`input${i + 1}`) as HTMLInputElement | null;
+      const prevInput = () =>
+        document.getElementById(`input${i - 1}`) as HTMLInputElement | null;
 
       elems.push(
-        <div style={{ position: "relative", height: 36 }}>
+        <div key={i} style={{ position: "relative", height: fontSize * 1.5 }}>
           <input
-            key={i}
             autoFocus={i === 0}
             autoComplete="off"
             style={{
@@ -51,31 +50,35 @@ export default function TextEditor({
             name={`input${i}`}
             data-lpignore="true"
             id={`input${i}`}
-            onKeyDown={(e) => {
+            onKeyUp={(e) => {
               const cursorPosition: number = (e.target as any).selectionStart;
+              const selectionLength: number =
+                (e.target as any).selectionEnd - cursorPosition;
               const lineLength = (e.target as any).value.length;
+              const _prevInput = prevInput();
+              const _nextInput = nextInput();
 
               // Allow switching between inputs
               switch (e.code) {
                 case "Enter":
                 case "ArrowDown":
-                  nextInput?.focus();
+                  _nextInput?.focus();
                   break;
                 case "ArrowUp":
-                  prevInput?.focus();
+                  _prevInput?.focus();
                   break;
                 case "ArrowRight":
                   if (cursorPosition === lineLength) {
-                    nextInput?.focus();
+                    _nextInput?.focus();
                   }
                   break;
                 case "ArrowLeft":
                 case "Backspace":
-                  if (cursorPosition === 0) {
-                    prevInput?.focus();
-                    prevInput?.setSelectionRange(
-                      prevInput.value.length - 1,
-                      prevInput.value.length - 1
+                  if (cursorPosition === 0 && selectionLength === 0) {
+                    _prevInput?.focus();
+                    _prevInput?.setSelectionRange(
+                      _prevInput.value.length,
+                      _prevInput.value.length
                     );
                   }
                   break;
@@ -118,8 +121,8 @@ export default function TextEditor({
 
               // Focus previous or next text input while typing
               if (cursorPosition === maxLineLength) {
-                nextInput?.focus();
-                nextInput?.setSelectionRange(0, 0);
+                nextInput()?.focus();
+                nextInput()?.setSelectionRange(0, 0);
               }
             }}
           />
@@ -143,19 +146,28 @@ export default function TextEditor({
     }
 
     return elems;
-  }, [lines, setLines]);
+  }, [lines, setLines, charWidth, fontSize]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap,
-        right: 0,
-        left: 0,
-      }}
-    >
-      {textInputs}
+    <div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap,
+          right: 0,
+          left: 0,
+        }}
+      >
+        {textInputs}
+      </div>
+
+      <Button
+        style={{ margin: "0 auto" }}
+        size="small"
+        onClick={() => setLines([])}
+        text="Clear"
+      />
     </div>
   );
 }

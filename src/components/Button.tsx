@@ -41,7 +41,7 @@ export default function Button({
         </div> */}
       </>
     ),
-    [text]
+    [text, size]
   );
 
   if (href) {

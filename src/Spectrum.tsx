@@ -118,7 +118,7 @@ export default function Spectrum({
       ...(auctionColors.includes(rgbToHex(c))
         ? {
             r: 1,
-            opacity: 0.25,
+            opacity: 0.5,
           }
         : {
             r: 1.5,
@@ -126,7 +126,7 @@ export default function Spectrum({
             onClick: () => onSelectColor(rgbToHex(c)),
           }),
     }),
-    [className]
+    [className, onSelectColor]
   );
 
   const Svg = useMemo(
@@ -136,16 +136,14 @@ export default function Spectrum({
         viewBox="0 0 412 365"
         style={{ cursor: "crosshair" }}
       >
-        {!isMobile && (
-          <style>
-            {`
-          circle:not(.x):hover, circle.active {
+        <style>
+          {`
+          ${isMobile ? "" : "circle:not(.x):hover, "}circle.active {
             opacity: 1;
             r: 3.5px;
             strokeWidth: 0px;
           }`}
-          </style>
-        )}
+        </style>
 
         <g transform="translate(2 4)">
           <g transform="translate(102 0)">
@@ -200,7 +198,7 @@ export default function Spectrum({
         </g>
       </svg>
     ),
-    [row, rows1, rows2, rows3, className, onSelectColor]
+    [row, rows1, rows2, rows3, circleProps]
   );
 
   return Svg;
