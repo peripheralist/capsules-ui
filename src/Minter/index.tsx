@@ -10,6 +10,7 @@ import { defaultLines } from "../utils";
 import TabBar, { Tab } from "./TabBar";
 
 const screenSize = isMobile ? window.innerWidth : window.innerHeight;
+const spectrumContainerId = "spectrum-container";
 
 export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const [spectrumScale, setSpectrumScale] = useState<number>(0);
@@ -26,6 +27,10 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
     setLines(defaultLines(color, 0));
   }, [color]);
 
+  useEffect(() => {
+    setLines(defaultLines(color, 0));
+  }, [color]);
+
   const mint = useCallback(() => {
     // Only send `text` param if text != defaultLines
     console.log("MINT");
@@ -36,11 +41,18 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
     console.log("CLAIM");
   }, []);
 
+  // const scrollSpectrumContainer = useCallback(() => {
+  //   document
+  //     .getElementById(spectrumContainerId)
+  //     ?.scrollTo({ left: Math.max(spectrumSize - window.innerWidth, 0) / -2 });
+  // }, [spectrumSize, window.innerWidth]);
+
   return (
     <div>
       {selectedTab === "color" && (
         <div style={{ position: "relative" }}>
           <div
+            id={spectrumContainerId}
             style={{
               height: "90vh",
               width: "100vw",
@@ -69,17 +81,46 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
               textAlign: "center",
             }}
           >
-            <input
-              style={{ width: 200 }}
-              value={spectrumScale}
-              type="range"
-              min={0}
-              step={0.01}
-              max={1}
-              onInput={(e) =>
-                setSpectrumScale(parseFloat((e.target as any).value))
-              }
-            />
+            {isMobile ? (
+              <div
+                style={{
+                  display: "inline-flex",
+                  justifyContent: "space-between",
+                  width: 50,
+                  background: "#000",
+                  padding: 15,
+                }}
+              >
+                <div
+                  onClick={() => {
+                    setSpectrumScale((scale) => Math.max(scale - 0.25, 0));
+                    // scrollSpectrumContainer();
+                  }}
+                >
+                  -
+                </div>
+                <div
+                  onClick={() => {
+                    setSpectrumScale((scale) => Math.min(scale + 0.25, 1));
+                    // scrollSpectrumContainer();
+                  }}
+                >
+                  +
+                </div>
+              </div>
+            ) : (
+              <input
+                style={{ width: 200 }}
+                value={spectrumScale}
+                type="range"
+                min={0}
+                step={0.01}
+                max={1}
+                onInput={(e) =>
+                  setSpectrumScale(parseFloat((e.target as any).value))
+                }
+              />
+            )}
           </div>
         </div>
       )}

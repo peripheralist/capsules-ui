@@ -11,9 +11,6 @@ export default function Spectrum({
   onSelectColor: (color: string) => void;
   color: string | undefined;
 }) {
-  const opacity = 0.75;
-  const disabledOpacity = 0.5;
-
   const rows1 = useMemo(() => {
     let _rows: RGB[][] = [];
 
@@ -142,7 +139,7 @@ export default function Spectrum({
           {`
           circle:not(.x):hover, circle.active {
             opacity: 1;
-            r: 3.5;
+            r: 3.5px;
             strokeWidth: 0px;
           }`}
         </style>
