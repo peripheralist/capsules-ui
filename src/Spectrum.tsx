@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react";
 
 import { auctionColors } from "./constants/auctionColors";
+import { isMobile } from "./constants/isMobile";
 import { RGB } from "./models/rgb";
 import { rgbToHex } from "./utils";
 
@@ -135,14 +136,16 @@ export default function Spectrum({
         viewBox="0 0 412 365"
         style={{ cursor: "crosshair" }}
       >
-        <style>
-          {`
+        {!isMobile && (
+          <style>
+            {`
           circle:not(.x):hover, circle.active {
             opacity: 1;
             r: 3.5px;
             strokeWidth: 0px;
           }`}
-        </style>
+          </style>
+        )}
 
         <g transform="translate(2 4)">
           <g transform="translate(102 0)">
