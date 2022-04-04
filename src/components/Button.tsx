@@ -6,59 +6,87 @@ export default function Button({
   onClick,
   size,
   style,
+  isDisabled,
+  underline,
 }: {
   text: string;
   href?: string;
   onClick?: VoidFunction;
-  size?: "large" | "small";
+  size?: "large" | "medium" | "small";
   style?: CSSProperties;
+  isDisabled?: boolean;
+  underline?: boolean;
 }) {
+  const fontSize = useMemo(() => {
+    switch (size) {
+      case "small":
+        return "1rem";
+      case "large":
+        return "1.4rem";
+      case "medium":
+      default:
+        return "1.2rem";
+    }
+  }, [size]);
+
+  const underlineStr = useMemo(() => {
+    if (!underline) return null;
+
+    let _underline = "";
+    for (let i = 0; i < text.length; i++) {
+      _underline += "_";
+    }
+
+    return _underline;
+  }, [text, underline]);
+
   const defaultStyle: CSSProperties = {
+    position: underline ? "relative" : "unset",
     display: "block",
-    fontSize: "1.5rem",
     textAlign: "center",
-    cursor: "pointer",
     paddingTop: 10,
     paddingBottom: 10,
+    cursor: isDisabled ? "default" : "pointer",
+    opacity: isDisabled ? 0.5 : 1,
+    textTransform: "uppercase",
+    fontSize,
   };
 
-  const child = useMemo(
-    () => (
-      <>
-        {/* <div style={{ fontSize: size === "small" ? "0.6rem" : "0.8rem" }}>
-          ———————————————————————————————————————————
-        </div> */}
-        <div
-          style={{
-            fontSize: size === "small" ? "1.2rem" : "1.6rem",
-            textTransform: "uppercase",
-          }}
-        >
-          {text}
-        </div>
-        {/* <div style={{ fontSize: size === "small" ? "0.6rem" : "0.8rem" }}>
-          ———————————————————————————————————————————
-        </div> */}
-      </>
-    ),
-    [text, size]
-  );
+  const child = useMemo(() => <div>{text}</div>, [text, size]);
 
   if (href) {
     return (
       <a href={href} style={{ ...defaultStyle, ...style }}>
         {child}
+
+        {underline && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+            }}
+          >
+            {underlineStr}
+          </div>
+        )}
       </a>
     );
   }
 
-  if (onClick) {
-    return (
-      <button onClick={onClick} style={{ ...defaultStyle, ...style }}>
-        {child}
-      </button>
-    );
-  }
+  return (
+    <button onClick={onClick} style={{ ...defaultStyle, ...style }}>
+      {child}
 
-  return null;
+      {underline && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+          }}
+        >
+          {underlineStr}
+        </div>
+      )}
+    </button>
+  );
 }

@@ -1,57 +1,37 @@
-export type Tab = "color" | "text" | "mint";
+import Button from "../components/Button";
 
-export default function TabBar({
+type Tab<TabKey> = { key: TabKey; title?: string; color?: string };
+
+export default function TabBar<Key extends string>({
+  tabs,
   selectedTab,
   disabledTabs,
   onClickTab,
-  color,
 }: {
-  selectedTab: Tab;
-  disabledTabs?: Tab[];
-  onClickTab: (tab: Tab) => void;
-  color: string | undefined;
+  tabs: Tab<Key>[];
+  selectedTab: Key;
+  disabledTabs?: Key[];
+  onClickTab: (tab: Key) => void;
 }) {
-  const Tab = (tab: Tab, i: number) => {
-    const isSelected = selectedTab === tab;
-
-    let text: string;
-    switch (tab) {
-      case "color":
-        text = color ?? "COLOR";
-        break;
-      case "text":
-        text = "TEXT";
-        break;
-      case "mint":
-        text = "MINT";
-        break;
-    }
-
-    let underline = "";
-    for (let i = 0; i < text.length + 3; i++) {
-      underline += "_";
-    }
-
-    const isDisabled = disabledTabs?.includes(tab);
+  const Tab = (tab: Tab<Key>, i: number) => {
+    const isSelected = selectedTab === tab.key;
+    const isDisabled = disabledTabs?.includes(tab.key);
 
     return (
-      <div
+      <Button
+        key={tab.key}
+        text={`${i + 1}. ${tab.title ?? tab.key}`}
+        size="small"
+        onClick={isDisabled ? undefined : () => onClickTab(tab.key)}
+        underline={isSelected}
+        isDisabled={isDisabled}
         style={{
-          position: "relative",
           fontWeight: isSelected ? "bold" : "normal",
           textTransform: "uppercase",
-          color: tab === "color" ? color : undefined,
+          color: tab.color,
           paddingBottom: ".8rem",
-          cursor: isDisabled ? "default" : "pointer",
-          opacity: isDisabled ? 0.5 : 1,
         }}
-        onClick={isDisabled ? undefined : () => onClickTab(tab)}
-      >
-        {i}. {text}
-        {isSelected && (
-          <div style={{ position: "absolute", bottom: 0 }}>{underline}</div>
-        )}
-      </div>
+      />
     );
   };
 
@@ -59,13 +39,10 @@ export default function TabBar({
     <div
       style={{
         display: "inline-flex",
-        fontSize: "1.2rem",
-        gap: "2.4rem",
+        gap: 20,
       }}
     >
-      {Tab("color", 1)}
-      {Tab("text", 2)}
-      {Tab("mint", 3)}
+      {tabs.map((t, i) => Tab(t, i))}
     </div>
   );
 }

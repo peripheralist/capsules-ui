@@ -7,15 +7,18 @@ import { Lines } from "../models/lines";
 import Spectrum from "../Spectrum";
 import TextEditor from "../TextEditor";
 import { defaultLines } from "../utils";
-import TabBar, { Tab } from "./TabBar";
+import TabBar from "./TabBar";
 
 const screenSize = isMobile ? window.innerWidth : window.innerHeight;
 const spectrumContainerId = "spectrum-container";
 const tabBarHeight = Math.max(window.innerHeight * 0.1, 60);
+const bodyHeight = window.innerHeight - tabBarHeight;
 
 export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const [spectrumScale, setSpectrumScale] = useState<number>(0);
-  const [selectedTab, setSelectedTab] = useState<Tab>("color");
+  const [selectedTab, setSelectedTab] = useState<"color" | "mint" | "text">(
+    "color"
+  );
   const [color, setColor] = useState<string>();
   const [lines, setLines] = useState<Lines>([]);
 
@@ -50,7 +53,13 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
       {selectedTab === "color" && (
-        <div style={{ position: "relative", height: "90%", width: "100%" }}>
+        <div
+          style={{
+            position: "relative",
+            height: bodyHeight,
+            width: "100%",
+          }}
+        >
           <div
             id={spectrumContainerId}
             style={{
@@ -127,18 +136,27 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
           style={{
             display: "flex",
             justifyContent: "center",
-            alignItems: isMobile ? "flex-end" : "center",
-            flexWrap: "wrap-reverse",
+            alignItems: "center",
             overflow: "auto",
-            height: "90%",
-            width: "100%",
-            gap: isMobile ? 30 : 50,
+            height: bodyHeight,
+            padding: 20,
+            boxSizing: "border-box",
           }}
         >
-          <TextEditor lines={lines} setLines={setLines} />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap-reverse",
+              gap: isMobile ? 30 : 50,
+              minHeight: isMobile ? 750 : 0,
+            }}
+          >
+            <TextEditor lines={lines} setLines={setLines} />
 
-          <div style={{ padding: isMobile ? 10 : 0 }}>
-            <Capsule text={lines} color={color} size={320} />
+            <div style={{ padding: isMobile ? 10 : 0 }}>
+              <Capsule text={lines} color={color} size={320} />
+            </div>
           </div>
         </div>
       )}
@@ -151,17 +169,24 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             alignItems: "center",
             justifyContent: "center",
             gap: 50,
-            height: "90%",
-            width: "100%",
+            height: bodyHeight,
+            padding: 20,
+            boxSizing: "border-box",
           }}
         >
-          <Capsule text={lines} color={color} size={360} />
+          <Capsule text={lines} color={color} size={320} />
 
           {useClaim ? (
-            <Button text="Claim" onClick={claim} style={{ margin: "0 auto" }} />
+            <Button
+              text="Claim Capsule"
+              size="large"
+              onClick={claim}
+              style={{ margin: "0 auto" }}
+            />
           ) : (
             <Button
-              text="Mint (0.1 ETH)"
+              text="Mint Capsule (0.1 ETH)"
+              size="large"
               onClick={mint}
               style={{ margin: "0 auto" }}
             />
@@ -183,7 +208,11 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
         }}
       >
         <TabBar
-          color={color}
+          tabs={[
+            { key: "color", title: color, color },
+            { key: "text" },
+            { key: "mint" },
+          ]}
           selectedTab={selectedTab}
           onClickTab={setSelectedTab}
           disabledTabs={color ? undefined : ["mint", "text"]}
