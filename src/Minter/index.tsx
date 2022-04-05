@@ -174,7 +174,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             <TextEditor lines={lines} setLines={setLines} />
 
             <div style={{ padding: isMobile ? 10 : 0 }}>
-              <Capsule text={lines} color={color} size={320} />
+              <Capsule text={lines} color={color} width={320} />
             </div>
           </div>
         </div>
@@ -193,7 +193,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             boxSizing: "border-box",
           }}
         >
-          <Capsule text={lines} color={color} size={320} />
+          <Capsule text={lines} color={color} width={320} />
 
           {useClaim ? (
             <Button

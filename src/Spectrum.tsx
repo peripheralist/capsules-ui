@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react";
 import { auctionColors } from "./constants/auctionColors";
 import { isMobile } from "./constants/isMobile";
 import { RGB } from "./models/rgb";
-import { hueForColor, rgbToHex } from "./utils";
+import { rgbToHex } from "./utils";
 
 export default function Spectrum({
   onSelectColor,
@@ -74,21 +74,21 @@ export default function Spectrum({
     return _row;
   }, []);
 
-  const allHexes = useMemo(() => {
-    const all = [...rows1, ...rows2, ...rows3, row].flatMap((r) =>
-      r.flatMap((rgb) => rgbToHex(rgb))
-    );
+  // const allHexes = useMemo(() => {
+  //   const all = [...rows1, ...rows2, ...rows3, row].flatMap((r) =>
+  //     r.flatMap((rgb) => rgbToHex(rgb))
+  //   );
 
-    console.log("all", {
-      red: all.filter((c) => hueForColor(c) === "red").length,
-      pink: all.filter((c) => hueForColor(c) === "pink").length,
-      blue: all.filter((c) => hueForColor(c) === "blue").length,
-      cyan: all.filter((c) => hueForColor(c) === "cyan").length,
-      green: all.filter((c) => hueForColor(c) === "green").length,
-      yellow: all.filter((c) => hueForColor(c) === "yellow").length,
-      white: all.filter((c) => hueForColor(c) === "white").length,
-    });
-  }, []);
+  //   console.log("all", {
+  //     red: all.filter((c) => hueForColor(c) === "red").length,
+  //     pink: all.filter((c) => hueForColor(c) === "pink").length,
+  //     blue: all.filter((c) => hueForColor(c) === "blue").length,
+  //     cyan: all.filter((c) => hueForColor(c) === "cyan").length,
+  //     green: all.filter((c) => hueForColor(c) === "green").length,
+  //     yellow: all.filter((c) => hueForColor(c) === "yellow").length,
+  //     white: all.filter((c) => hueForColor(c) === "white").length,
+  //   });
+  // }, []);
 
   // function isValidHex(x: BigNumber): boolean {
   //   const str = utils.hexZeroPad(x.toHexString(), 6).split("0x")[1];

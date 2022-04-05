@@ -24,7 +24,7 @@ export default function Landing() {
           }}
         >
           <Capsule
-            size={size}
+            width={size}
             color="#00ffff"
             text={[
               "   CAPSULES",
@@ -37,7 +37,7 @@ export default function Landing() {
             ]}
           />
           <Capsule
-            size={size}
+            width={size}
             color="#ff00ff"
             text={[
               "Capsule =",
@@ -50,7 +50,7 @@ export default function Landing() {
             ]}
           />
           <Capsule
-            size={size}
+            width={size}
             color="#ffff00"
             text={[
               " 50% ETH from",
@@ -63,7 +63,7 @@ export default function Landing() {
             ]}
           />
           <Capsule
-            size={size}
+            width={size}
             color="white"
             text={[
               "",

@@ -2,11 +2,27 @@ export default function Info() {
   return (
     <div>
       <h1>Capsules</h1>
+      {/* <Capsule
+        text={["7,957 NFTs on", "Ethereum"]}
+        height={80}
+        color={"white"}
+        preserveAspectRatio="xMinYMid meet"
+      />
+      <br />
+      <Capsule
+        text={["105 editable", "text characters"]}
+        height={80}
+        color={"white"}
+        preserveAspectRatio="xMinYMid meet"
+      /> */}
 
       <section id="capsules">
+        7,957 NFTs on Ethereum
+        <br />
+        <br />
         <h3>Each Capsule has:</h3>
         <b>105 text characters</b> that can be changed by the owner at any time,
-        for a fee. The text is rendered on-chain as an SVG image.
+        for a fee. Text is rendered as an SVG image on-chain.
         <br />
         <br />
         <b>1 of 7,957 colors</b>
@@ -23,7 +39,7 @@ export default function Info() {
         <br />
         <br />
         <a href="https://" target="_blank" rel="noopener noreferrer">
-          {"<"}Capsules Token contract{">"}
+          Capsules Token contract
         </a>
       </section>
 
@@ -57,7 +73,7 @@ export default function Info() {
         <br />
         <br />
         <a href="https://" target="_blank" rel="noopener noreferrer">
-          {"<"}Auction House contract{">"}
+          Auction House contract
         </a>
       </section>
 
@@ -84,23 +100,34 @@ export default function Info() {
         withdrawn by the Delegate.
         <br />
         <br />
-        <b>By default, the Treasury is funded by:</b>
+        <b>The Treasury is funded by:</b>
         <ul className="dashed">
-          <li>50% of all revenue from the initial mint</li>
-          <li>100% of all revenue from the Auction</li>
-          <li>All fees paid to update Capsule texts, forever</li>
+          <li>50% of revenue from the initial mint</li>
+          <li>100% of revenue from the Auction</li>
+          <li>All fees paid to edit Capsule texts, forever</li>
+          <li>Any ETH sent to the Capsules contract</li>
         </ul>
       </section>
 
       <section id="typeface">
         <h2>Typeface:</h2>
-        Capsule images render SVG text using the Capsules Typeface: a custom
-        mono typeface stored on-chain in 9 weights, using the Typeface solidity
-        interface.
+        Capsule images render SVG text in the Capsules Typeface: a mono typeface
+        stored on-chain in 9 weights using the Typeface solidity interface.
+        <br />
+        <br />
+        It can also be downloaded in{" "}
+        <a href="https://" target="_blank" rel="noopener noreferrer">
+          individual weights
+        </a>{" "}
+        or{" "}
+        <a href="https://" target="_blank" rel="noopener noreferrer">
+          variable weight
+        </a>{" "}
+        for free.
         <br />
         <br />
         <a href="https://" target="_blank" rel="noopener noreferrer">
-          {"<"}Capsules Typeface contract{">"}
+          Capsules Typeface contract
         </a>
       </section>
     </div>

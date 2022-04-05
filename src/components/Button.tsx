@@ -52,7 +52,7 @@ export default function Button({
     fontSize,
   };
 
-  const child = useMemo(() => <div>{text}</div>, [text, size]);
+  const child = useMemo(() => <div>{text}</div>, [text]);
 
   if (href) {
     return (
