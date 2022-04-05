@@ -27,11 +27,11 @@ export type TransactorInstance<T> = (
 
 // Check user has their wallet connected. If not, show select wallet prompt
 const checkWalletConnected = (
-  onSelectWallet: VoidFunction,
-  userAddress?: string
+  selectWallet: VoidFunction,
+  connectedWallet?: string | null
 ) => {
-  if (!userAddress && onSelectWallet) {
-    onSelectWallet();
+  if (!connectedWallet && selectWallet) {
+    selectWallet();
   }
 };
 
@@ -44,8 +44,8 @@ export function useTransactor({
 }): Transactor | undefined {
   const {
     signingProvider: provider,
-    onSelectWallet,
-    userAddress,
+    selectWallet,
+    connectedWallet,
   } = useContext(NetworkContext);
 
   return useCallback(
@@ -55,15 +55,15 @@ export function useTransactor({
       args: any[],
       options?: TransactorOptions
     ) => {
-      if (!onSelectWallet) return false;
+      if (!selectWallet) return false;
 
       if (!provider) {
-        onSelectWallet();
+        selectWallet();
         if (options?.onDone) options.onDone();
         return false;
       }
 
-      checkWalletConnected(onSelectWallet, userAddress);
+      checkWalletConnected(selectWallet, connectedWallet);
 
       if (!provider) return false;
 
@@ -147,6 +147,6 @@ export function useTransactor({
         return false;
       }
     },
-    [onSelectWallet, provider, gasPrice, userAddress]
+    [selectWallet, provider, gasPrice, connectedWallet]
   );
 }

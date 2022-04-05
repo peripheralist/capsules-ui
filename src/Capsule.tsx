@@ -10,6 +10,7 @@ export default function Capsule({
   height,
   preserveAspectRatio,
   id,
+  owner,
 }: {
   text: Lines;
   color: string | undefined;
@@ -17,6 +18,7 @@ export default function Capsule({
   height?: CSSProperties["height"];
   preserveAspectRatio?: React.SVGAttributes<SVGElement>["preserveAspectRatio"];
   id?: number;
+  owner?: string | null;
 }) {
   const x = 10;
   const y = 48;
@@ -44,7 +46,7 @@ export default function Capsule({
   }, []);
 
   const _text = text.every((l) => !l.length)
-    ? defaultLines(color, id ?? 0)
+    ? defaultLines(color, id ?? 0, owner ?? undefined)
     : text;
 
   const lineWidth: number = useMemo(

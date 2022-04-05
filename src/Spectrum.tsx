@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from "react";
 
-import { auctionColors } from "./constants/auctionColors";
 import { isMobile } from "./constants/isMobile";
 import { RGB } from "./models/rgb";
 import { rgbToHex } from "./utils";
@@ -8,9 +7,15 @@ import { rgbToHex } from "./utils";
 export default function Spectrum({
   onSelectColor,
   color,
+  inactiveColors,
+  inactiveStyle,
+  activeStyle,
 }: {
-  onSelectColor: (color: string) => void;
-  color: string | undefined;
+  onSelectColor?: (color: string) => void;
+  color?: string;
+  inactiveColors?: string[];
+  inactiveStyle?: React.SVGProps<SVGCircleElement>;
+  activeStyle?: React.SVGProps<SVGCircleElement>;
 }) {
   const rows1 = useMemo(() => {
     let _rows: RGB[][] = [];
@@ -115,28 +120,32 @@ export default function Spectrum({
 
   const className = useCallback(
     (c: RGB) =>
-      `${auctionColors.includes(rgbToHex(c)) ? "x" : ""} ${
+      `${inactiveColors?.includes(rgbToHex(c)) ? "x " : ""}${
         color === rgbToHex(c) ? "active" : ""
       }`,
-    [color]
+    [color, inactiveColors]
   );
 
   const circleProps: (c: RGB) => React.SVGProps<SVGCircleElement> = useCallback(
     (c: RGB) => ({
       fill: rgbToHex(c),
-      className: className(c),
-      ...(auctionColors.includes(rgbToHex(c))
+      ...(className(c) ? { className: className(c) } : {}),
+      ...(inactiveColors?.includes(rgbToHex(c))
         ? {
             r: 1,
             opacity: 0.75,
+            ...inactiveStyle,
           }
         : {
             r: 1.5,
             opacity: 1,
-            onClick: () => onSelectColor(rgbToHex(c)),
+            ...activeStyle,
+            ...(onSelectColor
+              ? { onClick: () => onSelectColor(rgbToHex(c)) }
+              : {}),
           }),
     }),
-    [className, onSelectColor]
+    [className, onSelectColor, activeStyle, inactiveStyle, inactiveColors]
   );
 
   const Svg = useMemo(
@@ -144,11 +153,13 @@ export default function Spectrum({
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 412 365"
-        style={{ cursor: "crosshair" }}
+        style={{ cursor: onSelectColor ? "crosshair" : "default" }}
       >
         <style>
           {`
-          ${isMobile ? "" : "circle:not(.x):hover, "}circle.active {
+          ${
+            isMobile || !onSelectColor ? "" : "circle:not(.x):hover, "
+          }circle.active {
             opacity: 1;
             r: 3.5px;
             strokeWidth: 0px;
@@ -208,7 +219,7 @@ export default function Spectrum({
         </g>
       </svg>
     ),
-    [row, rows1, rows2, rows3, circleProps]
+    [row, rows1, rows2, rows3, circleProps, onSelectColor]
   );
 
   return Svg;

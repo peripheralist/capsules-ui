@@ -39,14 +39,18 @@ export const rgbToHex = (rgb: RGB) => {
   return "#" + toOctet(rgb.r) + toOctet(rgb.g) + toOctet(rgb.b);
 };
 
-export const defaultLines = (color: string | undefined, id: number): Lines => [
+export const defaultLines = (
+  color: string | undefined,
+  id: number,
+  owner: string = constants.AddressZero
+): Lines => [
   `CAPSULE ${id}`,
   `COLOR   ${color?.split("#")[1] ?? "--"}`,
   `HUE     ${color ? hueForColor(color) : "--"}`,
   "OWNER",
-  `${constants.AddressZero.slice(0, 14)}`,
-  constants.AddressZero.slice(14, 28),
-  constants.AddressZero.slice(28, 42),
+  `${owner.slice(0, 14)}`,
+  owner.slice(14, 28),
+  owner.slice(28, 42),
 ];
 
 export const isAllowedChar = (char: string) => {

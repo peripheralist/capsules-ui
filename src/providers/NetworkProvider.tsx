@@ -26,7 +26,7 @@ export default function NetworkProvider({
     window.localStorage.setItem(KEY_SELECTED_WALLET, "");
   }, [onboard]);
 
-  const selectWallet = async () => {
+  const selectWallet = async (callback?: (success: boolean) => void) => {
     resetWallet();
 
     // Open select wallet modal.
@@ -34,11 +34,14 @@ export default function NetworkProvider({
 
     // User quit modal.
     if (!selectedWallet) {
+      callback?.(false);
       return;
     }
 
     // Wait for wallet selection initialization
     await onboard?.walletCheck();
+
+    callback?.(true);
   };
 
   const logOut = async () => {
@@ -104,8 +107,8 @@ export default function NetworkProvider({
           signingProvider && network === readNetwork.name && account
             ? signingProvider
             : undefined,
-        userAddress: account,
-        onSelectWallet: selectWallet,
+        connectedWallet: account ?? null,
+        selectWallet,
         onLogOut: logOut,
       }}
     >

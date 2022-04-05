@@ -1,25 +1,28 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import Capsule from "../Capsule";
 import Button from "../components/Button";
+import { auctionColors } from "../constants/colors";
 import { isMobile } from "../constants/isMobile";
+import { NetworkContext } from "../contexts/networkContext";
 import Info from "../Info";
 
 import { Lines } from "../models/lines";
 import Spectrum from "../Spectrum";
 import TextEditor from "../TextEditor";
 import { defaultLines } from "../utils";
-import TabBar from "./TabBar";
+import TabBar, { Tab } from "./TabBar";
 
 const screenSize = isMobile ? window.innerWidth : window.innerHeight;
 const spectrumContainerId = "spectrum-container";
 const tabBarHeight = Math.max(window.innerHeight * 0.1, 60);
 const bodyHeight = window.innerHeight - tabBarHeight;
 
+type TabKey = "info" | "connect" | "color" | "mint" | "text";
+
 export default function Minter({ useClaim }: { useClaim?: boolean }) {
+  const { connectedWallet, selectWallet } = useContext(NetworkContext);
   const [spectrumScale, setSpectrumScale] = useState<number>(0);
-  const [selectedTab, setSelectedTab] = useState<
-    "info" | "color" | "mint" | "text"
-  >("info");
+  const [selectedTab, setSelectedTab] = useState<TabKey>("info");
   const [color, setColor] = useState<string>();
   const [lines, setLines] = useState<Lines>([]);
 
@@ -29,12 +32,34 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const spectrumSize = screenSize * spectrumScaleMultiplier;
 
   useEffect(() => {
-    setLines(defaultLines(color, 0));
-  }, [color]);
+    setLines(defaultLines(color, 0, connectedWallet ?? undefined));
+  }, [color, connectedWallet]);
 
   useEffect(() => {
-    setLines(defaultLines(color, 0));
-  }, [color]);
+    setLines(defaultLines(color, 0, connectedWallet ?? undefined));
+  }, [color, connectedWallet]);
+
+  const tabs = useMemo(() => {
+    const _tabs: Tab<TabKey>[] = [{ key: "info", title: "Capsules" }];
+
+    if (connectedWallet === null) {
+      _tabs.push({ key: "connect" as const, title: "Mint" });
+    } else if (connectedWallet) {
+      _tabs.push(
+        ...[
+          {
+            key: "color" as const,
+            title: "1. " + (color ?? "Color"),
+            color,
+          },
+          { key: "text" as const, title: "2. Text" },
+          { key: "mint" as const, title: "3. Mint" },
+        ]
+      );
+    }
+
+    return _tabs;
+  }, [connectedWallet, color]);
 
   const mint = useCallback(() => {
     // Only send `text` param if text != defaultLines
@@ -71,6 +96,28 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
         </div>
       )}
 
+      {selectedTab === "connect" && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 20,
+            paddingBottom: tabBarHeight + 40,
+            height: bodyHeight,
+          }}
+        >
+          <Button
+            text="Connect your wallet"
+            onClick={() =>
+              selectWallet?.((success) => {
+                if (success) setSelectedTab("color");
+              })
+            }
+          />
+        </div>
+      )}
+
       {selectedTab === "color" && (
         <div
           style={{
@@ -98,7 +145,11 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
                 width: spectrumSize,
               }}
             >
-              <Spectrum color={color} onSelectColor={setColor} />
+              <Spectrum
+                color={color}
+                onSelectColor={setColor}
+                inactiveColors={auctionColors}
+              />
             </div>
           </div>
 
@@ -174,7 +225,12 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             <TextEditor lines={lines} setLines={setLines} />
 
             <div style={{ padding: isMobile ? 10 : 0 }}>
-              <Capsule text={lines} color={color} width={320} />
+              <Capsule
+                text={lines}
+                color={color}
+                width={320}
+                owner={connectedWallet}
+              />
             </div>
           </div>
         </div>
@@ -227,12 +283,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
         }}
       >
         <TabBar
-          tabs={[
-            { key: "info", title: "Capsules" },
-            { key: "color", title: "1. " + (color ?? "Color"), color },
-            { key: "text", title: "2. Text" },
-            { key: "mint", title: "3. Mint" },
-          ]}
+          tabs={tabs}
           selectedTab={selectedTab}
           onClickTab={setSelectedTab}
           disabledTabs={color ? undefined : ["mint", "text"]}

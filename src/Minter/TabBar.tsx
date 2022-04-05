@@ -1,6 +1,6 @@
 import Button from "../components/Button";
 
-type Tab<TabKey> = { key: TabKey; title?: string; color?: string };
+export type Tab<TabKey> = { key: TabKey; title?: string; color?: string };
 
 export default function TabBar<Key extends string>({
   tabs,
