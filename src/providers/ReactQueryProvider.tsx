@@ -9,7 +9,7 @@ const ReactQueryProvider: React.FC = ({ children }) => (
     {children}
     <ReactQueryDevtools
       initialIsOpen={false}
-      toggleButtonProps={{ style: { opacity: 0 } }}
+      toggleButtonProps={{ style: { display: "none" } }}
     />
   </QueryClientProvider>
 );

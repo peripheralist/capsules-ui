@@ -166,6 +166,7 @@ export default function TextEditor({
         style={{ margin: "0 auto" }}
         size="small"
         onClick={() => setLines([])}
+        isDisabled={lines.every((l) => !l.length)}
         text="Clear"
       />
     </div>

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import Capsule from "../Capsule";
 import Button from "../components/Button";
 import { isMobile } from "../constants/isMobile";
+import Info from "../Info";
 
 import { Lines } from "../models/lines";
 import Spectrum from "../Spectrum";
@@ -16,9 +17,9 @@ const bodyHeight = window.innerHeight - tabBarHeight;
 
 export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const [spectrumScale, setSpectrumScale] = useState<number>(0);
-  const [selectedTab, setSelectedTab] = useState<"color" | "mint" | "text">(
-    "color"
-  );
+  const [selectedTab, setSelectedTab] = useState<
+    "info" | "color" | "mint" | "text"
+  >("info");
   const [color, setColor] = useState<string>();
   const [lines, setLines] = useState<Lines>([]);
 
@@ -51,7 +52,25 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   // }, [spectrumSize, window.innerWidth]);
 
   return (
-    <div style={{ height: "100vh", width: "100vw" }}>
+    <div
+      style={{
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
+      {selectedTab === "info" && (
+        <div
+          style={{
+            margin: "0 auto",
+            maxWidth: 480,
+            padding: 20,
+            paddingBottom: tabBarHeight + 40,
+          }}
+        >
+          <Info />
+        </div>
+      )}
+
       {selectedTab === "color" && (
         <div
           style={{
@@ -136,7 +155,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
           style={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
+            alignItems: isMobile ? "initial" : "center",
             overflow: "auto",
             height: bodyHeight,
             padding: 20,
@@ -166,7 +185,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
           style={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
+            alignItems: isMobile ? "initial" : "center",
             justifyContent: "center",
             gap: 50,
             height: bodyHeight,
@@ -209,9 +228,10 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
       >
         <TabBar
           tabs={[
-            { key: "color", title: color, color },
-            { key: "text" },
-            { key: "mint" },
+            { key: "info", title: "Capsules" },
+            { key: "color", title: "1. " + (color ?? "Color"), color },
+            { key: "text", title: "2. Text" },
+            { key: "mint", title: "3. Mint" },
           ]}
           selectedTab={selectedTab}
           onClickTab={setSelectedTab}
