@@ -133,12 +133,12 @@ export default function Spectrum({
       ...(inactiveColors?.includes(rgbToHex(c))
         ? {
             r: 1,
-            opacity: 0.75,
+            opacity: 0.5,
             ...inactiveStyle,
           }
         : {
             r: 1.5,
-            opacity: 1,
+            opacity: .75,
             ...activeStyle,
             ...(onSelectColor
               ? { onClick: () => onSelectColor(rgbToHex(c)) }

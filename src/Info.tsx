@@ -107,8 +107,8 @@ export default function Info() {
           whichever wallet or contract address has {">"}50% of votes is the
           current Delegate
         </b>
-        . Each Capsule's vote can be changed at any time, and is reset when the
-        token is transferred.
+        . Each Capsule's vote can be changed by its owner at any time, and is
+        reset when the token is transferred.
       </section>
 
       <section id="treasury">
@@ -147,14 +147,15 @@ export default function Info() {
             color: "#888",
           }}
         >
-          {`|  ITypeface private capsulesType;
+          {`|  ITypeface capsulesType;
 |
 |  Font memory regular = Font({
 |    weight: 400, 
 |    style: "normal"
 |  });
 |
-|  bytes memory src = capsulesType.fontSrc(regular);`}
+|  bytes memory src =
+|    capsulesType.fontSrc(regular);`}
         </div>
         <br />
         <a href="https://" target="_blank" rel="noopener noreferrer">
