@@ -16,20 +16,24 @@ export default function Info() {
         <b>Each Capsule has...</b>
         <br />
         <br />
-        <b>128 text characters</b> rendered as an image on-chain. The text can
-        be changed by the owner at any time, for a fee.
-        <br />
-        <br />
-        <b>One of 7,957 colors</b>
+        <ul className="dashed">
+          <li>
+            <b>128 text characters</b> rendered as an image on-chain. Text can
+            be changed by the owner at any time, for a fee.
+          </li>
+          <li>
+            <b>One of 7,957 colors</b>
+          </li>
+          <li>
+            <b>One vote</b> for Delegate
+          </li>
+        </ul>
         {/* , each from <b>one of 7 hues:</b>
         <ul className="dashed">
           <li>Red, blue, green (1,351 colors)</li>
           <li>Pink, cyan, yellow (1,301 colors)</li>
           <li>White (1 color)</li>
         </ul> */}
-        <br />
-        <br />
-        <b>One vote</b> for Delegate
         <br />
         <br />
         <a href="https://" target="_blank" rel="noopener noreferrer">
@@ -146,12 +150,12 @@ export default function Info() {
         >
           {`|  ITypeface capsulesType;
 |
-|  Font memory regular = Font({
+|  Font regular = Font({
 |    weight: 400, 
 |    style: "normal"
 |  });
 |
-|  bytes memory src =
+|  bytes src =
 |    capsulesType.fontSrc(regular);`}
         </div>
         <br />
