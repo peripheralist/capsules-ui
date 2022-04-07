@@ -98,6 +98,7 @@ export default function TextEditor({
             onChange={(e) => {
               // Filter unallowed chars from val
               const value = e.target.value
+                .replace("…", ".")
                 .split("")
                 .filter(isAllowedChar)
                 .join("");

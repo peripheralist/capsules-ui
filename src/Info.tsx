@@ -8,7 +8,9 @@ export default function Info() {
       <h1 style={{ fontSize: isMobile ? "3rem" : "4rem" }}>Capsules</h1>
 
       <section id="capsules">
-        <b>7,957 NFTs on Ethereum</b>
+        <div style={{ textAlign: "center" }}>
+          <b>7,957 NFTs on Ethereum</b>
+        </div>
         <br />
         <br />
         <b>Each Capsule has...</b>
@@ -38,7 +40,8 @@ export default function Info() {
       <section id="mint">
         <h2>Mint</h2>
         <b>7,950 colors</b> are available to mint for 0.1 ETH each. 30 of those
-        colors may be minted for free by wallets on a reserve list.
+        may be minted for free by wallets on a reserve list. Each color can only
+        be minted once.
         <br />
         <br />
         <div dangerouslySetInnerHTML={{ __html: spectrumMintColors }}></div>
