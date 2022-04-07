@@ -1,7 +1,7 @@
-import { Lines } from "./models/lines";
+import { Text } from "./models/text";
 import { CSSProperties, useMemo } from "react";
-import { defaultLines } from "./utils";
-import { maxLineLength } from "./constants/lines";
+import { defaultText, isEmptyText } from "./utils";
+import { maxLineLength } from "./constants/text";
 import { fontCapsulesRegular } from "./fonts/base64/Capsules-Regular";
 
 export default function Capsule({
@@ -13,7 +13,7 @@ export default function Capsule({
   id,
   owner,
 }: {
-  text: Lines;
+  text: Text;
   color: string | undefined;
   width?: CSSProperties["width"];
   height?: CSSProperties["height"];
@@ -41,8 +41,8 @@ export default function Capsule({
     return str;
   }, []);
 
-  const _text = text.every((l) => !l.length)
-    ? defaultLines(color, id ?? 0, owner ?? undefined)
+  const _text = isEmptyText(text)
+    ? defaultText(color, id ?? 0, owner ?? undefined)
     : text;
 
   const longestLine: number = useMemo(

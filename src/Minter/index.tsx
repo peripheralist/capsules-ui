@@ -6,10 +6,10 @@ import { isMobile } from "../constants/isMobile";
 import { NetworkContext } from "../contexts/networkContext";
 import Info from "../Info";
 
-import { Lines } from "../models/lines";
+import { Text } from "../models/text";
 import Spectrum from "../Spectrum";
 import TextEditor from "../TextEditor";
-import { defaultLines } from "../utils";
+import { defaultText } from "../utils";
 import TabBar, { Tab } from "./TabBar";
 
 const screenSize = isMobile ? window.innerWidth : window.innerHeight;
@@ -24,20 +24,12 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const [spectrumScale, setSpectrumScale] = useState<number>(0);
   const [selectedTab, setSelectedTab] = useState<TabKey>("info");
   const [color, setColor] = useState<string>();
-  const [lines, setLines] = useState<Lines>([]);
+  const [text, setText] = useState<Text>([]);
 
   const spectrumScaleMultiplier =
     (isMobile ? 0.9 : 0.75) * (1 + spectrumScale) ** (isMobile ? 4 : 2);
 
   const spectrumSize = screenSize * spectrumScaleMultiplier;
-
-  useEffect(() => {
-    setLines(defaultLines(color, 0, connectedWallet ?? undefined));
-  }, [color, connectedWallet]);
-
-  useEffect(() => {
-    setLines(defaultLines(color, 0, connectedWallet ?? undefined));
-  }, [color, connectedWallet]);
 
   const tabs = useMemo(() => {
     const _tabs: Tab<TabKey>[] = [{ key: "info", title: "Capsules" }];
@@ -74,12 +66,12 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   }, [connectedWallet, color]);
 
   const mint = useCallback(() => {
-    // Only send `text` param if text != defaultLines
+    // Only send `text` param if text != defaultText
     console.log("MINT");
   }, []);
 
   const claim = useCallback(() => {
-    // Only send `text` param if text != defaultLines
+    // Only send `text` param if text != defaultText
     console.log("CLAIM");
   }, []);
 
@@ -235,11 +227,11 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
               minHeight: isMobile ? 750 : 0,
             }}
           >
-            <TextEditor lines={lines} setLines={setLines} />
+            <TextEditor text={text} setText={setText} color={color} />
 
             <div style={{ padding: isMobile ? 10 : 0 }}>
               <Capsule
-                text={lines}
+                text={text}
                 color={color}
                 width={320}
                 owner={connectedWallet}
@@ -262,7 +254,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             boxSizing: "border-box",
           }}
         >
-          <Capsule text={lines} color={color} width={320} />
+          <Capsule text={text} color={color} width={320} />
 
           {useClaim ? (
             <Button

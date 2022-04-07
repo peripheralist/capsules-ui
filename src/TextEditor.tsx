@@ -1,17 +1,19 @@
 import { useMemo } from "react";
-import { maxLineLength, maxLinesCount } from "./constants/lines";
+import { maxLineLength, maxLinesCount } from "./constants/text";
 
-import { Lines } from "./models/lines";
-import { isAllowedChar } from "./utils";
+import { Text } from "./models/text";
+import { defaultText, isAllowedChar, isEmptyText } from "./utils";
 import { isMobile } from "./constants/isMobile";
 import Button from "./components/Button";
 
 export default function TextEditor({
-  lines,
-  setLines,
+  text,
+  setText,
+  color,
 }: {
-  lines: Lines;
-  setLines: (lines: Lines | ((lines: Lines) => Lines)) => void;
+  text: Text;
+  setText: (text: Text | ((text: Text) => Text)) => void;
+  color: string | undefined;
 }) {
   const gap = 0;
   const fontSize = isMobile ? 20 : 24;
@@ -31,11 +33,16 @@ export default function TextEditor({
       const prevInput = () =>
         document.getElementById(`input${i - 1}`) as HTMLInputElement | null;
 
+      const placeholders: string[] = isEmptyText(text)
+        ? defaultText(color, 0)
+        : [];
+
       elems.push(
         <div key={i} style={{ position: "relative", height: fontSize * 1.5 }}>
           <input
             autoFocus={i === 0}
             autoComplete="off"
+            placeholder={placeholders[i]}
             style={{
               background: "transparent",
               height: 36,
@@ -44,7 +51,7 @@ export default function TextEditor({
               width: maxLineLength * charWidth,
               padding: 0,
             }}
-            value={lines[i] ?? ""}
+            value={text[i] ?? ""}
             type="text"
             maxLength={maxLineLength}
             name={`input${i}`}
@@ -91,29 +98,29 @@ export default function TextEditor({
                 .filter(isAllowedChar)
                 .join("");
 
-              const trim = (lines: Lines) => {
-                let _lines = [...lines.reverse()];
+              const trim = (text: Text) => {
+                let _text = [...text.reverse()];
 
-                while (_lines.length && !_lines[0].length) {
-                  _lines = _lines.slice(1);
+                while (_text.length && !_text[0].length) {
+                  _text = _text.slice(1);
                 }
 
-                return _lines.reverse();
+                return _text.reverse();
               };
 
-              setLines((_lines) => {
-                if (_lines.length < i + 1) {
-                  let newLines: Lines = [];
+              setText((_text) => {
+                if (_text.length < i + 1) {
+                  let newText: Text = [];
 
                   for (let _i = 0; _i < i; _i++) {
-                    newLines.push(_lines[_i] || "");
+                    newText.push(_text[_i] || "");
                   }
 
-                  newLines.push(value);
+                  newText.push(value);
 
-                  return trim(newLines);
+                  return trim(newText);
                 } else {
-                  return trim(_lines.map((l, _i) => (_i === i ? value : l)));
+                  return trim(_text.map((l, _i) => (_i === i ? value : l)));
                 }
               });
 
@@ -146,7 +153,7 @@ export default function TextEditor({
     }
 
     return elems;
-  }, [lines, setLines, charWidth, fontSize]);
+  }, [text, setText, charWidth, fontSize]);
 
   return (
     <div>
@@ -165,8 +172,8 @@ export default function TextEditor({
       <Button
         style={{ margin: "0 auto" }}
         size="small"
-        onClick={() => setLines([])}
-        isDisabled={lines.every((l) => !l.length)}
+        onClick={() => setText([])}
+        isDisabled={isEmptyText(text)}
         text="Clear"
       />
     </div>

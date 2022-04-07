@@ -1,6 +1,6 @@
 import { BigNumber, constants } from "ethers";
 import { Hue } from "../models/hue";
-import { Lines } from "../models/lines";
+import { Text } from "../models/text";
 import { RGB } from "../models/rgb";
 import { allowedChars } from "../constants/allowedChars";
 
@@ -32,6 +32,8 @@ export const hueForColor = (color: string): Hue | undefined => {
   }
 };
 
+export const isEmptyText = (text: string[]) => text.every((l) => !l.length);
+
 export const rgbToHex = (rgb: RGB) => {
   const toOctet = (int: number) =>
     BigNumber.from(int).toHexString().split("0x")[1];
@@ -39,11 +41,11 @@ export const rgbToHex = (rgb: RGB) => {
   return "#" + toOctet(rgb.r) + toOctet(rgb.g) + toOctet(rgb.b);
 };
 
-export const defaultLines = (
+export const defaultText = (
   color: string | undefined,
   id: number,
   owner: string = constants.AddressZero
-): Lines => [
+): Text => [
   `CAPSULE`,
   `#${color?.split("#")[1] ?? "--"}`,
   // "OWNER:",
