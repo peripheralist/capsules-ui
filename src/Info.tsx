@@ -1,10 +1,11 @@
 import { spectrumMintColors } from "./constants/elements/spectrumMintColors";
 import { spectrumAuctionColors } from "./constants/elements/spectrumAuctionColors";
+import { isMobile } from "./constants/isMobile";
 
 export default function Info() {
   return (
     <div>
-      <h1>Capsules</h1>
+      <h1 style={{ fontSize: isMobile ? "3rem" : "4rem" }}>Capsules</h1>
 
       <section id="capsules">
         <b>7,957 NFTs on Ethereum</b>
@@ -13,8 +14,8 @@ export default function Info() {
         <b>Each Capsule has...</b>
         <br />
         <br />
-        <b>128 text characters</b> that can be changed by the owner at any time,
-        for a fee. The text is rendered as an image on-chain.
+        <b>128 text characters</b> rendered as an image on-chain. The text can
+        be changed by the owner at any time, for a fee.
         <br />
         <br />
         <b>One of 7,957 colors</b>
@@ -62,8 +63,8 @@ export default function Info() {
         <br />
         <br />
         The Auction can <b>only be started by the Delegate</b>, who can only be
-        elected <b>after the initial mint has completed</b>. Once started, each
-        color will be auctioned sequentially, with each auction lasting 24
+        elected <b>after the initial mint has completed</b>. Once started, all
+        seven colors will be auctioned one after the other, with each lasting 24
         hours.
         <br />
         <br />
@@ -124,8 +125,11 @@ export default function Info() {
       <section id="typeface">
         <h2>Typeface</h2>
         Capsule images render SVG text in the Capsules Typeface: a mono typeface
-        that supports all 95 basic Latin characters. The typeface is stored
-        on-chain in 9 weights using the <b>Typeface solidity interface</b>.
+        that supports all 95 basic Latin letters, numbers, and punctuation.
+        <br />
+        <br />
+        The base64 encoded typeface is stored on-chain, and is available in 5
+        weights to any contract via the <b>Typeface solidity interface:</b>
         <br />
         <br />
         <div
@@ -149,7 +153,11 @@ export default function Info() {
         </div>
         <br />
         <a href="https://" target="_blank" rel="noopener noreferrer">
-          Capsules Typeface contract
+          Capsules Typeface mainnet
+        </a>
+        <br />
+        <a href="https://" target="_blank" rel="noopener noreferrer">
+          Capsules Typeface rinkeby
         </a>
         <br />
         <br />
