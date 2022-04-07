@@ -40,7 +40,7 @@ export default function TextEditor({
       elems.push(
         <div key={i} style={{ position: "relative", height: fontSize * 1.5 }}>
           <input
-            autoFocus={i === 0}
+            autoFocus={!isMobile && i === 0}
             autoComplete="off"
             placeholder={placeholders[i]}
             style={{
