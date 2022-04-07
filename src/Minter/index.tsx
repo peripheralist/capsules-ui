@@ -42,21 +42,33 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const tabs = useMemo(() => {
     const _tabs: Tab<TabKey>[] = [{ key: "info", title: "Capsules" }];
 
-    if (connectedWallet === null) {
-      _tabs.push({ key: "connect" as const, title: "Mint" });
-    } else if (connectedWallet) {
-      _tabs.push(
-        ...[
-          {
-            key: "color" as const,
-            title: "1. " + (color ?? "Color"),
-            color,
-          },
-          { key: "text" as const, title: "2. Text" },
-          { key: "mint" as const, title: "3. Mint" },
-        ]
-      );
-    }
+    _tabs.push(
+      ...[
+        {
+          key: "color" as const,
+          title: "1. " + (color ?? "Color"),
+          color,
+        },
+        { key: "text" as const, title: "2. Text" },
+        { key: "mint" as const, title: "3. Mint" },
+      ]
+    );
+
+    // if (connectedWallet === null) {
+    //   _tabs.push({ key: "connect" as const, title: "Mint" });
+    // } else if (connectedWallet) {
+    //   _tabs.push(
+    //     ...[
+    //       {
+    //         key: "color" as const,
+    //         title: "1. " + (color ?? "Color"),
+    //         color,
+    //       },
+    //       { key: "text" as const, title: "2. Text" },
+    //       { key: "mint" as const, title: "3. Mint" },
+    //     ]
+    //   );
+    // }
 
     return _tabs;
   }, [connectedWallet, color]);
@@ -217,6 +229,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             style={{
               display: "flex",
               justifyContent: "center",
+              alignItems: "center",
               flexWrap: "wrap-reverse",
               gap: isMobile ? 30 : 50,
               minHeight: isMobile ? 750 : 0,

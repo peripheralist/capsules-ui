@@ -21,27 +21,22 @@ export default function Capsule({
   id?: number;
   owner?: string | null;
 }) {
-  const x = 10;
-  const y = 48;
+  const canvasPaddingXDots = 3;
+  const charWidthDots = 5;
+  const charHeightDots = 12;
+  const gridSize = 4;
+  const marginXDots = 3;
+  const lineHeight = 48;
   const r = 1.5;
-  const border = 0;
 
   const _color = color ?? "#fff";
 
   const dots1x12: string = useMemo(() => {
     let str = "";
-    for (let i = 0; i < 12; i++) {
-      str += `<circle cx="2" cy="${4 * i + 2}" r="${r}"></circle>`;
-    }
-    return str;
-  }, []);
-
-  const dots5x12: string = useMemo(() => {
-    let str = "";
-    for (let i = 0; i < 5; i++) {
-      str += `<use xlink:href="#dots1x12" transform="translate(${
-        4 * i
-      } 0)"></use>`;
+    for (let x = 0; x < 12; x++) {
+      str += `<circle cx="${gridSize / 2}" cy="${
+        gridSize * x + gridSize / 2
+      }" r="${r}"></circle>`;
     }
     return str;
   }, []);
@@ -50,7 +45,7 @@ export default function Capsule({
     ? defaultLines(color, id ?? 0, owner ?? undefined)
     : text;
 
-  const lineWidth: number = useMemo(
+  const longestLine: number = useMemo(
     () =>
       Math.min(
         _text.reduce((acc, curr) => (curr.length > acc ? curr.length : acc), 0),
@@ -59,63 +54,67 @@ export default function Capsule({
     [_text]
   );
 
-  const rowId = "row" + lineWidth;
+  const rowId = "row" + longestLine;
+  const textRowId = "textRow" + longestLine;
 
-  const _width = lineWidth * 6 + 5;
-  const _height = _text.length * 12 + 2;
+  const canvasWidthDots =
+    longestLine * charWidthDots + (longestLine - 1) + canvasPaddingXDots * 2;
+  const canvasHeightDots = _text.length * charHeightDots + 2;
 
-  const row: string = useMemo(() => {
+  // Dot height row of dots
+  const rowDots: string = useMemo(() => {
     let str = "";
-    // 1 for each char
-    let offset = 0;
-    for (let i = 0; i < lineWidth; i++) {
-      str += `<use xlink:href="#dots5x12" transform="translate(${offset} 0)"></use>`;
-      offset += 20;
-    }
-    // 1 between each char, and on edges
-    for (let i = 0; i < lineWidth + 5; i++) {
-      str += `<use xlink:href="#dots1x12" transform="translate(${
-        4 * i + offset
-      } 0)"></use>`;
+    for (let i = 0; i < canvasWidthDots; i++) {
+      str += `<circle cx="${gridSize * i + gridSize / 2}" cy="${
+        gridSize / 2
+      }" r="${r}"></circle>`;
     }
     return str;
-  }, [lineWidth]);
+  }, [canvasWidthDots]);
+
+  // Text height row of dots
+  const textRowDots: string = useMemo(() => {
+    let str = "";
+
+    for (let i = 0; i < canvasWidthDots; i++) {
+      str += `<use xlink:href="#dots1x12" transform="translate(${
+        i * gridSize
+      } 0)"></use>`;
+    }
+
+    return str;
+  }, [longestLine]);
 
   const dots: string = useMemo(() => {
     // Top edge
-    let str = "";
+    let str = `<use xlink:href="#${rowId}"></use>`;
 
-    for (let i = 0; i < _text.length; i++) {
-      str += `<use xlink:href="#${rowId}" transform="translate(0 ${
-        y * i
+    for (let y = 0; y < _text.length; y++) {
+      str += `<use xlink:href="#${textRowId}" transform="translate(0 ${
+        lineHeight * y + gridSize
       })"></use>`;
     }
 
     // Bottom edge
-    for (let i = 0; i < _width; i++) {
-      str += `<circle cx="${4 * i + 2}" cy="${
-        _text.length * y + 2
-      }"  r="${r}"></circle>`;
-    }
-    for (let i = 0; i < _width; i++) {
-      str += `<circle cx="${4 * i + 2}" cy="${
-        _text.length * y + 6
-      }"  r="${r}"></circle>`;
-    }
+    str += `<use xlink:href="#${rowId}" transform="translate(0 ${
+      (canvasHeightDots - 1) * gridSize
+    })"></use>`;
 
     return str;
-  }, [_text.length, rowId, _width]);
+  }, [_text.length, rowId, canvasHeightDots]);
 
   return (
     <div
       style={{
         width,
-        height,
+        height: height ?? width,
         overflow: "hidden",
       }}
     >
       <svg
-        viewBox={`0 0 ${_width * 4 + border * 2} ${_height * 4 + border * 2}`}
+        viewBox={`0 0 ${canvasWidthDots * gridSize} ${
+          canvasHeightDots * gridSize
+        }`}
         preserveAspectRatio={preserveAspectRatio ?? "xMidYMid meet"}
         xmlns="http://www.w3.org/2000/svg"
         width="100%"
@@ -123,20 +122,25 @@ export default function Capsule({
       >
         <defs>
           <g id="dots1x12" dangerouslySetInnerHTML={{ __html: dots1x12 }}></g>
-          <g id="dots5x12" dangerouslySetInnerHTML={{ __html: dots5x12 }}></g>
-          <g id={rowId} dangerouslySetInnerHTML={{ __html: row }}></g>
+          <g id={rowId} dangerouslySetInnerHTML={{ __html: rowDots }}></g>
+          <g
+            id={textRowId}
+            dangerouslySetInnerHTML={{ __html: textRowDots }}
+          ></g>
         </defs>
         <rect x="0" y="0" width="100%" height="100%" fill="#000"></rect>
         <g
           fill={_color}
           opacity="0.25"
           dangerouslySetInnerHTML={{ __html: dots }}
-          transform={`translate(${border} ${border})`}
         ></g>
 
-        <g fill={_color} transform={`translate(${x + border} ${44 + border})`}>
+        <g
+          fill={_color}
+          transform={`translate(${(marginXDots - 0.5) * gridSize} 44)`}
+        >
           {_text.map((line, i) => (
-            <text y={y * i} className="capsule" key={i}>
+            <text y={lineHeight * i} className="capsule" key={i}>
               {line.substring(0, maxLineLength)}
             </text>
           ))}
@@ -149,10 +153,6 @@ export default function Capsule({
             white-space: pre;
           }
           
-          #edition {
-            font-size: 12.5px;
-          }
-
           @font-face {
             font-family: 'Capsule';
             font-style: normal;

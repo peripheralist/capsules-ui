@@ -5,19 +5,6 @@ export default function Info() {
   return (
     <div>
       <h1>Capsules</h1>
-      {/* <Capsule
-        text={["7,957 NFTs on", "Ethereum"]}
-        height={80}
-        color={"white"}
-        preserveAspectRatio="xMinYMid meet"
-      />
-      <br />
-      <Capsule
-        text={["105 editable", "text characters"]}
-        height={80}
-        color={"white"}
-        preserveAspectRatio="xMinYMid meet"
-      /> */}
 
       <section id="capsules">
         <b>7,957 NFTs on Ethereum</b>
@@ -30,12 +17,14 @@ export default function Info() {
         for a fee. The text is rendered as an image on-chain.
         <br />
         <br />
-        <b>One of 7,957 colors</b>, each from <b>one of 7 hues:</b>
+        <b>One of 7,957 colors</b>
+        {/* , each from <b>one of 7 hues:</b>
         <ul className="dashed">
           <li>Red, blue, green (1,351 colors)</li>
           <li>Pink, cyan, yellow (1,301 colors)</li>
           <li>White (1 color)</li>
-        </ul>
+        </ul> */}
+        <br />
         <br />
         <b>One vote</b> for Delegate
         <br />
@@ -145,6 +134,7 @@ export default function Info() {
             fontWeight: "bold",
             whiteSpace: "pre",
             color: "#888",
+            padding: "1rem",
           }}
         >
           {`|  ITypeface capsulesType;

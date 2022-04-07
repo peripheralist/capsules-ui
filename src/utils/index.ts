@@ -44,13 +44,12 @@ export const defaultLines = (
   id: number,
   owner: string = constants.AddressZero
 ): Lines => [
-  `CAPSULE ${id}`,
-  `COLOR   ${color?.split("#")[1] ?? "--"}`,
-  `HUE     ${color ? hueForColor(color) : "--"}`,
-  "OWNER",
-  `${owner.slice(0, 14)}`,
-  owner.slice(14, 28),
-  owner.slice(28, 42),
+  `CAPSULE`,
+  `#${color?.split("#")[1] ?? "--"}`,
+  // "OWNER:",
+  // `${owner.slice(0, 14)}`,
+  // `${owner.slice(14, 28)}`,
+  // `${owner.slice(28, 42)}`,
 ];
 
 export const isAllowedChar = (char: string) => {
