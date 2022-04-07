@@ -57,7 +57,7 @@ export default function TextEditor({
             name={`input${i}`}
             data-lpignore="true"
             id={`input${i}`}
-            onKeyUp={(e) => {
+            onKeyDown={(e) => {
               const cursorPosition: number = (e.target as any).selectionStart;
               const selectionLength: number =
                 (e.target as any).selectionEnd - cursorPosition;
@@ -70,13 +70,16 @@ export default function TextEditor({
                 case "Enter":
                 case "ArrowDown":
                   _nextInput?.focus();
+                  e.preventDefault();
                   break;
                 case "ArrowUp":
                   _prevInput?.focus();
+                  e.preventDefault();
                   break;
                 case "ArrowRight":
                   if (cursorPosition === lineLength) {
                     _nextInput?.focus();
+                    e.preventDefault();
                   }
                   break;
                 case "ArrowLeft":
@@ -87,6 +90,7 @@ export default function TextEditor({
                       _prevInput.value.length,
                       _prevInput.value.length
                     );
+                    e.preventDefault();
                   }
                   break;
               }
