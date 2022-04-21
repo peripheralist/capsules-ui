@@ -140,13 +140,30 @@ ul.dashed > li:before {
   margin-right: 10px;
 }
 
-section {
-  margin-bottom: 4rem;
+@font-face {
+  font-family: 'Capsules';
+  font-weight: 100;
+  font-style: normal;
+  src: url(./fonts/Capsules-Thin.otf) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
-  font-weight: normal;
+  font-weight: 200;
+  font-style: normal;
+  src: url(./fonts/Capsules-ExtraLight.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Capsules';
+  font-weight: 300;
+  font-style: normal;
+  src: url(./fonts/Capsules-Light.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Capsules';
+  font-weight: 400;
   font-style: normal;
   src: url(./fonts/Capsules-Regular.otf) format('opentype');
 }
@@ -163,4 +180,25 @@ section {
   font-weight: 600;
   font-style: normal;
   src: url(./fonts/Capsules-SemiBold.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Capsules';
+  font-weight: 700;
+  font-style: normal;
+  src: url(./fonts/Capsules-Bold.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Capsules';
+  font-weight: 800;
+  font-style: normal;
+  src: url(./fonts/Capsules-ExtraBold.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Capsules';
+  font-weight: 900;
+  font-style: normal;
+  src: url(./fonts/Capsules-Black.otf) format('opentype');
 }

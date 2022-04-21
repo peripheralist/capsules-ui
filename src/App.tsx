@@ -11,7 +11,7 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={Minter} />
         <Route path="/claim" component={() => Minter({ useClaim: true })} />
-        <Route path="/typeface" component={Typeface} />
+        <Route path="/weights" component={Typeface} />
       </Switch>
     </HashRouter>
   );

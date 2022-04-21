@@ -2,7 +2,7 @@ import { Text } from "./models/text";
 import { CSSProperties, useMemo } from "react";
 import { defaultText, isEmptyText } from "./utils";
 import { maxLineLength } from "./constants/text";
-import { fontCapsulesRegular } from "./fonts/base64/Capsules-Regular";
+import { fonts } from "./fonts/fonts";
 
 export default function Capsule({
   text,
@@ -29,7 +29,8 @@ export default function Capsule({
   const lineHeight = 48;
   const r = 1.5;
 
-  const _color = color ?? "#fff";
+  const _color = "#fff";
+  // const _color = color ?? "#fff";
 
   const dots1x12: string = useMemo(() => {
     let str = "";
@@ -165,5 +166,4 @@ export default function Capsule({
   );
 }
 
-const fontSrc =
-  "data:font/truetype;charset=utf-8;base64," + fontCapsulesRegular;
+const fontSrc = "data:font/truetype;charset=utf-8;base64," + fonts[900];
