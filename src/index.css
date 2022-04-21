@@ -124,6 +124,13 @@ input[type=range]::-moz-range-track {
   background: #ffffff;
 }
 
+select {
+  background: transparent;
+  color: white;
+  font-family: 'Capsules';
+  border: none;
+}
+
 ul {
   margin: 0;
 }

@@ -5,17 +5,21 @@ import { Text } from "./models/text";
 import { defaultText, isAllowedChar, isEmptyText } from "./utils";
 import { isMobile } from "./constants/isMobile";
 import Button from "./components/Button";
+import { Weight } from "./models/weight";
 
 export default function TextEditor({
   text,
   setText,
   color,
+  weight,
+  setWeight,
 }: {
   text: Text;
   setText: (text: Text | ((text: Text) => Text)) => void;
   color: string | undefined;
+  weight: Weight;
+  setWeight: (weight: Weight | ((weight: Weight) => Weight)) => void;
 }) {
-  const gap = 0;
   const fontSize = isMobile ? 20 : 24;
   const charWidth = fontSize * 0.6;
 
@@ -160,18 +164,46 @@ export default function TextEditor({
     return elems;
   }, [text, setText, charWidth, fontSize]);
 
+  const options = useMemo(
+    () =>
+      [100, 200, 300, 400, 500, 600, 700, 800, 900].map((weight) => (
+        <option value={weight} label={weight.toString()} />
+      )),
+    []
+  );
+
   return (
     <div>
       <div
         style={{
           display: "flex",
           flexDirection: "column",
-          gap,
+          gap: 20,
           right: 0,
           left: 0,
         }}
       >
-        {textInputs}
+        <div
+          style={{
+            display: "flex",
+            gap: 20,
+            alignItems: "baseline",
+            fontWeight: 600,
+          }}
+        >
+          <div>WEIGHT:</div>
+          <select
+            style={{ flex: 1, fontSize: "1rem", fontWeight: 600 }}
+            value={weight}
+            onChange={(e) => setWeight(parseInt(e.target.value) as Weight)}
+          >
+            {options}
+          </select>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {textInputs}
+        </div>
       </div>
 
       <Button

@@ -3,10 +3,12 @@ import { CSSProperties, useMemo } from "react";
 import { defaultText, isEmptyText } from "./utils";
 import { maxLineLength } from "./constants/text";
 import { fonts } from "./fonts/fonts";
+import { Weight } from "./models/weight";
 
 export default function Capsule({
   text,
   color,
+  weight,
   width,
   height,
   preserveAspectRatio,
@@ -15,6 +17,7 @@ export default function Capsule({
 }: {
   text: Text;
   color: string | undefined;
+  weight?: Weight;
   width?: CSSProperties["width"];
   height?: CSSProperties["height"];
   preserveAspectRatio?: React.SVGAttributes<SVGElement>["preserveAspectRatio"];
@@ -29,7 +32,7 @@ export default function Capsule({
   const lineHeight = 48;
   const r = 1.5;
 
-  const _color = "#fff";
+  const _color = color ?? "#fff";
   // const _color = color ?? "#fff";
 
   const dots1x12: string = useMemo(() => {
@@ -158,12 +161,12 @@ export default function Capsule({
             font-family: 'Capsule';
             font-style: normal;
             font-weight: normal;
-            src: url(${fontSrc})
+            src: url(data:font/truetype;charset=utf-8;base64,${
+              fonts[weight ?? 300]
+            })
           }`}
         </style>
       </svg>
     </div>
   );
 }
-
-const fontSrc = "data:font/truetype;charset=utf-8;base64," + fonts[900];

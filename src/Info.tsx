@@ -36,9 +36,10 @@ export default function Info() {
       <b>7,956 colors</b> can be minted only once.
       <br />
       <br />
-      The color <b>#ffffff</b> (white), can be minted up to 9 times, only by{" "}
+      The color <b>#ffffff</b> (white), can be minted up to 9 times, once to
+      each wallet that{" "}
       <a href="/#/typeface" rel="noopener noreferrer">
-        storing one of the 9 Capsules font weights
+        unlocks a Capsules font weight
       </a>
       .
       <br />

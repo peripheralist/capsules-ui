@@ -7,6 +7,7 @@ import { NetworkContext } from "../contexts/networkContext";
 import Info from "../Info";
 
 import { Text } from "../models/text";
+import { Weight } from "../models/weight";
 import Spectrum from "../Spectrum";
 import TextEditor from "../TextEditor";
 import { defaultText } from "../utils";
@@ -25,6 +26,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const [selectedTab, setSelectedTab] = useState<TabKey>("info");
   const [color, setColor] = useState<string>();
   const [text, setText] = useState<Text>([]);
+  const [weight, setWeight] = useState<Weight>(300);
 
   const spectrumScaleMultiplier =
     (isMobile ? 0.9 : 0.75) * (1 + spectrumScale) ** (isMobile ? 4 : 2);
@@ -227,7 +229,13 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
               minHeight: isMobile ? 750 : 0,
             }}
           >
-            <TextEditor text={text} setText={setText} color={color} />
+            <TextEditor
+              text={text}
+              setText={setText}
+              color={color}
+              weight={weight}
+              setWeight={setWeight}
+            />
 
             <div style={{ padding: isMobile ? 10 : 0 }}>
               <Capsule
@@ -235,6 +243,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
                 color={color}
                 width={320}
                 owner={connectedWallet}
+                weight={weight}
               />
             </div>
           </div>
