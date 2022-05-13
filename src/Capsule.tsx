@@ -113,6 +113,7 @@ export default function Capsule({
         width,
         height: height ?? width,
         overflow: "hidden",
+        cursor: "default",
       }}
     >
       <svg
@@ -162,7 +163,7 @@ export default function Capsule({
             font-style: normal;
             font-weight: normal;
             src: url(data:font/truetype;charset=utf-8;base64,${
-              fonts[weight ?? 300]
+              fonts[weight ?? 400]
             })
           }`}
         </style>

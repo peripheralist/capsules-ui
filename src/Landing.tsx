@@ -1,108 +1,129 @@
-import Capsule from "./Capsule";
+import { constants } from "ethers";
+
 import Button from "./components/Button";
 import { isMobile } from "./constants/isMobile";
+import { useFonts } from "./hooks/fonts";
+import { fonts } from "./fonts/fonts";
 
 export default function Landing() {
-  const gap = isMobile ? 30 : 40;
-  const size = isMobile ? window.innerWidth - gap : 400;
+  const fonts = useFonts();
 
   return (
-    <div>
-      <div
-        style={{
-          maxWidth: size,
-          margin: "0 auto",
-          paddingBottom: 100,
-        }}
-      >
+    <div
+      style={{
+        padding: 20,
+      }}
+    >
+      <div style={{ maxWidth: 900, marginTop: "30vh" }}>
+        <h1 style={{ fontSize: isMobile ? "3rem" : "8rem" }}>Capsules</h1>
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            gap,
-            marginTop: "20vh",
+            fontSize: "5rem",
+            lineHeight: 5 * 1.1825 + "rem",
+            fontWeight: 500,
           }}
         >
-          <Capsule
-            width={size}
-            color="#00ffff"
-            text={[
-              "   CAPSULES",
-              "",
-              "",
-              "",
-              "",
-              "> 7,957 colors",
-              "> 105 chars",
-            ]}
-          />
-          <Capsule
-            width={size}
-            color="#ff00ff"
-            text={[
-              "Capsule =",
-              " ~ on-chain ~",
-              "SVG text image",
-              "",
-              "Owner can edit",
-              "any time for a",
-              "fee of 0.01 ETH",
-            ]}
-          />
-          <Capsule
-            width={size}
-            color="#ffff00"
-            text={[
-              " 50% ETH from",
-              "   minting",
-              "      +",
-              " All ETH paid",
-              "   in edits",
-              "",
-              ">>> Locked <<<",
-            ]}
-          />
-          <Capsule
-            width={size}
-            color="white"
-            text={[
-              "",
-              "...but can be",
-              "withdrawn when",
-              ">50% agree",
-              "where it goes",
-              "",
-              "             ;)",
-            ]}
-          />
-        </div>
-        <Button
-          href="/#/mint"
-          text="MINT A CAPSULE"
-          style={{ marginTop: 100, width: "100%" }}
-        />
-        <div style={{ marginTop: 100 }}>
-          <h3>Releasing funds</h3>
-          <p>
-            Every Capsule owner may choose a <b>recipient</b> wallet address for
-            their token. If at least 50% of Capsules have a matching{" "}
-            <b>recipient</b> address, any funds locked in the contract can be
-            withdrawn to it.
-          </p>
+          A mono typeface in seven font weights
           <br />
-          <h3>Typeface</h3>
-          <p>
-            Capsule SVG images render text in the custom{" "}
-            <a href="/#/typeface">Capsule typeface</a>, which is stored entirely
-            on-chain.
-          </p>
-        </div>
-        <div style={{ marginTop: 100 }}>
-          <a href="http://" target="_blank" rel="noopener noreferrer">
-            Github
+          <br />
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
+            {fonts.map((f) => (
+              <span
+                style={{
+                  fontWeight: f.weight,
+                  fontSize: "7rem",
+                  whiteSpace: "pre",
+                  width: 200,
+                }}
+              >
+                {f.weight}
+              </span>
+            ))}
+          </div>
+          <br />
+          <br />
+          Available to all Ethereum smart contracts for free
+          <br />
+          <br />
+          <a
+            href="https://"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="light"
+            style={{ fontSize: "3rem" }}
+          >
+            CapsulesTypeface contract
           </a>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <div style={{ textAlign: "center", maxWidth: 600, margin: "0 auto" }}>
+        Fonts are locked until they've been stored on-chain. Anyone who pays gas
+        to store a font will also earn one of the 7{" "}
+        <a href="/#/mint" rel="noopener noreferrer">
+          pure-color Capsule NFTs
+        </a>
+        .
+        <br />
+        <br />
+        <div style={{ display: "inline-block" }}>
+          <div style={{ fontWeight: 200 }}>------------------------------</div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              textTransform: "uppercase",
+              fontWeight: 200,
+            }}
+          >
+            <span>Font</span>
+            <span>Unlocked</span>
+          </div>
+          <div style={{ fontWeight: 200 }}>------------------------------</div>
+          {fonts.map((f) => (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  height: "2.25rem",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: f.weight,
+                    color: f.color,
+                  }}
+                >
+                  {f.weight}
+                </span>
+                <span
+                  style={{
+                    fontWeight:
+                      f.unlocked === constants.AddressZero ? 200 : 500,
+                  }}
+                >
+                  {f.unlocked === constants.AddressZero ? "--" : f.unlocked}
+                </span>
+              </div>
+            </>
+          ))}
+          <div style={{ fontWeight: 200 }}>------------------------------</div>
+        </div>
+        <Button text="Unlock a font" href="/#/fonts" />
+        <Button text="Mint a Capsule NFT" href="/#/mint" />
+        <Button text="Typeface" href="/#/glyphs" />
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
   );
 }

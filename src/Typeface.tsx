@@ -25,18 +25,18 @@ export default function Typeface() {
   return (
     <div style={{ padding: 20 }}>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
-        <h1>Font Weights</h1>
+        <h1>Fonts</h1>
         <br />
-        Each of the 9 Capsules font weights must be stored on Ethereum before it
-        can be used.{" "}
+        Each of the 7 Capsules fonts must be stored on Ethereum before it can be
+        used.{" "}
         <b>
-          In exchange for paying gas to store a font weight, the payer will be
-          minted one of 9 Capsule NFTs with the color #ffffff (white).
+          Anyone who pays gas to store a font will receive a Capsule NFT with
+          one of 7 pure colors.
         </b>
         <br />
         <br />
-        Once the font data for a weight has been stored, it's available to
-        anyone for free via the <b>Typeface solidity interface:</b>
+        Once the data for a font has been stored, it's available to any smart
+        contract for free via the <b>Typeface solidity interface:</b>
         <br />
         <div style={{ textAlign: "center" }}>
           <div
@@ -58,17 +58,36 @@ export default function Typeface() {
   |    style: "normal"
   |  });
   |
-  |  bytes src =
+  |  bytes memory src =
   |    capsulesType.fontSrc(regular);`}
           </div>
         </div>
         <br />
-        <a href="https://" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="light"
+        >
           CapsulesTypeface mainnet
         </a>
         <br />
-        <a href="https://" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="light"
+        >
           CapsulesTypeface rinkeby
+        </a>
+        <br />
+        <a
+          href="https://"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="light"
+        >
+          Typeface solidity interface
         </a>
         <br />
         <br />

@@ -3,46 +3,78 @@ const { base64 } = require("ethers/lib/utils");
 
 const dir = "src/fonts/";
 
-const files = fs.readdirSync(dir);
-
-const weightForFont = (name) => {
-  switch (name) {
-    case "Thin":
-      return 100;
-    case "ExtraLight":
-      return 200;
-    case "Light":
-      return 300;
-    case "Regular":
-      return 400;
-    case "Medium":
-      return 500;
-    case "SemiBold":
-      return 600;
-    case "Bold":
-      return 700;
-    case "ExtraBold":
-      return 800;
-    case "Black":
-      return 900;
-  }
-};
-
 let fileContents = "export const fonts = {";
 
-for (let file of files) {
-  if (!file.endsWith(".otf")) continue;
+function writeFontsFile() {
+  console.log("Writing fonts file");
 
-  console.log("encoding", file);
+  const files = fs.readdirSync(dir);
 
-  let weight = weightForFont(file.replace(".otf", "").split("-")[1]);
+  for (let file of files) {
+    if (!file.endsWith(".otf")) continue;
 
-  fileContents += `${weight}: "${base64.encode(fs.readFileSync(dir + file))}",`;
+    console.log("encoding", file);
+
+    let weight = file.replace(".otf", "").split("-")[1];
+
+    if (!weight) continue;
+
+    fileContents += `${weight}: "${base64.encode(
+      fs.readFileSync(dir + file)
+    )}",`;
+  }
+
+  // Remove trailing comma
+  fileContents = fileContents.substring(0, fileContents.length - 1);
+
+  fileContents += "};";
+
+  fs.writeFileSync(dir + "/fonts.ts", fileContents);
 }
 
-// Remove trailing comma
-fileContents = fileContents.substring(0, fileContents.length - 1);
+function writeUnicode() {
+  const txt = fs.readFileSync(dir + "unicode.txt").toString();
 
-fileContents += "};";
+  const lines = txt.split("\n").filter((x) => x.startsWith("uni"));
 
-fs.writeFileSync(dir + "/fonts.ts", fileContents);
+  const unicodes = lines
+    .map((x) => x.split(" ")[0].split("uni")[1])
+    .filter((x) => x.toLowerCase() != "ffff" && x != "0000");
+
+  const charMap = unicodes.reduce(
+    (acc, curr, i) => ({
+      ...acc,
+      [curr.toLowerCase()]: lines[i].split(" ")[2],
+    }),
+    {}
+  );
+
+  const groups = [];
+  let temp = [];
+  unicodes
+    .sort((a, b) => (parseInt(a, 16) > parseInt(b, 16) ? 1 : -1))
+    .forEach((curr, i) => {
+      const prev = unicodes[i - 1];
+      const formatted = `0x${curr.toString(16)}`;
+      if (prev && curr - prev > 1) {
+        groups.push(temp);
+        temp = [formatted];
+      } else {
+        temp.push(formatted);
+      }
+    });
+
+  fs.writeFileSync(
+    dir + "/unicode.ts",
+    `export const unicodes = [${unicodes.map((x) => "0x" + x)}];
+  
+export const unicodeGroups = [${groups.map((g) => `[${g}]`)}];
+  
+export const unicodeNames: Record<string, string> = ${JSON.stringify(charMap)};`
+  );
+
+  console.log(`Wrote ${unicodes.length} unicodes`);
+}
+
+writeFontsFile();
+writeUnicode();

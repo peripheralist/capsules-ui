@@ -1,16 +1,15 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
+
 import Capsule from "../Capsule";
 import Button from "../components/Button";
 import { auctionColors } from "../constants/colors";
 import { isMobile } from "../constants/isMobile";
 import { NetworkContext } from "../contexts/networkContext";
-import Info from "../Info";
-
 import { Text } from "../models/text";
 import { Weight } from "../models/weight";
 import Spectrum from "../Spectrum";
 import TextEditor from "../TextEditor";
-import { defaultText } from "../utils";
+import NFTs from "./NFTs";
 import TabBar, { Tab } from "./TabBar";
 
 const screenSize = isMobile ? window.innerWidth : window.innerHeight;
@@ -26,7 +25,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const [selectedTab, setSelectedTab] = useState<TabKey>("info");
   const [color, setColor] = useState<string>();
   const [text, setText] = useState<Text>([]);
-  const [weight, setWeight] = useState<Weight>(300);
+  const [weight, setWeight] = useState<Weight>(400);
 
   const spectrumScaleMultiplier =
     (isMobile ? 0.9 : 0.75) * (1 + spectrumScale) ** (isMobile ? 4 : 2);
@@ -83,12 +82,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   // }, [spectrumSize, window.innerWidth]);
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        width: "100vw",
-      }}
-    >
+    <div>
       {selectedTab === "info" && (
         <div
           style={{
@@ -98,7 +92,14 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             paddingBottom: tabBarHeight + 40,
           }}
         >
-          <Info />
+          <NFTs />
+          <br />
+          <br />
+          <Button
+            text="Mint a Capsule"
+            style={{ width: "100%", color: "#0ff" }}
+            onClick={() => setSelectedTab("color")}
+          />
         </div>
       )}
 
@@ -274,7 +275,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             />
           ) : (
             <Button
-              text="Mint Capsule (0.1 ETH)"
+              text="Mint Capsule (0.02 ETH)"
               size="large"
               onClick={mint}
               style={{ margin: "0 auto" }}

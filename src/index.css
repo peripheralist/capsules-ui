@@ -46,13 +46,15 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   color: #fff;
-  text-align: center;
 }
 
 a, button {
   font-weight: bold;
-  color: #fff;
   text-decoration: none;
+}
+
+button {
+  color: #fff;
 }
 
 a {
@@ -60,8 +62,16 @@ a {
   color: #00ffff;
 }
 
+a.light {
+  font-weight: 200;
+}
+
 a:hover {
   font-weight: bold;
+}
+
+a.light:hover {
+  font-weight: 300;
 }
 
 button {
@@ -69,12 +79,21 @@ button {
   border: none;
 }
 
-input {
+input, textarea {
   font-family: 'Capsules';
   background: transparent;
   border: none;
   outline: none;
   color: white;
+}
+
+textarea::placeholder {
+  color: white;
+}
+
+pre.caret-underscore > span {
+  animation: blink 1s step-end infinite;
+  border-bottom: 2px solid white;
 }
 
 input[type=range] {
@@ -151,61 +170,47 @@ ul.dashed > li:before {
   font-family: 'Capsules';
   font-weight: 100;
   font-style: normal;
-  src: url(./fonts/Capsules-Thin.otf) format('opentype');
+  src: url(./fonts/Capsules-100.otf) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 200;
   font-style: normal;
-  src: url(./fonts/Capsules-ExtraLight.otf) format('opentype');
+  src: url(./fonts/Capsules-200.otf) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 300;
   font-style: normal;
-  src: url(./fonts/Capsules-Light.otf) format('opentype');
+  src: url(./fonts/Capsules-300.otf) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 400;
   font-style: normal;
-  src: url(./fonts/Capsules-Regular.otf) format('opentype');
+  src: url(./fonts/Capsules-400.otf) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 500;
   font-style: normal;
-  src: url(./fonts/Capsules-Medium.otf) format('opentype');
+  src: url(./fonts/Capsules-500.otf) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 600;
   font-style: normal;
-  src: url(./fonts/Capsules-SemiBold.otf) format('opentype');
+  src: url(./fonts/Capsules-600.otf) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 700;
   font-style: normal;
-  src: url(./fonts/Capsules-Bold.otf) format('opentype');
-}
-
-@font-face {
-  font-family: 'Capsules';
-  font-weight: 800;
-  font-style: normal;
-  src: url(./fonts/Capsules-ExtraBold.otf) format('opentype');
-}
-
-@font-face {
-  font-family: 'Capsules';
-  font-weight: 900;
-  font-style: normal;
-  src: url(./fonts/Capsules-Black.otf) format('opentype');
+  src: url(./fonts/Capsules-700.otf) format('opentype');
 }
