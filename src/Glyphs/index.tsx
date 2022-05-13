@@ -114,6 +114,7 @@ export default function Glyphs() {
         <div>
           <textarea
             autoFocus
+            autoCorrect="false"
             style={{
               fontSize: "2rem",
               background: "#ffffff16",
@@ -134,8 +135,10 @@ export default function Glyphs() {
         {GlyphSection("Math", charGroups.math)}
         {GlyphSection("Currencies", charGroups.currencies)}
         {GlyphSection("Arrows", charGroups.arrows)}
-        {GlyphSection("Other symbols", charGroups.others)}
-        {GlyphSection("Idk", charGroups.custom)}
+        {GlyphSection("Other symbols", [
+          ...charGroups.custom,
+          ...charGroups.others,
+        ])}
       </div>
     </div>
   );
