@@ -39,7 +39,8 @@ body, button, .bn-onboard-modal {
 body {
   margin: 0;
   background: black;
-  color: #ddd;
+  color: #fff;
+  /* color: #ddd; */
   line-height: 1.5;
   font-size: 1.1rem;
 }

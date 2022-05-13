@@ -53,7 +53,7 @@ export default function Button({
     color: "#fff",
   };
 
-  const child = useMemo(() => <div>{text}</div>, [text]);
+  const child = useMemo(() => <div>⮕ {text}</div>, [text]);
 
   if (href) {
     return (

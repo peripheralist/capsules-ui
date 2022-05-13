@@ -1,60 +1,111 @@
-import { constants } from "ethers";
+import { useState } from "react";
 
 import Button from "./components/Button";
+import WeightSelector from "./components/WeightSelector";
 import { isMobile } from "./constants/isMobile";
-import { useFonts } from "./hooks/fonts";
-import { fonts } from "./fonts/fonts";
+import { unicodeNames } from "./fonts/unicode";
+import { charGroups } from "./Glyphs/orderedUnicodes";
+import { Weight } from "./models/weight";
 
 export default function Landing() {
-  const fonts = useFonts();
+  const [weight, setWeight] = useState<Weight>(400);
+  const top = 100;
+
+  const GlyphElem = (x: number) => (
+    <div style={{ textAlign: "center", width: 100 }}>
+      <div
+        style={{
+          padding: "1rem",
+          fontSize: "3rem",
+          whiteSpace: "pre",
+          background: "#ffffff16",
+          fontWeight: weight,
+          userSelect: "all",
+          cursor: "default",
+        }}
+        dangerouslySetInnerHTML={{ __html: "&#" + x + ";" }}
+      ></div>
+      <div style={{ fontSize: "0.75rem", fontWeight: 600, opacity: 0.5 }}>
+        <div>{unicodeNames[x.toString(16).padStart(4, "0")]}</div>
+      </div>
+    </div>
+  );
+
+  const GlyphSection = (title: string, chars: number[]) => (
+    <div
+      style={{
+        display: "inline-flex",
+        flexWrap: "wrap",
+        gap: "1rem",
+      }}
+    >
+      {chars.map(GlyphElem)}
+    </div>
+  );
 
   return (
     <div
       style={{
-        padding: 20,
+        padding: isMobile ? 20 : 40,
+        position: "relative",
       }}
     >
-      <div style={{ maxWidth: 900, marginTop: "30vh" }}>
-        <h1 style={{ fontSize: isMobile ? "3rem" : "8rem" }}>Capsules</h1>
-        <div
+      <div
+        style={{
+          maxWidth: 600,
+          margin: "10vh auto 0",
+          fontWeight: weight,
+          textAlign: "center",
+        }}
+      >
+        <h1
           style={{
-            fontSize: "5rem",
-            lineHeight: 5 * 1.1825 + "rem",
-            fontWeight: 500,
+            fontSize: isMobile ? "2rem" : "4rem",
           }}
         >
-          A mono typeface in seven font weights
-          <br />
-          <br />
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
-            {fonts.map((f) => (
-              <span
-                style={{
-                  fontWeight: f.weight,
-                  fontSize: "7rem",
-                  whiteSpace: "pre",
-                  width: 200,
-                }}
-              >
-                {f.weight}
-              </span>
-            ))}
-          </div>
-          <br />
-          <br />
-          Available to all Ethereum smart contracts for free
-          <br />
-          <br />
-          <a
-            href="https://"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="light"
-            style={{ fontSize: "3rem" }}
-          >
-            CapsulesTypeface contract
-          </a>
-        </div>
+          Capsules
+        </h1>
+      </div>
+      <WeightSelector
+        selectedWeight={weight}
+        onSelectWeight={setWeight}
+        style={{
+          position: "sticky",
+          zIndex: 1,
+          top: 0,
+          fontSize: isMobile ? "1rem" : "2rem",
+          background: "#000",
+          height: top,
+          justifyContent: "center",
+        }}
+      />
+      <div
+        style={{
+          maxWidth: 600,
+          margin: "0 auto",
+          fontWeight: weight,
+          textAlign: "center",
+        }}
+      >
+        <textarea
+          autoFocus
+          autoCorrect="false"
+          style={{
+            fontSize: "2rem",
+            background: "#ffffff16",
+            padding: "2rem",
+            width: "100%",
+            boxSizing: "border-box",
+            fontWeight: weight,
+          }}
+          rows={7}
+          placeholder={`A mono typeface in seven font weights\n\nStored on Ethereum\n\nAvailable to all smart contracts for free, forever`}
+        />
+        <br />
+        <br />
+        <a href="https://" target="_blank" rel="noopener noreferrer">
+          ⮕ CapsulesTypeface contract
+        </a>
       </div>
       <br />
       <br />
@@ -69,21 +120,8 @@ export default function Landing() {
         .
         <br />
         <br />
-        <div style={{ display: "inline-block" }}>
-          <div style={{ fontWeight: 200 }}>------------------------------</div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              textTransform: "uppercase",
-              fontWeight: 200,
-            }}
-          >
-            <span>Font</span>
-            <span>Unlocked</span>
-          </div>
-          <div style={{ fontWeight: 200 }}>------------------------------</div>
+        {/* <div style={{ display: "inline-block" }}>
+          <div style={{ fontWeight: 300 }}>------------------------------</div>
           {fonts.map((f) => (
             <>
               <div
@@ -96,7 +134,7 @@ export default function Landing() {
               >
                 <span
                   style={{
-                    fontSize: "1.5rem",
+                    fontSize: isMobile ? "1rem" : "2rem",
                     fontWeight: f.weight,
                     color: f.color,
                   }}
@@ -105,25 +143,42 @@ export default function Landing() {
                 </span>
                 <span
                   style={{
-                    fontWeight:
-                      f.unlocked === constants.AddressZero ? 200 : 500,
+                    fontWeight: 500,
                   }}
                 >
-                  {f.unlocked === constants.AddressZero ? "--" : f.unlocked}
+                  {f.unlocked === constants.AddressZero ? "" : f.unlocked}
                 </span>
               </div>
             </>
           ))}
-          <div style={{ fontWeight: 200 }}>------------------------------</div>
-        </div>
+          <div style={{ fontWeight: 300 }}>------------------------------</div>
+        </div> */}
         <Button text="Unlock a font" href="/#/fonts" />
         <Button text="Mint a Capsule NFT" href="/#/mint" />
-        <Button text="Typeface" href="/#/glyphs" />
       </div>
       <br />
       <br />
-      <br />
-      <br />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "6rem",
+          padding: "3rem",
+          margin: "0 auto",
+        }}
+      >
+        {GlyphSection("Uppercase", charGroups.uppercase)}
+        {GlyphSection("Lowercase", charGroups.lowercase)}
+        {GlyphSection("Numbers", charGroups.digits)}
+        {GlyphSection("Punctuation", charGroups.punctuationSymbols)}
+        {GlyphSection("Math", charGroups.math)}
+        {GlyphSection("Currencies", charGroups.currencies)}
+        {GlyphSection("Arrows", charGroups.arrows)}
+        {GlyphSection("Other symbols", [
+          ...charGroups.custom,
+          ...charGroups.others,
+        ])}
+      </div>
     </div>
   );
 }
