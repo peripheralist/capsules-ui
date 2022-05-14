@@ -12,11 +12,11 @@ export default function Landing() {
   const top = 100;
 
   const GlyphElem = (x: number) => (
-    <div style={{ textAlign: "center", width: 100 }}>
+    <div style={{ textAlign: "center", width: isMobile ? "3rem" : 100 }}>
       <div
         style={{
           padding: "1rem",
-          fontSize: "3rem",
+          fontSize: isMobile ? "2rem" : "3rem",
           whiteSpace: "pre",
           background: "#ffffff16",
           fontWeight: weight,
@@ -25,9 +25,17 @@ export default function Landing() {
         }}
         dangerouslySetInnerHTML={{ __html: "&#" + x + ";" }}
       ></div>
-      <div style={{ fontSize: "0.75rem", fontWeight: 600, opacity: 0.5 }}>
-        <div>{unicodeNames[x.toString(16).padStart(4, "0")]}</div>
-      </div>
+      {!isMobile && (
+        <div
+          style={{
+            fontSize: "0.75rem",
+            fontWeight: 600,
+            opacity: 0.5,
+          }}
+        >
+          <div>{unicodeNames[x.toString(16).padStart(4, "0")]}</div>
+        </div>
+      )}
     </div>
   );
 
@@ -36,7 +44,7 @@ export default function Landing() {
       style={{
         display: "inline-flex",
         flexWrap: "wrap",
-        gap: "1rem",
+        gap: isMobile ? "0.5rem" : "1rem",
       }}
     >
       {chars.map(GlyphElem)}
@@ -77,6 +85,7 @@ export default function Landing() {
           background: "#000",
           height: top,
           justifyContent: "center",
+          gap: isMobile ? "1rem" : "2rem",
         }}
       />
       <div
@@ -91,7 +100,7 @@ export default function Landing() {
           autoFocus
           autoCorrect="false"
           style={{
-            fontSize: "2rem",
+            fontSize: isMobile ? "1rem" : "2rem",
             background: "#ffffff16",
             padding: "2rem",
             width: "100%",
@@ -113,9 +122,9 @@ export default function Landing() {
       <br />
       <div style={{ textAlign: "center", maxWidth: 600, margin: "0 auto" }}>
         Fonts are locked until they've been stored on-chain. Anyone who pays gas
-        to store a font will also earn one of the 7{" "}
+        to store a font will also earn one of the 7 pure-color{" "}
         <a href="/#/mint" rel="noopener noreferrer">
-          pure-color Capsule NFTs
+          Capsule NFTs
         </a>
         .
         <br />
@@ -162,8 +171,7 @@ export default function Landing() {
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "6rem",
-          padding: "3rem",
+          gap: isMobile ? "3rem" : "6rem",
           margin: "0 auto",
         }}
       >
@@ -179,6 +187,8 @@ export default function Landing() {
           ...charGroups.others,
         ])}
       </div>
+      <br />
+      <br />
     </div>
   );
 }
