@@ -2,7 +2,7 @@ import { BigNumber, constants } from "ethers";
 import { Hue } from "../models/hue";
 import { Text } from "../models/text";
 import { RGB } from "../models/rgb";
-import { allowedChars } from "../constants/allowedChars";
+import { unicodes } from "../fonts/unicode";
 
 export const hueForColor = (color: string): Hue | undefined => {
   const _color = color.split("#")[1];
@@ -56,5 +56,10 @@ export const defaultText = (
 
 export const isAllowedChar = (char: string) => {
   if (!char.length || char.length > 1) return false;
-  return allowedChars.has(char);
+  return isAllowedCode(char.codePointAt(0));
+};
+
+export const isAllowedCode = (code?: number) => {
+  if (code === undefined) return false;
+  return unicodes.includes(code);
 };

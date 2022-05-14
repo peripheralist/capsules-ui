@@ -6,6 +6,7 @@ import { isMobile } from "./constants/isMobile";
 import { unicodeNames } from "./fonts/unicode";
 import { charGroups } from "./Glyphs/orderedUnicodes";
 import { Weight } from "./models/weight";
+import { isAllowedChar, isAllowedCode } from "./utils/index";
 
 export default function Landing() {
   const [weight, setWeight] = useState<Weight>(400);
@@ -108,7 +109,7 @@ export default function Landing() {
             fontWeight: weight,
           }}
           rows={7}
-          placeholder={`A mono typeface in seven font weights\n\nStored on Ethereum\n\nAvailable to all smart contracts for free, forever`}
+          defaultValue={`A mono typeface in seven font weights\n\nStored on Ethereum\n\nAvailable to all smart contracts for free, forever`}
         />
         <br />
         <br />

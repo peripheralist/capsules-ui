@@ -88,10 +88,6 @@ input, textarea {
   color: white;
 }
 
-textarea::placeholder {
-  color: white;
-}
-
 pre.caret-underscore > span {
   animation: blink 1s step-end infinite;
   border-bottom: 2px solid white;
