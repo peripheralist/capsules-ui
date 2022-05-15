@@ -1,10 +1,13 @@
+import { formatEther } from "ethers/lib/utils";
 import { useCallback, useContext, useMemo, useState } from "react";
 
 import Capsule from "../Capsule";
 import Button from "../components/Button";
 import { auctionColors } from "../constants/colors";
 import { isMobile } from "../constants/isMobile";
+import { mintPrice } from "../constants/mintPrice";
 import { NetworkContext } from "../contexts/networkContext";
+import { WalletContext } from "../contexts/walletContext";
 import { Text } from "../models/text";
 import { Weight } from "../models/weight";
 import Spectrum from "../Spectrum";
@@ -21,6 +24,7 @@ type TabKey = "info" | "connect" | "color" | "mint" | "text";
 
 export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const { connectedWallet, selectWallet } = useContext(NetworkContext);
+  const { transactor, contracts } = useContext(WalletContext);
   const [spectrumScale, setSpectrumScale] = useState<number>(0);
   const [selectedTab, setSelectedTab] = useState<TabKey>("info");
   const [color, setColor] = useState<string>();
@@ -67,13 +71,17 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   }, [connectedWallet, color]);
 
   const mint = useCallback(() => {
-    // Only send `text` param if text != defaultText
-    console.log("MINT");
+    if (!contracts || !transactor) return;
+
+    transactor(contracts.CapsulesToken, "mint", [color, text, weight], {
+      value: mintPrice,
+    });
   }, []);
 
   const claim = useCallback(() => {
-    // Only send `text` param if text != defaultText
-    console.log("CLAIM");
+    if (!contracts || !transactor) return;
+
+    transactor(contracts.CapsulesToken, "claim", [color, text, weight]);
   }, []);
 
   // const scrollSpectrumContainer = useCallback(() => {
@@ -275,7 +283,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             />
           ) : (
             <Button
-              text="Mint Capsule (0.02 ETH)"
+              text={`Mint Capsule (${formatEther(mintPrice)} ETH)`}
               size="large"
               onClick={mint}
               style={{ margin: "0 auto" }}

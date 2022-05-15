@@ -2,7 +2,7 @@ import { Contract } from "@ethersproject/contracts";
 
 export enum ContractName {
   CapsulesToken = "CapsulesToken",
-  CapsulesAuctionHouse = "CapsulesAuctionHouse",
+  CapsulesTypeface = "CapsulesTypeface",
 }
 
 export type Contracts = Record<ContractName, Contract>;

@@ -3,10 +3,9 @@ import { useState } from "react";
 import Button from "./components/Button";
 import WeightSelector from "./components/WeightSelector";
 import { isMobile } from "./constants/isMobile";
+import { charGroups } from "./constants/orderedUnicodes";
 import { unicodeNames } from "./fonts/unicode";
-import { charGroups } from "./Glyphs/orderedUnicodes";
 import { Weight } from "./models/weight";
-import { isAllowedChar, isAllowedCode } from "./utils/index";
 
 export default function Landing() {
   const [weight, setWeight] = useState<Weight>(400);
