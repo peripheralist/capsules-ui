@@ -1,13 +1,12 @@
-import { constants } from "ethers";
 import { useMemo } from "react";
 
-import Button from "./components/Button";
-import { isMobile } from "./constants/isMobile";
-import { maxLineLength, maxLinesCount } from "./constants/text";
-import { useFonts } from "./hooks/fonts";
-import { Text } from "./models/text";
-import { Weight } from "./models/weight";
-import { defaultText, isAllowedChar, isEmptyText } from "./utils";
+import Button from "./Button";
+import { isMobile } from "../constants/isMobile";
+import { maxLineLength, maxLinesCount } from "../constants/text";
+import { useFonts } from "../hooks/fonts";
+import { Text } from "../models/text";
+import { Weight } from "../models/weight";
+import { defaultText, isAllowedChar, isEmptyText } from "../utils";
 
 export default function TextEditor({
   text,
@@ -42,7 +41,7 @@ export default function TextEditor({
         document.getElementById(`input${i - 1}`) as HTMLInputElement | null;
 
       const placeholders: string[] = isEmptyText(text)
-        ? defaultText(color, 0)
+        ? defaultText(color)
         : [];
 
       elems.push(
@@ -170,14 +169,15 @@ export default function TextEditor({
 
   const options = useMemo(
     () =>
-      fonts.map((f) => (
+      fonts?.map((f) => (
         <option
+          key={f.weight}
           value={f.weight}
           label={f.weight.toString()}
-          disabled={f.unlocked === constants.AddressZero}
+          disabled={!f.minter}
         />
       )),
-    []
+    [fonts]
   );
 
   return (

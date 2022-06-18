@@ -1,46 +1,19 @@
-import { constants } from "ethers";
 import { Weight } from "../models/weight";
+import useSubgraphQuery from "./SubgraphQuery";
 
-export function useFonts(): {
-  weight: Weight;
-  color: string;
-  unlocked: string;
-}[] {
-  return [
-    {
-      weight: 100,
-      color: "#00ffff",
-      unlocked: constants.AddressZero,
-    },
-    {
-      weight: 200,
-      color: "#0000ff",
-      unlocked: constants.AddressZero,
-    },
-    {
-      weight: 300,
-      color: "#ff00ff",
-      unlocked: constants.AddressZero,
-    },
-    {
-      weight: 400,
-      color: "#ffffff",
-      unlocked: "peri.eth",
-    },
-    {
-      weight: 500,
-      color: "#ff0000",
-      unlocked: constants.AddressZero,
-    },
-    {
-      weight: 600,
-      color: "#ffff00",
-      unlocked: constants.AddressZero,
-    },
-    {
-      weight: 700,
-      color: "#00ff00",
-      unlocked: constants.AddressZero,
-    },
-  ];
+export function useFonts() {
+  const fonts = useSubgraphQuery({
+    entity: "font",
+    first: 1000,
+    keys: ["color", "minter", "weight"],
+  }) as {
+    data?: {
+      fonts?: { color: string; minter: string | null; weight: Weight }[];
+    };
+  };
+
+  return fonts.data?.fonts?.map((f) => ({
+    ...f,
+    color: `#${f.color.split("0x")[1].toUpperCase()}`,
+  }));
 }

@@ -1,4 +1,5 @@
-import { CSSProperties, useMemo } from "react";
+import { CSSProperties, useEffect, useMemo, useState } from "react";
+import { clearInterval, setInterval } from "timers";
 
 export default function Button({
   text,
@@ -8,6 +9,7 @@ export default function Button({
   style,
   isDisabled,
   underline,
+  loading,
 }: {
   text: string;
   href?: string;
@@ -16,7 +18,13 @@ export default function Button({
   style?: CSSProperties;
   isDisabled?: boolean;
   underline?: boolean;
+  loading?: string | boolean;
 }) {
+  const [interval, _setInterval] = useState<NodeJS.Timer>();
+  const [loadingCharStartIndex, setLoadingCharStartIndex] = useState<number>(0);
+
+  const defaultLoadingText = "...";
+
   const fontSize = useMemo(() => {
     switch (size) {
       case "small":
@@ -29,20 +37,67 @@ export default function Button({
     }
   }, [size]);
 
+  const _text: string = useMemo(() => {
+    if (loading) {
+      return typeof loading === "string" ? loading : defaultLoadingText;
+    }
+    if (href) {
+      return "▶ " + text;
+    }
+    return text;
+  }, [text, href, loading]);
+
+  useEffect(() => {
+    if (!loading) return;
+
+    _setInterval(
+      setInterval(() => {
+        setLoadingCharStartIndex((idx) => (idx + 1) % _text.length);
+      }, 150)
+    );
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [loading, _text]);
+
   const underlineStr = useMemo(() => {
     if (!underline) return null;
 
     let _underline = "";
-    for (let i = 0; i < text.length; i++) {
+    for (let i = 0; i < _text.length; i++) {
       _underline += "_";
     }
 
     return _underline;
-  }, [text, underline]);
+  }, [_text, underline]);
+
+  const child = useMemo(
+    () =>
+      loading ? (
+        <div>
+          {_text.split("").map((char, i) => (
+            <span
+              key={char + i}
+              style={{
+                fontWeight:
+                  [700, 600, 500, 400, 300, 200, 100][
+                    (loadingCharStartIndex - i) % _text.length
+                  ] || 100,
+              }}
+            >
+              {char}
+            </span>
+          ))}
+        </div>
+      ) : (
+        <div>{_text}</div>
+      ),
+    [_text, loading, loadingCharStartIndex]
+  );
 
   const defaultStyle: CSSProperties = {
     position: underline ? "relative" : "unset",
-    display: "block",
     textAlign: "center",
     paddingTop: 10,
     paddingBottom: 10,
@@ -52,16 +107,6 @@ export default function Button({
     fontSize,
     color: "#fff",
   };
-
-  const child = useMemo(
-    () => (
-      <div>
-        {href ? "⮕ " : ""}
-        {text}
-      </div>
-    ),
-    [text, href]
-  );
 
   if (href) {
     return (

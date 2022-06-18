@@ -88,6 +88,10 @@ input, textarea {
   color: white;
 }
 
+textarea::placeholder {
+  color: #fff;
+}
+
 pre.caret-underscore > span {
   animation: blink 1s step-end infinite;
   border-bottom: 2px solid white;
@@ -97,6 +101,7 @@ input[type=range] {
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
   width: 100%; /* Specific width is required for Firefox. */
   background: transparent; /* Otherwise white in Chrome */
+  cursor: pointer;
 }
 
 input[type=range]::-ms-track {
@@ -120,7 +125,6 @@ input[type=range]::-webkit-slider-thumb {
   border-radius: 50%;
   background: #000;
   border: 2px solid #fff;
-  cursor: pointer;
   margin-top: -9px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
 }
 
@@ -128,7 +132,6 @@ input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
   height: 2px;
   border-radius: 2px;
-  cursor: pointer;
   background: #ffffff;
 }
 
@@ -136,7 +139,6 @@ input[type=range]::-moz-range-track {
   width: 100%;
   height: 2px;
   border-radius: 2px;
-  cursor: pointer;
   background: #ffffff;
 }
 
@@ -161,53 +163,81 @@ ul.dashed > li:before {
   content: "-";
   margin-left: -20px;
   margin-right: 10px;
+  margin-top: -10px;
 }
 
-@font-face {
+.address-container .address {
+  position: absolute;
+  padding: 10px;
+  background: black;
+  font-size: 0.8rem;
+  display: none;
+  text-align: left;
+  color: white;
+  border: 1px solid white;
+}
+
+.address-container:hover .address {
+  display: block;
+}
+
+/* @font-face {
   font-family: 'Capsules';
   font-weight: 100;
   font-style: normal;
-  src: url(./fonts/Capsules-100.otf) format('opentype');
+  src: url(./fonts/Capsules-100.woff) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 200;
   font-style: normal;
-  src: url(./fonts/Capsules-200.otf) format('opentype');
+  src: url(./fonts/Capsules-200.woff) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 300;
   font-style: normal;
-  src: url(./fonts/Capsules-300.otf) format('opentype');
+  src: url(./fonts/Capsules-300.woff) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 400;
   font-style: normal;
-  src: url(./fonts/Capsules-400.otf) format('opentype');
+  src: url(./fonts/Capsules-400.woff) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 500;
   font-style: normal;
-  src: url(./fonts/Capsules-500.otf) format('opentype');
+  src: url(./fonts/Capsules-500.woff) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 600;
   font-style: normal;
-  src: url(./fonts/Capsules-600.otf) format('opentype');
+  src: url(./fonts/Capsules-600.woff) format('opentype');
 }
 
 @font-face {
   font-family: 'Capsules';
   font-weight: 700;
   font-style: normal;
-  src: url(./fonts/Capsules-700.otf) format('opentype');
+  src: url(./fonts/Capsules-700.woff) format('opentype');
+} */
+
+@font-face {
+	font-family: 'Capsules';
+	src: url('./fonts/CapsulesVF.woff2') format('woff2');
+	font-weight: 100 700;
+}
+
+@font-face {
+	font-family: 'Capsules';
+	src: url('./fonts/CapsulesVF.woff2') format('woff2') tech('variations');
+	font-weight: 100 700;
 }

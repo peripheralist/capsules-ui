@@ -1,7 +1,7 @@
 import { RGB } from "../models/rgb";
 import { rgbToHex } from "../utils";
 
-export const auctionColors: string[] = [
+export const reservedColors: string[] = [
   "#ff0000",
   "#ffff00",
   "#00ff00",

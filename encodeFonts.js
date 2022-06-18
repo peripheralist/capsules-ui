@@ -11,11 +11,11 @@ function writeFontsFile() {
   const files = fs.readdirSync(dir);
 
   for (let file of files) {
-    if (!file.endsWith(".otf")) continue;
+    if (!file.endsWith(".woff")) continue;
 
     console.log("encoding", file);
 
-    let weight = file.replace(".otf", "").split("-")[1];
+    let weight = file.replace(".woff", "").split("-")[1];
 
     if (!weight) continue;
 

@@ -5,11 +5,11 @@ import { isMobile } from "../constants/isMobile";
 export default function NFTs() {
   return (
     <div style={{ textAlign: "center" }}>
-      <h1 style={{ fontSize: isMobile ? "3rem" : "4rem" }}>Capsule NFTs</h1>
-      <b>7,957 non-fungible tokens on Ethereum</b>
+      <h1 style={{ fontSize: isMobile ? "3rem" : "4rem" }}>Capsule Tokens</h1>
+      <b>7,957 NFTs on Ethereum</b>
       <br />
       <br />
-      Each has:
+      Each token has:
       <br />
       <br />
       <b>128</b> text characters

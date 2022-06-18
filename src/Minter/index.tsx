@@ -1,9 +1,9 @@
 import { formatEther } from "ethers/lib/utils";
 import { useCallback, useContext, useMemo, useState } from "react";
 
-import Capsule from "../Capsule";
+import Capsule from "../components/Capsule";
 import Button from "../components/Button";
-import { auctionColors } from "../constants/colors";
+import { reservedColors } from "../constants/colors";
 import { isMobile } from "../constants/isMobile";
 import { mintPrice } from "../constants/mintPrice";
 import { NetworkContext } from "../contexts/networkContext";
@@ -11,9 +11,12 @@ import { WalletContext } from "../contexts/walletContext";
 import { Text } from "../models/text";
 import { Weight } from "../models/weight";
 import Spectrum from "../Spectrum";
-import TextEditor from "../TextEditor";
+import TextEditor from "../components/TextEditor";
 import NFTs from "./NFTs";
 import TabBar, { Tab } from "./TabBar";
+import { colorStringToBytes } from "../utils";
+import { toText } from "../utils/index";
+import { useMintedColors } from "../hooks/mintedColors";
 
 const screenSize = isMobile ? window.innerWidth : window.innerHeight;
 const spectrumContainerId = "spectrum-container";
@@ -30,6 +33,9 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const [color, setColor] = useState<string>();
   const [text, setText] = useState<Text>([]);
   const [weight, setWeight] = useState<Weight>(400);
+  const [loadingTx, setLoadingTx] = useState<boolean>();
+
+  const mintedColors = useMintedColors();
 
   const spectrumScaleMultiplier =
     (isMobile ? 0.9 : 0.75) * (1 + spectrumScale) ** (isMobile ? 4 : 2);
@@ -71,18 +77,35 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   }, [connectedWallet, color]);
 
   const mint = useCallback(() => {
-    if (!contracts || !transactor) return;
+    if (!contracts || !transactor || !color) return;
 
-    transactor(contracts.CapsulesToken, "mint", [color, text, weight], {
-      value: mintPrice,
-    });
-  }, []);
+    setLoadingTx(true);
+
+    transactor(
+      contracts.CapsulesToken,
+      "mint",
+      [colorStringToBytes(color), toText(text), weight],
+      {
+        value: mintPrice,
+        onDone: () => setLoadingTx(false),
+      }
+    );
+  }, [contracts, transactor, color, text, weight]);
 
   const claim = useCallback(() => {
-    if (!contracts || !transactor) return;
+    if (!contracts || !transactor || !color) return;
 
-    transactor(contracts.CapsulesToken, "claim", [color, text, weight]);
-  }, []);
+    setLoadingTx(true);
+
+    transactor(
+      contracts.CapsulesToken,
+      "claim",
+      [colorStringToBytes(color), toText(text), weight],
+      {
+        onDone: () => setLoadingTx(false),
+      }
+    );
+  }, [contracts, transactor, color, text, weight]);
 
   // const scrollSpectrumContainer = useCallback(() => {
   //   const x = Math.max(spectrumSize - window.innerWidth, 0) / -2
@@ -95,7 +118,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
         <div
           style={{
             margin: "0 auto",
-            maxWidth: 480,
+            maxWidth: 540,
             padding: 20,
             paddingBottom: tabBarHeight + 40,
           }}
@@ -163,7 +186,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
               <Spectrum
                 color={color}
                 onSelectColor={setColor}
-                inactiveColors={auctionColors}
+                inactiveColors={[...reservedColors, ...mintedColors]}
               />
             </div>
           </div>
@@ -247,13 +270,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             />
 
             <div style={{ padding: isMobile ? 10 : 0 }}>
-              <Capsule
-                text={text}
-                color={color}
-                width={320}
-                owner={connectedWallet}
-                weight={weight}
-              />
+              <Capsule text={text} color={color} width={320} weight={weight} />
             </div>
           </div>
         </div>
@@ -272,7 +289,7 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             boxSizing: "border-box",
           }}
         >
-          <Capsule text={text} color={color} width={320} />
+          <Capsule text={text} color={color} width={320} locked={true} />
 
           {useClaim ? (
             <Button
@@ -280,13 +297,15 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
               size="large"
               onClick={claim}
               style={{ margin: "0 auto" }}
+              loading={loadingTx ? "Transaction pending..." : false}
             />
           ) : (
             <Button
-              text={`Mint Capsule (${formatEther(mintPrice)} ETH)`}
+              text={`Mint Capsule (Ξ${formatEther(mintPrice)})`}
               size="large"
               onClick={mint}
               style={{ margin: "0 auto" }}
+              loading={loadingTx ? "Transaction pending..." : false}
             />
           )}
         </div>

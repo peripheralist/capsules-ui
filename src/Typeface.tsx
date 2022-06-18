@@ -1,15 +1,23 @@
-import { constants } from "ethers";
+import { useCallback, useContext, useState } from "react";
 
 import Button from "./components/Button";
+import FormattedAddress from "./components/FormattedAddress";
 import { spectrumAuctionColors } from "./constants/elements/spectrumAuctionColors";
 import { isMobile } from "./constants/isMobile";
+import { WalletContext } from "./contexts/walletContext";
+import { fonts } from "./fonts/fonts";
 import { useFonts } from "./hooks/fonts";
+import { Weight } from "./models/weight";
 
 export default function Typeface() {
-  const fonts = useFonts();
+  const { transactor, contracts } = useContext(WalletContext);
+  const [loadingTxForWeight, setLoadingTxForWeight] = useState<Weight>();
 
-  const Elem = (weight: number, color: string, minted?: boolean) => (
+  const _fonts = useFonts();
+
+  const Elem = (weight: Weight, color: string, minter?: string | null) => (
     <div
+      key={weight}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -21,8 +29,37 @@ export default function Typeface() {
       <h1 style={{ fontWeight: weight, color }}>{weight}</h1>
       <div style={{ color }}>{color}</div>
       <br />
-      {minted ? <Button text="Minted" isDisabled /> : <Button text="Mint" />}
+      {minter ? (
+        <div style={{ textAlign: "center" }}>
+          <div>Minted by</div>
+          <FormattedAddress address={minter} />
+        </div>
+      ) : (
+        <Button
+          text="Mint"
+          onClick={() => unlockFont(weight)}
+          loading={loadingTxForWeight === weight}
+        />
+      )}
     </div>
+  );
+
+  const unlockFont = useCallback(
+    (weight: Weight) => {
+      if (!contracts || !transactor) return;
+
+      setLoadingTxForWeight(weight);
+
+      transactor(
+        contracts.CapsulesTypeface,
+        "setFontSrc",
+        [{ weight, style: "normal" }, Buffer.from(fonts[weight])],
+        {
+          onDone: (tx) => setLoadingTxForWeight(undefined),
+        }
+      );
+    },
+    [contracts, transactor]
   );
 
   return (
@@ -46,7 +83,8 @@ export default function Typeface() {
           <br />
           <b>
             Anyone who pays gas to store a font will receive a Capsule NFT with
-            one of the 7 pure Capsule colors.
+            one of the 7 pure colors. These colors can only be minted by
+            unlocking a font.
           </b>
         </div>
         <div
@@ -62,9 +100,7 @@ export default function Typeface() {
             justifyContent: "space-evenly",
           }}
         >
-          {fonts.map((f) =>
-            Elem(f.weight, f.color, f.unlocked !== constants.AddressZero)
-          )}
+          {_fonts?.map((f) => Elem(f.weight, f.color, f.minter))}
         </div>
       </div>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
@@ -104,16 +140,7 @@ export default function Typeface() {
           rel="noopener noreferrer"
           className="light"
         >
-          CapsulesTypeface mainnet
-        </a>
-        <br />
-        <a
-          href="https://"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="light"
-        >
-          CapsulesTypeface rinkeby
+          CapsulesTypeface contract
         </a>
         <br />
         <a
@@ -126,11 +153,11 @@ export default function Typeface() {
         </a>
         <br />
         <br />
-        You can also{" "}
+        {/* You can also{" "}
         <a href="https://" target="_blank" rel="noopener noreferrer">
           download the typeface
         </a>{" "}
-        for free.
+        for free. */}
         <br />
         <br />
       </div>

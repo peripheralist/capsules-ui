@@ -1,9 +1,10 @@
-import { Text } from "./models/text";
 import { CSSProperties, useMemo } from "react";
-import { defaultText, isEmptyText } from "./utils";
-import { maxLineLength } from "./constants/text";
-import { fonts } from "./fonts/fonts";
-import { Weight } from "./models/weight";
+
+import { maxLineLength } from "../constants/text";
+import { fonts } from "../fonts/fonts";
+import { Text } from "../models/text";
+import { Weight } from "../models/weight";
+import { bytesToColorString, parseText } from "../utils";
 
 export default function Capsule({
   text,
@@ -12,8 +13,8 @@ export default function Capsule({
   width,
   height,
   preserveAspectRatio,
-  id,
-  owner,
+  locked,
+  square,
 }: {
   text: Text;
   color: string | undefined;
@@ -21,8 +22,8 @@ export default function Capsule({
   width?: CSSProperties["width"];
   height?: CSSProperties["height"];
   preserveAspectRatio?: React.SVGAttributes<SVGElement>["preserveAspectRatio"];
-  id?: number;
-  owner?: string | null;
+  locked?: boolean;
+  square?: boolean;
 }) {
   const canvasPaddingXDots = 3;
   const charWidthDots = 5;
@@ -32,8 +33,9 @@ export default function Capsule({
   const lineHeight = 48;
   const r = 1.5;
 
-  const _color = color ?? "#fff";
-  // const _color = color ?? "#fff";
+  const _color = color?.startsWith("0x")
+    ? bytesToColorString(color)
+    : color ?? "#fff";
 
   const dots1x12: string = useMemo(() => {
     let str = "";
@@ -45,9 +47,7 @@ export default function Capsule({
     return str;
   }, []);
 
-  const _text = isEmptyText(text)
-    ? defaultText(color, id ?? 0, owner ?? undefined)
-    : text;
+  const _text = parseText(text, color ?? "#ffffff");
 
   const longestLine: number = useMemo(
     () =>
@@ -58,29 +58,35 @@ export default function Capsule({
     [_text]
   );
 
-  const rowId = "row" + longestLine;
+  const rowId = (locked ? "rowL" : "row") + longestLine;
   const textRowId = "textRow" + longestLine;
 
-  const canvasWidthDots =
+  const textAreaWidthDots =
     longestLine * charWidthDots + (longestLine - 1) + canvasPaddingXDots * 2;
-  const canvasHeightDots = _text.length * charHeightDots + 2;
+  const textAreaHeightDots = _text.length * charHeightDots + 2;
+  const canvasSizeDots = Math.max(textAreaWidthDots, textAreaHeightDots) + 2;
 
   // Dot height row of dots
   const rowDots: string = useMemo(() => {
     let str = "";
-    for (let i = 0; i < canvasWidthDots; i++) {
+    // Cut off start and end dots
+    for (
+      let i = locked ? 1 : 0;
+      i < textAreaWidthDots - (locked ? 1 : 0);
+      i++
+    ) {
       str += `<circle cx="${gridSize * i + gridSize / 2}" cy="${
         gridSize / 2
       }" r="${r}"></circle>`;
     }
     return str;
-  }, [canvasWidthDots]);
+  }, [textAreaWidthDots, locked]);
 
   // Text height row of dots
   const textRowDots: string = useMemo(() => {
     let str = "";
 
-    for (let i = 0; i < canvasWidthDots; i++) {
+    for (let i = 0; i < textAreaWidthDots; i++) {
       str += `<use xlink:href="#dots1x12" transform="translate(${
         i * gridSize
       } 0)"></use>`;
@@ -101,11 +107,11 @@ export default function Capsule({
 
     // Bottom edge
     str += `<use xlink:href="#${rowId}" transform="translate(0 ${
-      (canvasHeightDots - 1) * gridSize
+      (textAreaHeightDots - 1) * gridSize
     })"></use>`;
 
     return str;
-  }, [_text.length, rowId, canvasHeightDots]);
+  }, [_text.length, rowId, textAreaHeightDots]);
 
   return (
     <div
@@ -117,9 +123,9 @@ export default function Capsule({
       }}
     >
       <svg
-        viewBox={`0 0 ${canvasWidthDots * gridSize} ${
-          canvasHeightDots * gridSize
-        }`}
+        viewBox={`0 0 ${
+          (square ? canvasSizeDots : textAreaWidthDots) * gridSize
+        } ${(square ? canvasSizeDots : textAreaHeightDots) * gridSize}`}
         preserveAspectRatio={preserveAspectRatio ?? "xMidYMid meet"}
         xmlns="http://www.w3.org/2000/svg"
         width="100%"
@@ -136,13 +142,30 @@ export default function Capsule({
         <rect x="0" y="0" width="100%" height="100%" fill="#000"></rect>
         <g
           fill={_color}
-          opacity="0.25"
+          opacity={0.2}
           dangerouslySetInnerHTML={{ __html: dots }}
+          transform={
+            square
+              ? `translate(${
+                  ((canvasSizeDots - textAreaWidthDots) / 2) * gridSize
+                } ${((canvasSizeDots - textAreaHeightDots) / 2) * gridSize})`
+              : undefined
+          }
         ></g>
-
         <g
           fill={_color}
-          transform={`translate(${(marginXDots - 0.5) * gridSize} 44)`}
+          transform={
+            square
+              ? `translate(${
+                  (marginXDots -
+                    0.5 +
+                    (canvasSizeDots - textAreaWidthDots) / 2) *
+                  gridSize
+                } ${
+                  44 + ((canvasSizeDots - textAreaHeightDots) / 2) * gridSize
+                })`
+              : `translate(${(marginXDots - 0.5) * gridSize} 44)`
+          }
         >
           {_text.map((line, i) => (
             <text y={lineHeight * i} className="capsule" key={i}>
@@ -150,22 +173,19 @@ export default function Capsule({
             </text>
           ))}
         </g>
-
         <style>
           {`.capsule {
-            font-family: Capsule;
-            font-size: 40px;
-            white-space: pre;
-          }
-          
-          @font-face {
-            font-family: 'Capsule';
-            font-style: normal;
-            font-weight: normal;
-            src: url(data:font/truetype;charset=utf-8;base64,${
-              fonts[weight ?? 400]
-            })
-          }`}
+  font-family: Capsule;
+  font-size: 40px;
+  white-space: pre;
+}
+
+@font-face {
+  font-family: 'Capsule';
+  font-style: normal;
+  font-weight: normal;
+  src: url(data:font/truetype;charset=utf-8;base64,${fonts[weight ?? 400]})
+}`}
         </style>
       </svg>
     </div>

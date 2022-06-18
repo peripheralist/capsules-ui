@@ -4,13 +4,14 @@ import { Contract } from "@ethersproject/contracts";
 import { Deferrable } from "@ethersproject/properties";
 import { TransactionRequest } from "@ethersproject/providers";
 import { parseUnits } from "@ethersproject/units";
+import { Transaction } from "ethers";
 import { useCallback, useContext } from "react";
 
 import { NetworkContext } from "../contexts/networkContext";
 
 export type TransactorOptions = {
   value?: BigNumberish;
-  onDone?: VoidFunction;
+  onDone?: (tx?: Transaction) => void;
 };
 
 export type Transactor = (
@@ -120,27 +121,11 @@ export function useTransactor({
         }
         console.info("RESULT:", result);
 
-        // if it is a valid Notify.js network, use that, if not, just send a default notification
-        const isNotifyNetwork =
-          [1, 3, 4, 5, 42, 100].indexOf(network.chainId) >= 0;
-
-        options?.onDone && options.onDone();
+        options?.onDone && options.onDone(result);
 
         return true;
       } catch (e) {
-        const message = (e as Error).message;
-
-        console.error("Transaction Error:", message);
-
-        let description: string;
-
-        try {
-          let json = message.split("(error=")[1];
-          json = json.split(", method=")[0];
-          description = JSON.parse(json).message || message;
-        } catch (_) {
-          description = message;
-        }
+        console.error("Transaction Error:", (e as Error).message);
 
         options?.onDone && options.onDone();
 
