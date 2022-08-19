@@ -14,7 +14,11 @@ import Spectrum from "../Spectrum";
 import TextEditor from "../components/TextEditor";
 import NFTs from "./NFTs";
 import TabBar, { Tab } from "./TabBar";
-import { colorStringToBytes, textToBytesText } from "../utils";
+import {
+  colorStringToBytes,
+  isEmptyBytesText,
+  textToBytesText,
+} from "../utils";
 import { useMintedColors } from "../hooks/mintedColors";
 
 const screenSize = isMobile ? window.innerWidth : window.innerHeight;
@@ -83,10 +87,14 @@ export default function Minter() {
 
     setLoadingTx(true);
 
+    const bytesText = textToBytesText(text);
+
     transactor(
       contracts.CapsulesToken,
-      "mint",
-      [colorStringToBytes(color), textToBytesText(text), weight, false],
+      isEmptyBytesText(bytesText) ? "mint" : "mintWithText",
+      isEmptyBytesText(bytesText)
+        ? [colorStringToBytes(color), weight]
+        : [colorStringToBytes(color), weight, bytesText],
       {
         value: mintPrice,
         onDone: () => setLoadingTx(false),

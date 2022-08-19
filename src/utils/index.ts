@@ -3,6 +3,7 @@ import { Hue } from "../models/hue";
 import { RGB } from "../models/rgb";
 import { unicodes } from "../fonts/unicode";
 import { BytesText, Text } from "../models/text";
+import { text } from "stream/consumers";
 
 const zeroBytes4 = "0x00000000";
 
@@ -75,14 +76,15 @@ export const isAllowedCode = (code?: number) => {
   return unicodes.includes(code);
 };
 
-export const bytesToColorString = (bytes: string) => `#${bytes.split("0x")[1]}`;
+export const bytesToColorString = (bytes: string | undefined) =>
+  bytes ? `#${bytes.split("0x")[1]}` : "";
 
 export const colorStringToBytes = (str: string) => `0x${str.split("#")[1]}`;
 
 export const textToBytesText = (text: string[]) => {
   const lines = [];
   for (let i = 0; i < 8; i++) {
-    lines.push(stringToBytes4Line(text.length > i ? text[i] : undefined));
+    lines.push(stringToBytes4Line(text.length > i ? text[i] : ""));
   }
   return lines;
 };
@@ -99,7 +101,28 @@ export const stringToBytes4Line = (str?: string) => {
   return arr;
 };
 
-export const parseBytesText = (text: BytesText, color: string): string[] =>
+export const parseBytesText = (text: BytesText): string[] =>
   isEmptyBytesText(text)
-    ? defaultText(color.startsWith("0x") ? bytesToColorString(color) : color)
-    : text.map((line) => line.map((char) => utils.toUtf8String(char)).join(""));
+    ? []
+    : trimText(
+        text.map((line) =>
+          line
+            .map((bytes4) =>
+              Buffer.from(bytes4.split("0x")[1], "hex").toString()
+            )
+            .join("")
+            .replaceAll("\x00", "")
+        )
+      );
+
+// Remove trailing empty lines
+export const trimText = (text: Text): Text => {
+  let output = [];
+  for (let i = text.length - 1; i >= 0; i--) {
+    if (text[i].length || output.length) output.push(text[i]);
+  }
+  return output;
+};
+
+export const deepEqBytesTexts = (text1: BytesText, text2: BytesText): boolean =>
+  text1.every((line, i) => line.every((bytes4, j) => bytes4 === text2[i][j]));

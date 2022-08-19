@@ -15,6 +15,7 @@ export default function Capsule({
   preserveAspectRatio,
   locked,
   square,
+  style,
 }: {
   text: Text;
   color: string | undefined;
@@ -24,6 +25,7 @@ export default function Capsule({
   preserveAspectRatio?: React.SVGAttributes<SVGElement>["preserveAspectRatio"];
   locked?: boolean;
   square?: boolean;
+  style?: CSSProperties;
 }) {
   if (isEmptyText(text)) text = defaultText(color);
 
@@ -49,6 +51,7 @@ export default function Capsule({
     return str;
   }, []);
 
+  // Number of characters in longest line
   const longestLine: number = useMemo(
     () =>
       Math.min(
@@ -58,12 +61,18 @@ export default function Capsule({
     [text]
   );
 
+  // Equal to index of last non-empty line
+  const linesCount: number = useMemo(
+    () => text.reduce((acc, curr, i) => (curr.length ? i + 1 : acc), 0),
+    [text]
+  );
+
   const rowId = (locked ? "rowL" : "row") + longestLine;
   const textRowId = "textRow" + longestLine;
 
   const textAreaWidthDots =
     longestLine * charWidthDots + (longestLine - 1) + canvasPaddingXDots * 2;
-  const textAreaHeightDots = text.length * charHeightDots + 2;
+  const textAreaHeightDots = linesCount * charHeightDots + 2;
   const canvasSizeDots = Math.max(textAreaWidthDots, textAreaHeightDots) + 2;
 
   // Dot height row of dots
@@ -99,7 +108,7 @@ export default function Capsule({
     // Top edge
     let str = `<use xlink:href="#${rowId}"></use>`;
 
-    for (let y = 0; y < text.length; y++) {
+    for (let y = 0; y < linesCount; y++) {
       str += `<use xlink:href="#${textRowId}" transform="translate(0 ${
         lineHeight * y + gridSize
       })"></use>`;
@@ -111,7 +120,7 @@ export default function Capsule({
     })"></use>`;
 
     return str;
-  }, [text.length, rowId, textRowId, textAreaHeightDots]);
+  }, [linesCount, rowId, textRowId, textAreaHeightDots]);
 
   return (
     <div
@@ -121,6 +130,7 @@ export default function Capsule({
         overflow: "hidden",
         cursor: "default",
         userSelect: "none",
+        ...style,
       }}
     >
       <svg

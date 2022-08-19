@@ -6,6 +6,7 @@ import { maxLineLength, maxLinesCount } from "../constants/text";
 import { useFonts } from "../hooks/fonts";
 import { Weight } from "../models/weight";
 import {
+  bytesToColorString,
   defaultText,
   isAllowedChar,
   isEmptyText,
@@ -78,7 +79,7 @@ export default function TextEditor({
               lineHeight: 1,
               fontSize,
               padding: 0,
-              caretColor: color,
+              caretColor: bytesToColorString(color),
             }}
             value={text[i] ?? ""}
             type="text"

@@ -2,6 +2,7 @@ import { BigNumber } from "ethers";
 import { useContext } from "react";
 
 import Capsule from "./components/Capsule";
+import FormattedAddress from "./components/FormattedAddress";
 import { WalletContext } from "./contexts/walletContext";
 import useContractReader from "./hooks/ContractReader";
 import useSubgraphQuery from "./hooks/SubgraphQuery";
@@ -17,7 +18,7 @@ export default function Capsules({
   const { contracts } = useContext(WalletContext);
   const supply = useContractReader<BigNumber>({
     contract: contracts?.CapsulesToken,
-    functionName: "totalSupply",
+    functionName: owner ? undefined : "totalSupply",
   });
 
   const capsules = useSubgraphQuery({
@@ -30,7 +31,7 @@ export default function Capsules({
       ? [
           {
             key: "owner",
-            value: owner,
+            value: owner.toLowerCase(),
           },
         ]
       : [],
@@ -48,21 +49,30 @@ export default function Capsules({
   };
 
   return (
-    <div>
+    <div style={{ padding: 20 }}>
       <h1 style={{ textAlign: "center" }}>
-        {supply?.toString()} Capsules Minted
+        {owner ? (
+          <span>
+            Owned by <FormattedAddress address={owner} />
+          </span>
+        ) : (
+          `${supply?.toString() ?? "--"} Capsules Minted`
+        )}
       </h1>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
         {capsules.data?.capsules?.map((c) => (
-          <div key={c.id} style={{ flex: 1 }}>
-            <Capsule
-              height={140}
-              text={c.text}
-              weight={c.fontWeight}
-              color={bytesToColorString(c.color)}
-              locked={c.locked}
-            />
-          </div>
+          <a key={c.id} href={`/#/edit/${c.id}`}>
+            <div>
+              <Capsule
+                height={"10rem"}
+                text={c.text}
+                weight={c.fontWeight}
+                color={bytesToColorString(c.color)}
+                locked={c.locked}
+                style={{ fontWeight: "initial", cursor: "pointer" }}
+              />
+            </div>
+          </a>
         ))}
       </div>
     </div>

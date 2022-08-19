@@ -97,7 +97,7 @@ textarea::placeholder {
 }
 
 input::placeholder {
-  opacity: .5;
+  opacity: .6;
 }
 
 pre.caret-underscore > span {

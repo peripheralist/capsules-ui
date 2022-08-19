@@ -9,13 +9,19 @@ import useContractReader from "./hooks/ContractReader";
 import { Text } from "./models/text";
 import { Weight } from "./models/weight";
 import TextEditor from "./components/TextEditor";
-import { parseBytesText } from "./utils";
+import {
+  bytesToColorString,
+  deepEqBytesTexts,
+  parseBytesText,
+  textToBytesText,
+} from "./utils";
 import { NetworkContext } from "./contexts/networkContext";
 import { BigNumber } from "ethers";
 
 export default function Edit() {
   const [weight, setWeight] = useState<Weight>(400);
   const [text, setText] = useState<Text>([]);
+  const [locked, setLocked] = useState<boolean>(false);
   const [loadingTx, setLoadingTx] = useState<boolean>();
   const { contracts, transactor } = useContext(WalletContext);
   const { connectedWallet } = useContext(NetworkContext);
@@ -49,25 +55,30 @@ export default function Edit() {
     owner && connectedWallet?.toLowerCase() === owner?.toLowerCase();
 
   useEffect(() => {
-    if (!capsuleText || !capsuleColor) return;
-    setText(parseBytesText(capsuleText, capsuleColor));
-  }, [capsuleText, capsuleColor]);
+    if (!capsuleText) return;
+    setText(parseBytesText(capsuleText));
+  }, [capsuleText]);
 
   const save = useCallback(() => {
     if (!transactor || !contracts) return;
 
     setLoadingTx(true);
 
-    transactor(contracts.CapsulesToken, "editCapsule", [id, text, weight], {
-      onDone: () => setLoadingTx(false),
-    });
-  }, [transactor, contracts, id, text, weight]);
+    transactor(
+      contracts.CapsulesToken,
+      "editCapsule",
+      [id, textToBytesText(text), weight, locked],
+      {
+        onDone: () => setLoadingTx(false),
+      }
+    );
+  }, [transactor, contracts, id, text, weight, locked]);
 
   if (!capsuleText || !capsuleColor || !capsuleFontWeight) return null;
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <h2>Edit Capsule {id}</h2>
+    <div style={{ textAlign: "center", padding: 20 }}>
+      <h2>Edit Capsule {bytesToColorString(capsuleColor)}</h2>
 
       <div
         style={{
@@ -107,19 +118,31 @@ export default function Edit() {
               weight={weight}
               square
             />
+
+            <div
+              style={{ cursor: "pointer", fontWeight: 500 }}
+              onClick={() => setLocked((l) => !l)}
+            >
+              {locked ? " Don't lock" : " Lock"}
+            </div>
           </div>
         </div>
       </div>
 
       {isOwner ? (
         <Button
-          text="Save Capsule"
+          text={locked ? "Save and lock Capsule" : "Save Capsule"}
           onClick={save}
           loading={loadingTx ? "Transaction pending..." : false}
+          isDisabled={
+            deepEqBytesTexts(textToBytesText(text), capsuleText) && !locked
+          }
         />
       ) : (
         <Button text="You don't own this Capsule" isDisabled />
       )}
+      <br />
+      {locked && "This Capsule can never be edited again!"}
     </div>
   );
 }
