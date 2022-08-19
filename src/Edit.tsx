@@ -9,8 +9,9 @@ import useContractReader from "./hooks/ContractReader";
 import { Text } from "./models/text";
 import { Weight } from "./models/weight";
 import TextEditor from "./components/TextEditor";
-import { parseText } from "./utils";
+import { parseBytesText } from "./utils";
 import { NetworkContext } from "./contexts/networkContext";
+import { BigNumber } from "ethers";
 
 export default function Edit() {
   const [weight, setWeight] = useState<Weight>(400);
@@ -20,13 +21,21 @@ export default function Edit() {
   const { connectedWallet } = useContext(NetworkContext);
   const { id } = useParams<{ id: string }>();
 
-  const capsule = useContractReader<{
-    text: Text;
-    fontWeight: Weight;
-    color: string;
-  }>({
+  const capsuleText = useContractReader<string[][]>({
     contract: contracts?.CapsulesToken,
-    functionName: "capsuleOf",
+    functionName: "textOf",
+    args: useMemo(() => [id], [id]),
+  });
+
+  const capsuleFontWeight = useContractReader<BigNumber>({
+    contract: contracts?.CapsulesToken,
+    functionName: "fontWeightOf",
+    args: useMemo(() => [id], [id]),
+  });
+
+  const capsuleColor = useContractReader<string>({
+    contract: contracts?.CapsulesToken,
+    functionName: "colorOf",
     args: useMemo(() => [id], [id]),
   });
 
@@ -40,9 +49,9 @@ export default function Edit() {
     owner && connectedWallet?.toLowerCase() === owner?.toLowerCase();
 
   useEffect(() => {
-    if (!capsule) return;
-    setText(parseText(capsule.text, capsule.color));
-  }, [capsule]);
+    if (!capsuleText || !capsuleColor) return;
+    setText(parseBytesText(capsuleText, capsuleColor));
+  }, [capsuleText, capsuleColor]);
 
   const save = useCallback(() => {
     if (!transactor || !contracts) return;
@@ -52,9 +61,9 @@ export default function Edit() {
     transactor(contracts.CapsulesToken, "editCapsule", [id, text, weight], {
       onDone: () => setLoadingTx(false),
     });
-  }, [transactor, contracts]);
+  }, [transactor, contracts, id, text, weight]);
 
-  if (!capsule) return null;
+  if (!capsuleText || !capsuleColor || !capsuleFontWeight) return null;
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -84,8 +93,8 @@ export default function Edit() {
             <TextEditor
               text={text}
               setText={setText}
-              color={capsule.color}
-              weight={capsule.fontWeight}
+              color={capsuleColor}
+              weight={capsuleFontWeight.toNumber() as Weight}
               setWeight={setWeight}
             />
           )}
@@ -93,9 +102,10 @@ export default function Edit() {
           <div style={{ padding: isMobile ? 10 : 0 }}>
             <Capsule
               text={text}
-              color={capsule.color}
+              color={capsuleColor}
               width={320}
               weight={weight}
+              square
             />
           </div>
         </div>

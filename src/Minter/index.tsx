@@ -14,8 +14,7 @@ import Spectrum from "../Spectrum";
 import TextEditor from "../components/TextEditor";
 import NFTs from "./NFTs";
 import TabBar, { Tab } from "./TabBar";
-import { colorStringToBytes } from "../utils";
-import { toText } from "../utils/index";
+import { colorStringToBytes, textToBytesText } from "../utils";
 import { useMintedColors } from "../hooks/mintedColors";
 
 const screenSize = isMobile ? window.innerWidth : window.innerHeight;
@@ -25,11 +24,11 @@ const bodyHeight = window.innerHeight - tabBarHeight;
 
 type TabKey = "info" | "connect" | "color" | "mint" | "text";
 
-export default function Minter({ useClaim }: { useClaim?: boolean }) {
+export default function Minter() {
   const { connectedWallet, selectWallet } = useContext(NetworkContext);
   const { transactor, contracts } = useContext(WalletContext);
   const [spectrumScale, setSpectrumScale] = useState<number>(0);
-  const [selectedTab, setSelectedTab] = useState<TabKey>("info");
+  const [selectedTab, setSelectedTab] = useState<TabKey>("color");
   const [color, setColor] = useState<string>();
   const [text, setText] = useState<Text>([]);
   const [weight, setWeight] = useState<Weight>(400);
@@ -43,35 +42,38 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
   const spectrumSize = screenSize * spectrumScaleMultiplier;
 
   const tabs = useMemo(() => {
-    const _tabs: Tab<TabKey>[] = [{ key: "info", title: "Capsules" }];
+    const _tabs: Tab<TabKey>[] = [];
+    // const _tabs: Tab<TabKey>[] = [{ key: "info", title: "Capsules" }];
 
-    _tabs.push(
-      ...[
-        {
-          key: "color" as const,
-          title: "1. " + (color ?? "Color"),
-          color,
-        },
-        { key: "text" as const, title: "2. Text" },
-        { key: "mint" as const, title: "3. Mint" },
-      ]
-    );
+    // _tabs.push(
+    //   ...[
+    //     {
+    //       key: "color" as const,
+    //       title: "1. " + (color ?? "Color"),
+    //       color,
+    //     },
+    //     { key: "text" as const, title: "2. Text" },
+    //     { key: "mint" as const, title: "3. Mint" },
+    //   ]
+    // );
 
-    // if (connectedWallet === null) {
-    //   _tabs.push({ key: "connect" as const, title: "Mint" });
-    // } else if (connectedWallet) {
-    //   _tabs.push(
-    //     ...[
-    //       {
-    //         key: "color" as const,
-    //         title: "1. " + (color ?? "Color"),
-    //         color,
-    //       },
-    //       { key: "text" as const, title: "2. Text" },
-    //       { key: "mint" as const, title: "3. Mint" },
-    //     ]
-    //   );
-    // }
+    if (!connectedWallet) {
+      _tabs.push({ key: "connect" as const, title: "" });
+      setSelectedTab("connect");
+    } else {
+      _tabs.push(
+        ...[
+          {
+            key: "color" as const,
+            title: "1. " + (color ?? "Color"),
+            color,
+          },
+          { key: "text" as const, title: "2. Text" },
+          { key: "mint" as const, title: "3. Mint" },
+        ]
+      );
+      setSelectedTab("color");
+    }
 
     return _tabs;
   }, [connectedWallet, color]);
@@ -84,24 +86,9 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
     transactor(
       contracts.CapsulesToken,
       "mint",
-      [colorStringToBytes(color), toText(text), weight],
+      [colorStringToBytes(color), textToBytesText(text), weight, false],
       {
         value: mintPrice,
-        onDone: () => setLoadingTx(false),
-      }
-    );
-  }, [contracts, transactor, color, text, weight]);
-
-  const claim = useCallback(() => {
-    if (!contracts || !transactor || !color) return;
-
-    setLoadingTx(true);
-
-    transactor(
-      contracts.CapsulesToken,
-      "claim",
-      [colorStringToBytes(color), toText(text), weight],
-      {
         onDone: () => setLoadingTx(false),
       }
     );
@@ -267,10 +254,22 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
               color={color}
               weight={weight}
               setWeight={setWeight}
+              autofocus
             />
 
             <div style={{ padding: isMobile ? 10 : 0 }}>
-              <Capsule text={text} color={color} width={320} weight={weight} />
+              <Capsule
+                text={text}
+                color={color}
+                width={320}
+                weight={weight}
+                square
+              />
+              {!text.length && (
+                <div style={{ width: 320 }}>
+                  ↑ Leave text empty to use the default image
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -289,25 +288,15 @@ export default function Minter({ useClaim }: { useClaim?: boolean }) {
             boxSizing: "border-box",
           }}
         >
-          <Capsule text={text} color={color} width={320} locked={true} />
+          <Capsule text={text} color={color} width={320} square />
 
-          {useClaim ? (
-            <Button
-              text="Claim Capsule"
-              size="large"
-              onClick={claim}
-              style={{ margin: "0 auto" }}
-              loading={loadingTx ? "Transaction pending..." : false}
-            />
-          ) : (
-            <Button
-              text={`Mint Capsule (Ξ${formatEther(mintPrice)})`}
-              size="large"
-              onClick={mint}
-              style={{ margin: "0 auto" }}
-              loading={loadingTx ? "Transaction pending..." : false}
-            />
-          )}
+          <Button
+            text={`Mint Capsule (Ξ${formatEther(mintPrice)})`}
+            size="large"
+            onClick={mint}
+            style={{ margin: "0 auto" }}
+            loading={loadingTx ? "Transaction pending..." : false}
+          />
         </div>
       )}
 

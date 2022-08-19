@@ -1,3 +1,3 @@
 import { parseEther } from "ethers/lib/utils";
 
-export const mintPrice = parseEther("0.02");
+export const mintPrice = parseEther(".01");

@@ -5,7 +5,7 @@ import FormattedAddress from "./components/FormattedAddress";
 import { spectrumAuctionColors } from "./constants/elements/spectrumAuctionColors";
 import { isMobile } from "./constants/isMobile";
 import { WalletContext } from "./contexts/walletContext";
-import { fonts } from "./fonts/fonts";
+import { FONTS } from "./fonts/fonts";
 import { useFonts } from "./hooks/fonts";
 import { Weight } from "./models/weight";
 
@@ -53,7 +53,7 @@ export default function Typeface() {
       transactor(
         contracts.CapsulesTypeface,
         "setFontSrc",
-        [{ weight, style: "normal" }, Buffer.from(fonts[weight])],
+        [{ weight, style: "normal" }, Buffer.from(FONTS[weight])],
         {
           onDone: (tx) => setLoadingTxForWeight(undefined),
         }
@@ -77,14 +77,12 @@ export default function Typeface() {
       >
         <div style={{ flex: 1 }}>
           <h1>Fonts</h1>
-          The 7 Capsules fonts must be stored in the contract before they can be
-          used.
+          The 7 Capsules fonts must be stored on-chain before they can be used.
           <br />
           <br />
           <b>
-            Anyone who pays gas to store a font will receive a Capsule NFT with
-            one of the 7 pure colors. These colors can only be minted by
-            unlocking a font.
+            Anyone who pays gas to store a font will receive one of 7 pure-color
+            Capsule NFTs. Pure colors can only be minted by unlocking a font.
           </b>
         </div>
         <div

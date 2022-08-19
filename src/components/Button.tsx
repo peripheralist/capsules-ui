@@ -30,10 +30,10 @@ export default function Button({
       case "small":
         return "1rem";
       case "large":
-        return "1.4rem";
+        return "1.5rem";
       case "medium":
       default:
-        return "1.2rem";
+        return "1.3rem";
     }
   }, [size]);
 

@@ -11,7 +11,7 @@ export const reservedColors: string[] = [
   "#ffffff",
 ];
 
-export const allColors = () => {
+export const ALL_COLORS = (() => {
   let colors: RGB[] = [];
 
   for (let g = 0; g <= 255; g += 5) {
@@ -23,4 +23,6 @@ export const allColors = () => {
   }
 
   return colors.map(rgbToHex);
-};
+})();
+
+// 7,957 total colors

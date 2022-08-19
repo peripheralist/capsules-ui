@@ -1,3 +1,3 @@
-import { fonts } from "../fonts/fonts";
+import { FONTS } from "../fonts/fonts";
 
-export type Weight = keyof typeof fonts;
+export type Weight = keyof typeof FONTS;

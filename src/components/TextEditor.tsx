@@ -4,9 +4,14 @@ import Button from "./Button";
 import { isMobile } from "../constants/isMobile";
 import { maxLineLength, maxLinesCount } from "../constants/text";
 import { useFonts } from "../hooks/fonts";
-import { Text } from "../models/text";
 import { Weight } from "../models/weight";
-import { defaultText, isAllowedChar, isEmptyText } from "../utils";
+import {
+  defaultText,
+  isAllowedChar,
+  isEmptyText,
+  randPlaceholders,
+} from "../utils";
+import { Text } from "../models/text";
 
 export default function TextEditor({
   text,
@@ -14,17 +19,27 @@ export default function TextEditor({
   color,
   weight,
   setWeight,
+  autofocus,
 }: {
   text: Text;
-  setText: (text: Text | ((text: Text) => Text)) => void;
+  setText: (text: string[] | ((text: Text) => Text)) => void;
   color: string | undefined;
   weight: Weight;
   setWeight: (weight: Weight | ((weight: Weight) => Weight)) => void;
+  autofocus?: boolean;
 }) {
   const fontSize = isMobile ? 20 : 24;
   const charWidth = fontSize * 0.6;
 
   const fonts = useFonts();
+
+  const placeholders: string[] = useMemo(() => {
+    if (!text.length) {
+      return [defaultText(color)[0], defaultText(color)[1]];
+    }
+
+    return randPlaceholders().map((p, i) => (text.length > i ? text[i] : p));
+  }, [text, color]);
 
   const textInputs = useMemo(() => {
     let elems: JSX.Element[] = [];
@@ -40,14 +55,17 @@ export default function TextEditor({
       const prevInput = () =>
         document.getElementById(`input${i - 1}`) as HTMLInputElement | null;
 
-      const placeholders: string[] = isEmptyText(text)
-        ? defaultText(color)
-        : [];
-
       elems.push(
-        <div key={i} style={{ position: "relative", height: fontSize * 1.5 }}>
+        <div
+          key={i}
+          style={{
+            position: "relative",
+            height: fontSize * 1.5,
+            width: maxLineLength * charWidth,
+          }}
+        >
           <input
-            autoFocus={!isMobile && i === 0}
+            autoFocus={!isMobile && autofocus && i === 0}
             autoComplete="off"
             placeholder={placeholders[i]}
             style={{
@@ -55,8 +73,8 @@ export default function TextEditor({
               height: 36,
               lineHeight: 1,
               fontSize,
-              width: maxLineLength * charWidth,
               padding: 0,
+              caretColor: color,
             }}
             value={text[i] ?? ""}
             type="text"
@@ -165,7 +183,7 @@ export default function TextEditor({
     }
 
     return elems;
-  }, [text, setText, charWidth, fontSize]);
+  }, [text, setText, charWidth, fontSize, color, placeholders, autofocus]);
 
   const options = useMemo(
     () =>
@@ -173,7 +191,7 @@ export default function TextEditor({
         <option
           key={f.weight}
           value={f.weight}
-          label={f.weight.toString()}
+          label={f.weight.toString() + (!f.minter ? " - locked" : "")}
           disabled={!f.minter}
         />
       )),
@@ -199,7 +217,7 @@ export default function TextEditor({
             fontWeight: 600,
           }}
         >
-          <div>WEIGHT:</div>
+          <div>FONT:</div>
           <select
             style={{ flex: 1, fontSize: "1rem", fontWeight: 600 }}
             value={weight}

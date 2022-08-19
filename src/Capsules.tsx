@@ -1,12 +1,13 @@
+import { BigNumber } from "ethers";
+import { useContext } from "react";
+
 import Capsule from "./components/Capsule";
+import { WalletContext } from "./contexts/walletContext";
 import useContractReader from "./hooks/ContractReader";
 import useSubgraphQuery from "./hooks/SubgraphQuery";
 import { Text } from "./models/text";
 import { Weight } from "./models/weight";
-import { bytesToColorString } from "./utils/index";
-import { useContext } from "react";
-import { WalletContext } from "./contexts/walletContext";
-import { BigNumber } from "ethers";
+import { bytesToColorString } from "./utils";
 
 export default function Capsules() {
   const { contracts } = useContext(WalletContext);
@@ -18,7 +19,7 @@ export default function Capsules() {
   const capsules = useSubgraphQuery({
     entity: "capsule",
     first: 25,
-    keys: ["owner", "text", "fontWeight", "color", "id"],
+    keys: ["owner", "text", "fontWeight", "color", "id", "locked"],
     orderBy: "mintedAt",
     orderDirection: "desc",
   }) as {
@@ -29,6 +30,7 @@ export default function Capsules() {
         owner: string;
         fontWeight: Weight;
         text: Text;
+        locked: boolean;
       }[];
     };
   };
@@ -40,14 +42,13 @@ export default function Capsules() {
       </h1>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         {capsules.data?.capsules?.map((c) => (
-          <div key={c.id}>
+          <div key={c.id} style={{flex: 1}}>
             <Capsule
               height={140}
               text={c.text}
               weight={c.fontWeight}
               color={bytesToColorString(c.color)}
-              locked={Math.random() > 0.5}
-              square={Math.random() > 0.5}
+              locked={c.locked}
             />
           </div>
         ))}

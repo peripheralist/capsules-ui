@@ -7,7 +7,6 @@ export const NetworkContext: React.Context<{
   signingProvider?: Web3Provider;
   signerNetwork?: NetworkName;
   connectedWallet?: string | null;
-  onNeedProvider?: () => Promise<void>;
   selectWallet?: (callback?: (success: boolean) => void) => Promise<void>;
   onLogOut?: () => void;
 }> = createContext({});

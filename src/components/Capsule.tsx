@@ -1,10 +1,10 @@
 import { CSSProperties, useMemo } from "react";
 
 import { maxLineLength } from "../constants/text";
-import { fonts } from "../fonts/fonts";
+import { FONTS } from "../fonts/fonts";
 import { Text } from "../models/text";
 import { Weight } from "../models/weight";
-import { bytesToColorString, parseText } from "../utils";
+import { bytesToColorString, defaultText, isEmptyText } from "../utils";
 
 export default function Capsule({
   text,
@@ -25,6 +25,8 @@ export default function Capsule({
   locked?: boolean;
   square?: boolean;
 }) {
+  if (isEmptyText(text)) text = defaultText(color);
+
   const canvasPaddingXDots = 3;
   const charWidthDots = 5;
   const charHeightDots = 12;
@@ -47,15 +49,13 @@ export default function Capsule({
     return str;
   }, []);
 
-  const _text = parseText(text, color ?? "#ffffff");
-
   const longestLine: number = useMemo(
     () =>
       Math.min(
-        _text.reduce((acc, curr) => (curr.length > acc ? curr.length : acc), 0),
+        text.reduce((acc, curr) => (curr.length > acc ? curr.length : acc), 0),
         maxLineLength
       ),
-    [_text]
+    [text]
   );
 
   const rowId = (locked ? "rowL" : "row") + longestLine;
@@ -63,7 +63,7 @@ export default function Capsule({
 
   const textAreaWidthDots =
     longestLine * charWidthDots + (longestLine - 1) + canvasPaddingXDots * 2;
-  const textAreaHeightDots = _text.length * charHeightDots + 2;
+  const textAreaHeightDots = text.length * charHeightDots + 2;
   const canvasSizeDots = Math.max(textAreaWidthDots, textAreaHeightDots) + 2;
 
   // Dot height row of dots
@@ -93,13 +93,13 @@ export default function Capsule({
     }
 
     return str;
-  }, [longestLine]);
+  }, [textAreaWidthDots]);
 
   const dots: string = useMemo(() => {
     // Top edge
     let str = `<use xlink:href="#${rowId}"></use>`;
 
-    for (let y = 0; y < _text.length; y++) {
+    for (let y = 0; y < text.length; y++) {
       str += `<use xlink:href="#${textRowId}" transform="translate(0 ${
         lineHeight * y + gridSize
       })"></use>`;
@@ -111,15 +111,16 @@ export default function Capsule({
     })"></use>`;
 
     return str;
-  }, [_text.length, rowId, textAreaHeightDots]);
+  }, [text.length, rowId, textRowId, textAreaHeightDots]);
 
   return (
     <div
       style={{
         width,
-        height: height ?? width,
+        height,
         overflow: "hidden",
         cursor: "default",
+        userSelect: "none",
       }}
     >
       <svg
@@ -151,7 +152,7 @@ export default function Capsule({
                 } ${((canvasSizeDots - textAreaHeightDots) / 2) * gridSize})`
               : undefined
           }
-        ></g>
+        />
         <g
           fill={_color}
           transform={
@@ -167,7 +168,7 @@ export default function Capsule({
               : `translate(${(marginXDots - 0.5) * gridSize} 44)`
           }
         >
-          {_text.map((line, i) => (
+          {text.map((line, i) => (
             <text y={lineHeight * i} className="capsule" key={i}>
               {line.substring(0, maxLineLength)}
             </text>
@@ -184,7 +185,7 @@ export default function Capsule({
   font-family: 'Capsule';
   font-style: normal;
   font-weight: normal;
-  src: url(data:font/truetype;charset=utf-8;base64,${fonts[weight ?? 400]})
+  src: url(data:font/truetype;charset=utf-8;base64,${FONTS[weight ?? 400]})
 }`}
         </style>
       </svg>

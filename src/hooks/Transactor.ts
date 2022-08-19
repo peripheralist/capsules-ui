@@ -70,18 +70,6 @@ export function useTransactor({
 
       const signer = provider.getSigner();
 
-      const network = await provider.getNetwork();
-
-      let etherscanNetwork = "";
-      if (network.name && network.chainId > 1) {
-        etherscanNetwork = network.name + ".";
-      }
-
-      let etherscanTxUrl = "https://" + etherscanNetwork + "etherscan.io/tx/";
-      if (network.chainId === 100) {
-        etherscanTxUrl = "https://blockscout.com/poa/xdai/tx/";
-      }
-
       const tx: Deferrable<TransactionRequest> =
         options?.value !== undefined
           ? contract[functionName](...args, { value: options.value })

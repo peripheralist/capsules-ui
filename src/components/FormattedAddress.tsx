@@ -1,5 +1,6 @@
 import { utils } from "ethers";
 import { useLayoutEffect, useState } from "react";
+import { readNetwork } from "../constants/networks";
 
 import { readProvider } from "../constants/readProvider";
 import { NetworkName } from "../models/networkName";
@@ -71,8 +72,8 @@ export default function FormattedAddress({
             <a
               style={{ marginLeft: 10 }}
               href={`https://${
-                readProvider.network.name !== NetworkName.mainnet
-                  ? readProvider.network.name + "."
+                readNetwork.name !== NetworkName.mainnet
+                  ? readNetwork.name + "."
                   : ""
               }etherscan.io/address/${address}`}
               target="_blank"

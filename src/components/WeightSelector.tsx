@@ -1,7 +1,7 @@
 import { CSSProperties, useState } from "react";
 import { isMobile } from "../constants/isMobile";
 
-import { fonts } from "../fonts/fonts";
+import { FONTS } from "../fonts/fonts";
 import { Weight } from "../models/weight";
 
 export default function WeightSelector({
@@ -28,7 +28,7 @@ export default function WeightSelector({
           <div
             style={{
               position: "absolute",
-              left: ((selectedWeight - 90) / 655) * 100 - 0.7 + "%",
+              left: ((selectedWeight - 90) / 655) * 100 - 0.7 + "%", // hack for aligning slider handle
               fontWeight: selectedWeight,
               fontSize: isMobile ? "0.8rem" : "1.4rem",
             }}
@@ -50,31 +50,6 @@ export default function WeightSelector({
               paddingTop: 22,
             }}
           />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              paddingLeft: 16,
-              paddingRight: 16,
-            }}
-          >
-            {Object.keys(fonts).map((w) => (
-              <div style={{ position: "relative" }} key={w}>
-                <div
-                  style={{
-                    position: "absolute",
-                    zIndex: -1,
-                    top: -16,
-                    left: -4,
-                    width: 8,
-                    height: 8,
-                    borderRadius: "100%",
-                    background: "#fff",
-                  }}
-                ></div>
-              </div>
-            ))}
-          </div>
         </div>
       ) : (
         <div
@@ -87,7 +62,7 @@ export default function WeightSelector({
             fontSize: isMobile ? "1rem" : "2rem",
           }}
         >
-          {Object.keys(fonts).map((w) => (
+          {Object.keys(FONTS).map((w) => (
             <div
               key={w}
               style={{
@@ -114,7 +89,6 @@ export default function WeightSelector({
           gap: "0.9rem",
         }}
       >
-        <span>weights:</span>{" "}
         <span
           style={{
             fontWeight: useVariableWeight ? "inherit" : 600,
