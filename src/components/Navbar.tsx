@@ -25,7 +25,7 @@ export default function Navbar() {
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div style={{ display: "flex", gap: "1rem" }}>
-          {Link("⌂", "")}
+          {Link("[⌂]", "")}
           {Link("Mint", "mint")}
           {Link("Minted", "minted")}
           {connectedWallet && Link("Yours", "mine")}

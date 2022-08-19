@@ -60,6 +60,8 @@ export default function WeightSelector({
             justifyContent: "center",
             gap: isMobile ? "1rem" : "1.6rem",
             fontSize: isMobile ? "1rem" : "1.6rem",
+            paddingTop: isMobile ? 0 : "0.2rem",
+            paddingBottom: isMobile ? 0 : "0.2rem",
           }}
         >
           {Object.keys(FONTS).map((w) => (
@@ -103,7 +105,7 @@ export default function WeightSelector({
             }
           }}
         >
-          On-chain
+          On-chain fonts
         </span>{" "}
         <span
           style={{
@@ -112,7 +114,7 @@ export default function WeightSelector({
           }}
           onClick={() => setUseVariableWeight(true)}
         >
-          Variable
+          Variable font
         </span>
       </div>
     </div>

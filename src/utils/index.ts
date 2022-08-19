@@ -118,7 +118,7 @@ export const parseBytesText = (text: BytesText): string[] =>
 export const trimText = (text: Text): Text => {
   let output = [];
   for (let i = text.length - 1; i >= 0; i--) {
-    if (text[i].length || output.length) output.push(text[i]);
+    if (text[i].length || output.length) output.unshift(text[i]);
   }
   return output;
 };

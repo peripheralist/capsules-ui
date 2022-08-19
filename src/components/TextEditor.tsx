@@ -13,6 +13,7 @@ import {
   randPlaceholders,
 } from "../utils";
 import { Text } from "../models/text";
+import GlyphPicker from "./GlyphPicker";
 
 export default function TextEditor({
   text,
@@ -237,13 +238,22 @@ export default function TextEditor({
         </div>
       </div>
 
-      <Button
-        style={{ margin: "0 auto" }}
-        size="small"
-        onClick={() => setText([])}
-        isDisabled={isEmptyText(text)}
-        text="Clear"
-      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+        }}
+      >
+        <Button
+          size="small"
+          onClick={() => setText([])}
+          isDisabled={isEmptyText(text)}
+          text="Clear"
+        />
+
+        <GlyphPicker />
+      </div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import GlyphElem from "../../components/GlyphElem";
 
 import WeightSelector from "../../components/WeightSelector";
 import { reservedColors } from "../../constants/colors";
@@ -6,7 +7,7 @@ import { spectrumAuctionColors } from "../../constants/elements/spectrumAuctionC
 import { spectrumMintColors } from "../../constants/elements/spectrumMintColors";
 import { isMobile } from "../../constants/isMobile";
 import { charGroups } from "../../constants/orderedUnicodes";
-import { unicodeNames, unicodes } from "../../fonts/unicode";
+import { unicodes } from "../../fonts/unicode";
 import { Weight } from "../../models/weight";
 import Fonts from "./Fonts";
 import NftDemo from "./NftDemo";
@@ -15,38 +16,6 @@ export default function Landing() {
   const [weight, setWeight] = useState<number>(400);
 
   const top = isMobile ? "3.5rem" : "4.5rem";
-
-  const GlyphElem = (x: number) => (
-    <div
-      style={{ textAlign: "center", width: isMobile ? "3rem" : 100 }}
-      key={x}
-    >
-      <div
-        style={{
-          padding: "1rem",
-          fontSize: isMobile ? "2rem" : "3rem",
-          whiteSpace: "pre",
-          background: "#ffffff16",
-          fontWeight: weight,
-          userSelect: "all",
-          cursor: "default",
-        }}
-        dangerouslySetInnerHTML={{ __html: "&#" + x + ";" }}
-      ></div>
-      {!isMobile && (
-        <div
-          style={{
-            fontSize: "0.7rem",
-            fontWeight: 600,
-            opacity: 0.5,
-          }}
-        >
-          <div>{unicodeNames[x.toString(16).padStart(4, "0")]}</div>
-          <div>{x.toString(16).padStart(4, "0")}</div>
-        </div>
-      )}
-    </div>
-  );
 
   const GlyphSection = (chars: number[]) => (
     <div
@@ -57,7 +26,18 @@ export default function Landing() {
         gap: isMobile ? "0.5rem" : "1rem",
       }}
     >
-      {chars.map(GlyphElem)}
+      {chars.map((x) => (
+        <GlyphElem
+          charCode={x}
+          style={{
+            fontSize: isMobile ? "2rem" : "3rem",
+            width: isMobile ? "3rem" : "5rem",
+            fontWeight: weight,
+            marginBottom: 20,
+          }}
+          includeCode={!isMobile}
+        />
+      ))}
     </div>
   );
 
@@ -164,7 +144,7 @@ export default function Landing() {
       </div>
 
       <div style={{ maxWidth: 960, margin: "0 auto", paddingTop: 100 }}>
-        <h1 style={{ textAlign: "center" }}>7,957 unique colors</h1>
+        <h1 style={{ textAlign: "center" }}>7,957 colors</h1>
         <div
           style={{
             display: "flex",
@@ -210,7 +190,7 @@ export default function Landing() {
       <div
         style={{
           position: "sticky",
-          zIndex: 1,
+          zIndex: 20,
           top: 0,
           left: 0,
           right: 0,
