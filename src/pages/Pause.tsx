@@ -1,9 +1,8 @@
 import { useCallback, useContext, useState } from "react";
 
-import Button from "./components/Button";
-import Loading from "./components/Loading";
-import { WalletContext } from "./contexts/walletContext";
-import useContractReader from "./hooks/ContractReader";
+import Button from "../components/Button";
+import { WalletContext } from "../contexts/walletContext";
+import useContractReader from "../hooks/ContractReader";
 
 export default function Pause() {
   const { contracts, transactor } = useContext(WalletContext);

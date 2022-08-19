@@ -1,21 +1,21 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import Capsule from "./components/Capsule";
-import Button from "./components/Button";
-import { isMobile } from "./constants/isMobile";
-import { WalletContext } from "./contexts/walletContext";
-import useContractReader from "./hooks/ContractReader";
-import { Text } from "./models/text";
-import { Weight } from "./models/weight";
-import TextEditor from "./components/TextEditor";
+import Capsule from "../components/Capsule";
+import Button from "../components/Button";
+import { isMobile } from "../constants/isMobile";
+import { WalletContext } from "../contexts/walletContext";
+import useContractReader from "../hooks/ContractReader";
+import { Text } from "../models/text";
+import { Weight } from "../models/weight";
+import TextEditor from "../components/TextEditor";
 import {
   bytesToColorString,
   deepEqBytesTexts,
   parseBytesText,
   textToBytesText,
-} from "./utils";
-import { NetworkContext } from "./contexts/networkContext";
+} from "../utils";
+import { NetworkContext } from "../contexts/networkContext";
 import { BigNumber } from "ethers";
 
 export default function Edit() {

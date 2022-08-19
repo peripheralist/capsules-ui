@@ -58,8 +58,8 @@ export default function WeightSelector({
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
-            gap: isMobile ? "1rem" : "2rem",
-            fontSize: isMobile ? "1rem" : "2rem",
+            gap: isMobile ? "1rem" : "1.6rem",
+            fontSize: isMobile ? "1rem" : "1.6rem",
           }}
         >
           {Object.keys(FONTS).map((w) => (

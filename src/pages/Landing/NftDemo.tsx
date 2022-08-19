@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import Capsule from "../components/Capsule";
-import TextEditor from "../components/TextEditor";
-import { ALL_COLORS } from "../constants/colors";
-import { isMobile } from "../constants/isMobile";
-import { Text } from "../models/text";
-import { Weight } from "../models/weight";
+import Capsule from "../../components/Capsule";
+import TextEditor from "../../components/TextEditor";
+import { ALL_COLORS } from "../../constants/colors";
+import { isMobile } from "../../constants/isMobile";
+import { Text } from "../../models/text";
+import { Weight } from "../../models/weight";
 
 export default function NftDemo() {
   const [weight, setWeight] = useState<Weight>(400);

@@ -1,11 +1,11 @@
 import { useCallback, useContext, useState } from "react";
-import Button from "../components/Button";
-import FormattedAddress from "../components/FormattedAddress";
-import { isMobile } from "../constants/isMobile";
-import { WalletContext } from "../contexts/walletContext";
-import { FONTS } from "../fonts/fonts";
-import { useFonts } from "../hooks/fonts";
-import { Weight } from "../models/weight";
+import Button from "../../components/Button";
+import FormattedAddress from "../../components/FormattedAddress";
+import { isMobile } from "../../constants/isMobile";
+import { WalletContext } from "../../contexts/walletContext";
+import { FONTS } from "../../fonts/fonts";
+import { useFonts } from "../../hooks/fonts";
+import { Weight } from "../../models/weight";
 
 export default function Fonts() {
   const { transactor, contracts } = useContext(WalletContext);

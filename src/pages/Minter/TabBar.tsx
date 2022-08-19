@@ -1,4 +1,4 @@
-import Button from "../components/Button";
+import Button from "../../components/Button";
 
 export type Tab<TabKey> = { key: TabKey; title?: string; color?: string };
 

@@ -1,14 +1,14 @@
 import { BigNumber } from "ethers";
 import { useContext } from "react";
 
-import Capsule from "./components/Capsule";
-import FormattedAddress from "./components/FormattedAddress";
-import { WalletContext } from "./contexts/walletContext";
-import useContractReader from "./hooks/ContractReader";
-import useSubgraphQuery from "./hooks/SubgraphQuery";
-import { Text } from "./models/text";
-import { Weight } from "./models/weight";
-import { bytesToColorString } from "./utils";
+import Capsule from "../components/Capsule";
+import FormattedAddress from "../components/FormattedAddress";
+import { WalletContext } from "../contexts/walletContext";
+import useContractReader from "../hooks/ContractReader";
+import useSubgraphQuery from "../hooks/SubgraphQuery";
+import { Text } from "../models/text";
+import { Weight } from "../models/weight";
+import { bytesToColorString } from "../utils";
 
 export default function Capsules({
   owner,

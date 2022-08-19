@@ -1,6 +1,6 @@
-import { spectrumAuctionColors } from "../constants/elements/spectrumAuctionColors";
-import { spectrumMintColors } from "../constants/elements/spectrumMintColors";
-import { isMobile } from "../constants/isMobile";
+import { spectrumAuctionColors } from "../../constants/elements/spectrumAuctionColors";
+import { spectrumMintColors } from "../../constants/elements/spectrumMintColors";
+import { isMobile } from "../../constants/isMobile";
 
 export default function NFTs() {
   return (

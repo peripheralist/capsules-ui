@@ -1,32 +1,31 @@
 import { formatEther } from "ethers/lib/utils";
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 
-import Capsule from "../components/Capsule";
-import Button from "../components/Button";
-import { reservedColors } from "../constants/colors";
-import { isMobile } from "../constants/isMobile";
-import { mintPrice } from "../constants/mintPrice";
-import { NetworkContext } from "../contexts/networkContext";
-import { WalletContext } from "../contexts/walletContext";
-import { Text } from "../models/text";
-import { Weight } from "../models/weight";
-import Spectrum from "../Spectrum";
-import TextEditor from "../components/TextEditor";
-import NFTs from "./NFTs";
-import TabBar, { Tab } from "./TabBar";
+import Button from "../../components/Button";
+import Capsule from "../../components/Capsule";
+import TextEditor from "../../components/TextEditor";
+import { reservedColors } from "../../constants/colors";
+import { isMobile } from "../../constants/isMobile";
+import { mintPrice } from "../../constants/mintPrice";
+import { NetworkContext } from "../../contexts/networkContext";
+import { WalletContext } from "../../contexts/walletContext";
+import { useMintedColors } from "../../hooks/mintedColors";
+import { Text } from "../../models/text";
+import { Weight } from "../../models/weight";
+import Spectrum from "../../Spectrum";
 import {
   colorStringToBytes,
   isEmptyBytesText,
   textToBytesText,
-} from "../utils";
-import { useMintedColors } from "../hooks/mintedColors";
+} from "../../utils";
+import TabBar, { Tab } from "./TabBar";
 
 const screenSize = isMobile ? window.innerWidth : window.innerHeight;
 const spectrumContainerId = "spectrum-container";
 const tabBarHeight = Math.max(window.innerHeight * 0.1, 60);
 const bodyHeight = window.innerHeight - tabBarHeight;
 
-type TabKey = "info" | "connect" | "color" | "mint" | "text";
+type TabKey = "color" | "mint" | "text";
 
 export default function Minter() {
   const { connectedWallet, selectWallet } = useContext(NetworkContext);
@@ -45,42 +44,15 @@ export default function Minter() {
 
   const spectrumSize = screenSize * spectrumScaleMultiplier;
 
-  const tabs = useMemo(() => {
-    const _tabs: Tab<TabKey>[] = [];
-    // const _tabs: Tab<TabKey>[] = [{ key: "info", title: "Capsules" }];
-
-    // _tabs.push(
-    //   ...[
-    //     {
-    //       key: "color" as const,
-    //       title: "1. " + (color ?? "Color"),
-    //       color,
-    //     },
-    //     { key: "text" as const, title: "2. Text" },
-    //     { key: "mint" as const, title: "3. Mint" },
-    //   ]
-    // );
-
-    if (!connectedWallet) {
-      _tabs.push({ key: "connect" as const, title: "" });
-      setSelectedTab("connect");
-    } else {
-      _tabs.push(
-        ...[
-          {
-            key: "color" as const,
-            title: "1. " + (color ?? "Color"),
-            color,
-          },
-          { key: "text" as const, title: "2. Text" },
-          { key: "mint" as const, title: "3. Mint" },
-        ]
-      );
-      setSelectedTab("color");
-    }
-
-    return _tabs;
-  }, [connectedWallet, color]);
+  const tabs: Tab<TabKey>[] = [
+    {
+      key: "color",
+      title: "1. " + (color ?? "Color"),
+      color,
+    },
+    { key: "text", title: "2. Text" },
+    { key: "mint", title: "3. Mint" },
+  ];
 
   const mint = useCallback(() => {
     if (!contracts || !transactor || !color) return;
@@ -107,50 +79,32 @@ export default function Minter() {
   //   document.getElementById(spectrumContainerId)?.scrollBy(200, 200);
   // }, [spectrumSize, window.innerWidth]);
 
+  if (!connectedWallet) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 20,
+          paddingBottom: tabBarHeight + 40,
+          height: bodyHeight,
+        }}
+      >
+        <Button
+          text="Connect your wallet"
+          onClick={() =>
+            selectWallet?.((success) => {
+              if (success) setSelectedTab("color");
+            })
+          }
+        />
+      </div>
+    );
+  }
+
   return (
     <div>
-      {selectedTab === "info" && (
-        <div
-          style={{
-            margin: "0 auto",
-            maxWidth: 540,
-            padding: 20,
-            paddingBottom: tabBarHeight + 40,
-          }}
-        >
-          <NFTs />
-          <br />
-          <br />
-          <Button
-            text="Mint a Capsule"
-            style={{ width: "100%", color: "#0ff" }}
-            onClick={() => setSelectedTab("color")}
-          />
-        </div>
-      )}
-
-      {selectedTab === "connect" && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 20,
-            paddingBottom: tabBarHeight + 40,
-            height: bodyHeight,
-          }}
-        >
-          <Button
-            text="Connect your wallet"
-            onClick={() =>
-              selectWallet?.((success) => {
-                if (success) setSelectedTab("color");
-              })
-            }
-          />
-        </div>
-      )}
-
       {selectedTab === "color" && (
         <div
           style={{

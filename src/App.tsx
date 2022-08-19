@@ -2,11 +2,11 @@ import "./App.css";
 
 import { HashRouter, Route, Switch } from "react-router-dom";
 
-import Capsules from "./Capsules";
-import Edit from "./Edit";
-import Landing from "./Landing";
-import Minter from "./Minter";
-import Pause from "./Pause";
+import Capsules from "./pages/Capsules";
+import Edit from "./pages/Edit";
+import Landing from "./pages/Landing";
+import Minter from "./pages/Minter";
+import Pause from "./pages/Pause";
 import Typeface from "./Typeface";
 import Navbar from "./components/Navbar";
 import { useContext } from "react";

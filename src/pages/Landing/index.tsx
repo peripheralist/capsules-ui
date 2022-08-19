@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-import WeightSelector from "../components/WeightSelector";
-import { reservedColors } from "../constants/colors";
-import { spectrumAuctionColors } from "../constants/elements/spectrumAuctionColors";
-import { spectrumMintColors } from "../constants/elements/spectrumMintColors";
-import { isMobile } from "../constants/isMobile";
-import { charGroups } from "../constants/orderedUnicodes";
-import { unicodeNames } from "../fonts/unicode";
-import { Weight } from "../models/weight";
+import WeightSelector from "../../components/WeightSelector";
+import { reservedColors } from "../../constants/colors";
+import { spectrumAuctionColors } from "../../constants/elements/spectrumAuctionColors";
+import { spectrumMintColors } from "../../constants/elements/spectrumMintColors";
+import { isMobile } from "../../constants/isMobile";
+import { charGroups } from "../../constants/orderedUnicodes";
+import { unicodeNames, unicodes } from "../../fonts/unicode";
+import { Weight } from "../../models/weight";
 import Fonts from "./Fonts";
 import NftDemo from "./NftDemo";
 
@@ -48,7 +48,7 @@ export default function Landing() {
     </div>
   );
 
-  const GlyphSection = (title: string, chars: number[]) => (
+  const GlyphSection = (chars: number[]) => (
     <div
       style={{
         display: "inline-flex",
@@ -106,7 +106,7 @@ export default function Landing() {
               reservedColors[Math.floor(Math.random() * reservedColors.length)],
           }}
           rows={8}
-          placeholder={`Mono typeface\n\n7,957 NFTs\n\n7 fonts stored on Ethereum \n\nAvailable to any smart contract for free, forever`}
+          placeholder={`Mono typeface\n\n${unicodes.length} characters + 7 fonts\n\nStored on Ethereum\n\nAvailable to any smart contract for free, forever`}
         />
       </div>
 
@@ -155,9 +155,9 @@ export default function Landing() {
           blank for a default image.
           <br />
           <br />
-          Capsules can also be locked,{" "}
-          <b>making its current text and font permanent</b> even when
-          transferred, and giving it sharp corners.
+          Capsules can also be locked. Locked Capsules{" "}
+          <b>can never be changed</b>, even when transferred, and their images
+          have sharp corners.
           {/* <span style={{ fontSize: "2rem" }}>↓</span> */}
         </div>
         <NftDemo />
@@ -235,22 +235,18 @@ export default function Landing() {
           gap: isMobile ? "3rem" : "6rem",
           margin: "0 auto",
           paddingTop: 50,
+          paddingBottom: 50,
         }}
       >
-        {GlyphSection("Uppercase", charGroups.uppercase)}
-        {GlyphSection("Lowercase", charGroups.lowercase)}
-        {GlyphSection("Numbers", charGroups.digits)}
-        {GlyphSection("Punctuation", charGroups.punctuationSymbols)}
-        {GlyphSection("Math", charGroups.math)}
-        {GlyphSection("Currencies", charGroups.currencies)}
-        {GlyphSection("Arrows", charGroups.arrows)}
-        {GlyphSection("Other symbols", [
-          ...charGroups.custom,
-          ...charGroups.others,
-        ])}
+        {GlyphSection(charGroups.uppercase)}
+        {GlyphSection(charGroups.lowercase)}
+        {GlyphSection(charGroups.digits)}
+        {GlyphSection(charGroups.punctuationSymbols)}
+        {GlyphSection(charGroups.math)}
+        {GlyphSection(charGroups.currencies)}
+        {GlyphSection(charGroups.arrows)}
+        {GlyphSection([...charGroups.custom, ...charGroups.others])}
       </div>
-      <br />
-      <br />
     </div>
   );
 }
