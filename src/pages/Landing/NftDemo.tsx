@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Capsule from "../../components/Capsule";
 import TextEditor from "../../components/TextEditor";
 import { ALL_COLORS } from "../../constants/colors";

@@ -1,9 +1,8 @@
-import { BigNumber, utils } from "ethers";
+import { BigNumber } from "ethers";
 import { Hue } from "../models/hue";
 import { RGB } from "../models/rgb";
 import { unicodes } from "../fonts/unicode";
 import { BytesText, Text } from "../models/text";
-import { text } from "stream/consumers";
 
 const zeroBytes4 = "0x00000000";
 

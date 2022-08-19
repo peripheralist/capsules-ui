@@ -59,7 +59,7 @@ export default function Button({
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [loading, _text]);
+  }, [loading, _text, interval]);
 
   const underlineStr = useMemo(() => {
     if (!underline) return null;
