@@ -65,7 +65,6 @@ export default function Landing() {
     <div
       style={{
         padding: isMobile ? 20 : 0,
-        position: "relative",
       }}
     >
       <div
@@ -111,25 +110,12 @@ export default function Landing() {
         />
       </div>
 
-      <div
-        style={{
-          position: "sticky",
-          zIndex: 1,
-          top: 0,
-          left: 0,
-          right: 0,
-          margin: "0 auto",
-          background: "#000",
-          paddingBottom: 20,
-        }}
-      >
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <WeightSelector
-            selectedWeight={weight as Weight}
-            onSelectWeight={setWeight}
-            style={{ height: top }}
-          />
-        </div>
+      <div style={{ maxWidth: 600, margin: "0 auto" }}>
+        <WeightSelector
+          selectedWeight={weight as Weight}
+          onSelectWeight={setWeight}
+          style={{ height: top }}
+        />
       </div>
 
       <div
@@ -166,7 +152,12 @@ export default function Landing() {
           <br />
           <br />
           Text and font can be changed whenever by the owner. Leave the text
-          blank for a default image
+          blank for a default image.
+          <br />
+          <br />
+          Capsules can also be locked,{" "}
+          <b>making its current text and font permanent</b> even when
+          transferred, and giving it sharp corners.
           {/* <span style={{ fontSize: "2rem" }}>↓</span> */}
         </div>
         <NftDemo />
@@ -194,7 +185,7 @@ export default function Landing() {
           </div>
 
           <div style={{ flex: 1 }}>
-            <b>7,950 colors</b> can be minted for 0.01 ETH
+            <b>7,950 colors</b> can be minted for Ξ0.01
             <br />
             <br />
             <br />
@@ -208,7 +199,6 @@ export default function Landing() {
 
       <div
         style={{
-          maxWidth: 960,
           margin: "0 auto",
           paddingTop: 100,
           textAlign: "center",
@@ -219,11 +209,32 @@ export default function Landing() {
 
       <div
         style={{
+          position: "sticky",
+          zIndex: 1,
+          top: 0,
+          left: 0,
+          right: 0,
+          margin: "0 auto",
+          background: "#000",
+          paddingBottom: 20,
+        }}
+      >
+        <div style={{ maxWidth: 600, margin: "0 auto" }}>
+          <WeightSelector
+            selectedWeight={weight as Weight}
+            onSelectWeight={setWeight}
+            style={{ height: top }}
+          />
+        </div>
+      </div>
+
+      <div
+        style={{
           display: "flex",
           flexDirection: "column",
           gap: isMobile ? "3rem" : "6rem",
           margin: "0 auto",
-          paddingTop: 100,
+          paddingTop: 50,
         }}
       >
         {GlyphSection("Uppercase", charGroups.uppercase)}

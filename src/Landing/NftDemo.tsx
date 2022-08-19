@@ -10,6 +10,7 @@ export default function NftDemo() {
   const [weight, setWeight] = useState<Weight>(400);
   const [text, setText] = useState<Text>([]);
   const [color, setColor] = useState<string>();
+  const [locked, setLocked] = useState<boolean>(false);
 
   useEffect(() => {
     setRandomColor();
@@ -43,26 +44,43 @@ export default function NftDemo() {
             color={color}
             weight={weight}
             setWeight={setWeight}
+            // locked={locked}
+            // setLocked={setLocked}
           />
         </div>
 
         <div style={{ padding: isMobile ? 10 : 0, flex: 1 }}>
-          <span
+          <div
             style={{
-              cursor: "pointer",
-              userSelect: "none",
+              display: "flex",
+              justifyContent: "space-between",
               fontWeight: 600,
             }}
-            onClick={setRandomColor}
           >
-            <span style={{ color }}>{color}</span> New color ⏩
-          </span>
+            <span
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+              }}
+              onClick={setRandomColor}
+            >
+              <span style={{ color }}>{color}</span> New color ⏩
+            </span>
+
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => setLocked((l) => !l)}
+            >
+              {locked ? " Locked" : " Unlocked"}
+            </div>
+          </div>
           <Capsule
             text={text}
             color={color}
             width={400}
             weight={weight}
             square
+            locked={locked}
           />
         </div>
       </div>

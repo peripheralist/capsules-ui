@@ -71,8 +71,8 @@ export default function Capsule({
     let str = "";
     // Cut off start and end dots
     for (
-      let i = locked ? 1 : 0;
-      i < textAreaWidthDots - (locked ? 1 : 0);
+      let i = locked ? 0 : 1;
+      i < textAreaWidthDots - (locked ? 0 : 1);
       i++
     ) {
       str += `<circle cx="${gridSize * i + gridSize / 2}" cy="${

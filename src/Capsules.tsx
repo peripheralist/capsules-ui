@@ -9,7 +9,11 @@ import { Text } from "./models/text";
 import { Weight } from "./models/weight";
 import { bytesToColorString } from "./utils";
 
-export default function Capsules() {
+export default function Capsules({
+  owner,
+}: {
+  owner: string | null | undefined;
+}) {
   const { contracts } = useContext(WalletContext);
   const supply = useContractReader<BigNumber>({
     contract: contracts?.CapsulesToken,
@@ -22,6 +26,14 @@ export default function Capsules() {
     keys: ["owner", "text", "fontWeight", "color", "id", "locked"],
     orderBy: "mintedAt",
     orderDirection: "desc",
+    where: owner
+      ? [
+          {
+            key: "owner",
+            value: owner,
+          },
+        ]
+      : [],
   }) as {
     data?: {
       capsules?: {
@@ -42,7 +54,7 @@ export default function Capsules() {
       </h1>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         {capsules.data?.capsules?.map((c) => (
-          <div key={c.id} style={{flex: 1}}>
+          <div key={c.id} style={{ flex: 1 }}>
             <Capsule
               height={140}
               text={c.text}

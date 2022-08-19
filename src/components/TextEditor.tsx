@@ -19,6 +19,8 @@ export default function TextEditor({
   color,
   weight,
   setWeight,
+  locked,
+  setLocked,
   autofocus,
 }: {
   text: Text;
@@ -26,6 +28,8 @@ export default function TextEditor({
   color: string | undefined;
   weight: Weight;
   setWeight: (weight: Weight | ((weight: Weight) => Weight)) => void;
+  locked?: boolean;
+  setLocked?: (locked: boolean | ((locked: boolean) => boolean)) => void;
   autofocus?: boolean;
 }) {
   const fontSize = isMobile ? 20 : 24;
