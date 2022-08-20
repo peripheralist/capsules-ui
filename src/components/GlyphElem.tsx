@@ -86,7 +86,7 @@ export default function GlyphElem({
           </div>
         )}
       </div>
-      <input hidden type="text" id={id} value={char} />
+      <input hidden type="text" id={id} defaultValue={char} />
     </div>
   );
 }

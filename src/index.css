@@ -4,6 +4,14 @@ body, button, .bn-onboard-modal {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body, div, span, p, textarea, input, a {
+  transition: font-weight .25s ease-in !important;
+}
+
+.hov-fat:hover {
+  font-weight: 700 !important;
+}
+
 .bn-onboard-modal-content-header-icon {
   display: none !important;
 }

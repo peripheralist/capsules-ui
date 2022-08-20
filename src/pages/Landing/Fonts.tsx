@@ -65,9 +65,11 @@ export default function Fonts() {
     <div>
       <div
         style={{
+          maxWidth: 960,
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
           justifyContent: "space-evenly",
+          margin: "0 auto",
         }}
       >
         {_fonts?.map((f) => FontElem(f.weight, f.color, f.minter))}

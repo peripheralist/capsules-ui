@@ -28,6 +28,7 @@ export default function Landing() {
     >
       {chars.map((x) => (
         <GlyphElem
+          key={x}
           charCode={x}
           style={{
             fontSize: isMobile ? "2rem" : "3rem",
@@ -86,7 +87,7 @@ export default function Landing() {
               reservedColors[Math.floor(Math.random() * reservedColors.length)],
           }}
           rows={8}
-          placeholder={`Mono typeface\n\n${unicodes.length} characters + 7 fonts\n\nStored on Ethereum\n\nAvailable to any smart contract for free, forever`}
+          placeholder={`Mono typeface\n\n${unicodes.length} characters × 7 fonts\n\nStored on Ethereum\n\nAvailable to any smart contract for free, forever`}
         />
       </div>
 
@@ -137,8 +138,7 @@ export default function Landing() {
           <br />
           Capsules can also be locked. Locked Capsules{" "}
           <b>can never be changed</b>, even when transferred, and their images
-          have sharp corners.
-          {/* <span style={{ fontSize: "2rem" }}>↓</span> */}
+          have special sharp corners.
         </div>
         <NftDemo />
       </div>
