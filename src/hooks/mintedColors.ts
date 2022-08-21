@@ -14,5 +14,8 @@ export function useMintedColors() {
 
   if (!fonts.data?.lists?.length) return [];
 
-  return fonts.data.lists[0].mintedColors.split(" ").map(bytesToColorString);
+  return fonts.data.lists[0].mintedColors
+    .split(" ")
+    .filter((x) => x.length)
+    .map(bytesToColorString);
 }

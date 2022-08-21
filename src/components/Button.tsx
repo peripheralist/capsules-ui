@@ -105,7 +105,7 @@ export default function Button({
     opacity: isDisabled ? 0.5 : 1,
     textTransform: "uppercase",
     fontSize,
-    color: "#fff",
+    color: "#00ffff",
   };
 
   if (href) {

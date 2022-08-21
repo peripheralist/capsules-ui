@@ -64,7 +64,7 @@ export default function NftDemo() {
               }}
               onClick={setRandomColor}
             >
-              <span style={{ color }}>{color}</span> New color ⏩
+              <span style={{ color }}>{color}</span> ↻
             </span>
 
             <div

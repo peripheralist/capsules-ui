@@ -80,9 +80,11 @@ export default function GlyphElem({
               left: 0,
               right: 0,
               bottom: "-20%",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}
           >
-            <div>{unicodeNames[charCode.toString(16).padStart(4, "0")]}</div>
+            {unicodeNames[charCode.toString(16).padStart(4, "0")]}
           </div>
         )}
       </div>

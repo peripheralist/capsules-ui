@@ -28,8 +28,6 @@ export default function Edit() {
   const { connectedWallet } = useContext(NetworkContext);
   const { id } = useParams<{ id: string }>();
 
-  console.log({ id });
-
   const capsuleText = useContractReader<string[][]>({
     contract: contracts?.CapsulesToken,
     functionName: "textOf",

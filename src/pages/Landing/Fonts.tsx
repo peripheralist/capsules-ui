@@ -53,6 +53,7 @@ export default function Fonts() {
         </div>
       ) : (
         <Button
+          style={{ color: "#fff" }}
           text="Mint"
           onClick={() => unlockFont(weight)}
           loading={loadingTxForWeight === weight}

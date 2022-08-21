@@ -50,8 +50,6 @@ export default function Capsules() {
     };
   };
 
-  console.log({ wallet, _wallet });
-
   return (
     <div style={{ padding: 20 }}>
       <h1 style={{ textAlign: "center" }}>

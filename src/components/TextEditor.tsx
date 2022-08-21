@@ -246,6 +246,7 @@ export default function TextEditor({
         }}
       >
         <Button
+          style={{ color: "#fff" }}
           size="small"
           onClick={() => setText([])}
           isDisabled={isEmptyText(text)}

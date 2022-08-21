@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "../../components/Button";
 import GlyphElem from "../../components/GlyphElem";
 
 import WeightSelector from "../../components/WeightSelector";
@@ -144,6 +145,10 @@ export default function Landing() {
           Capsules can also be locked. Locked Capsules{" "}
           <b>can never be changed</b>, even when transferred, and their images
           have super special sharp corners.
+          <br />
+          <br />
+          <br />
+          <Button href="/#/mint" text="Mint a Capsule" />
         </div>
         <NftDemo />
       </div>
@@ -231,12 +236,14 @@ export default function Landing() {
       >
         {GlyphSection(charGroups.uppercase)}
         {GlyphSection(charGroups.lowercase)}
+        {GlyphSection(charGroups.specials)}
         {GlyphSection(charGroups.digits)}
         {GlyphSection(charGroups.punctuationSymbols)}
         {GlyphSection(charGroups.math)}
         {GlyphSection(charGroups.currencies)}
         {GlyphSection(charGroups.arrows)}
-        {GlyphSection([...charGroups.custom, ...charGroups.others])}
+        {GlyphSection(charGroups.custom)}
+        {GlyphSection(charGroups.others)}
       </div>
     </div>
   );

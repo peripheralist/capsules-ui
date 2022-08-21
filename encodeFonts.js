@@ -3,7 +3,7 @@ const { base64 } = require("ethers/lib/utils");
 
 const dir = "src/fonts/";
 
-let fileContents = "export const fonts = {";
+let fileContents = "export const FONTS = {";
 
 function writeFontsFile() {
   console.log("Writing fonts file");

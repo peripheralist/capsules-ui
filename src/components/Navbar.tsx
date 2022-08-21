@@ -1,10 +1,13 @@
 import { useContext } from "react";
 import { NetworkContext } from "../contexts/networkContext";
+import { useMintedColors } from "../hooks/mintedColors";
 import useSubgraphQuery from "../hooks/SubgraphQuery";
 import FormattedAddress from "./FormattedAddress";
 
 export default function Navbar() {
   const { connectedWallet, selectWallet } = useContext(NetworkContext);
+
+  const mintedColors = useMintedColors();
 
   const Link = (text: string, path: string) => (
     <a href={"/#/" + path} style={{ color: "white", fontWeight: 300 }} className="hov-fat">
@@ -45,8 +48,8 @@ export default function Navbar() {
         <div style={{ display: "flex", gap: "1rem" }}>
           {Link("[⌂]", "")}
           {/* {Link("[⌂]", "")} */}
+          {Link(`${mintedColors.length || '--'} Minted`, "minted")}
           {Link("Mint", "mint")}
-          {Link("Minted", "minted")}
           {Link("Contracts", "contracts")}
         </div>
 
