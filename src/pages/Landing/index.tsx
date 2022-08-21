@@ -108,12 +108,17 @@ export default function Landing() {
           fontWeight: 500,
         }}
       >
-        Capsules fonts need to be stored on-chain before they're available to
-        other smart contracts. Anyone can store a font just by paying gas.
+        Fonts need to be stored on-chain before they're available to other
+        contracts.
         <br />
         <br />
-        Storing a font also mints a Capsule NFT with{" "}
-        <b>one of 7 pure colors, out of 7,957.</b>
+        <b>
+          A font can be stored by minting its NFT, which just costs the gas for
+          storage.
+        </b>
+        <br />
+        <br />
+        Out of 7,957 total NFTs, only these 7 have pure colors.
       </div>
 
       <Fonts />
@@ -138,7 +143,7 @@ export default function Landing() {
           <br />
           Capsules can also be locked. Locked Capsules{" "}
           <b>can never be changed</b>, even when transferred, and their images
-          have special sharp corners.
+          have super special sharp corners.
         </div>
         <NftDemo />
       </div>
@@ -206,6 +211,12 @@ export default function Landing() {
             style={{ height: top }}
           />
         </div>
+      </div>
+
+      <div style={{ textAlign: "center" }}>
+        <a href="/CapsulesTypeface.zip" download="CapsulesTypeface">
+           Download
+        </a>
       </div>
 
       <div

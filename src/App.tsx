@@ -9,6 +9,7 @@ import Edit from "./pages/Edit";
 import Landing from "./pages/Landing";
 import Minter from "./pages/Minter";
 import Pause from "./pages/Pause";
+import Withdraw from "./pages/Withdraw";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/minted" component={Capsules} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/pause" component={Pause} />
+          <Route path="/withdraw" component={Withdraw} />
           <Route path="/edit/:id" component={Edit} />
         </Switch>
       </HashRouter>

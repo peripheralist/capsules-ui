@@ -30,8 +30,9 @@ export default function Pause() {
   }, [transactor, contracts]);
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{ padding: 100, textAlign: "center" }}>
       <Button
+        size="small"
         text={paused ? "Unpause" : "Pause"}
         onClick={paused ? unpause : pause}
         loading={paused === undefined ? true : loadingTx ? "Waiting..." : false}
