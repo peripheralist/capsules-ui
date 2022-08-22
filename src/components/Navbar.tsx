@@ -68,7 +68,11 @@ export default function Navbar() {
     >
       <div
         className="hov-fat"
-        style={{ cursor: "crosshair", width: 240, padding }}
+        style={{
+          cursor: "crosshair",
+          width: isMobile ? undefined : 240,
+          padding,
+        }}
         onClick={() => setMenuIsOpen(true)}
       >
         [☰]
@@ -85,7 +89,7 @@ export default function Navbar() {
             }}
             className="hov-fat"
           >
-            {capsules.data?.capsules?.length ?? "--"} Capsules
+            {capsules.data?.capsules?.length ?? "--"} Owned
           </a>
         )}
 

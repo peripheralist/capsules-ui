@@ -4,12 +4,13 @@ import { useParams } from "react-router-dom";
 
 import Capsule from "../components/Capsule";
 import FormattedAddress from "../components/FormattedAddress";
+import { isMobile } from "../constants/isMobile";
 import { WalletContext } from "../contexts/walletContext";
 import useContractReader from "../hooks/ContractReader";
 import useSubgraphQuery from "../hooks/SubgraphQuery";
 import { Text } from "../models/text";
 import { Weight } from "../models/weight";
-import { bytesToColorString } from "../utils";
+import { bytesToColorString, trimText } from "../utils";
 
 export default function Capsules() {
   const { contracts } = useContext(WalletContext);
@@ -52,7 +53,7 @@ export default function Capsules() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h1 style={{ textAlign: "center" }}>
+      <h1 style={{ textAlign: "center", paddingTop: isMobile ? 50 : 0 }}>
         {_wallet ? (
           <span>
             Owned by <FormattedAddress address={_wallet} />
@@ -61,12 +62,20 @@ export default function Capsules() {
           `${supply?.toString() ?? "--"} Capsules Minted`
         )}
       </h1>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.5rem",
+          paddingBottom: isMobile ? 50 : 0,
+        }}
+      >
         {capsules.data?.capsules?.map((c) => (
           <a key={c.id} href={`/#/edit/${c.id}`}>
             <div>
               <Capsule
-                height={"10rem"}
+                height={isMobile ? undefined : "10rem"}
+                width={isMobile ? "90vw" : undefined}
                 text={c.text}
                 weight={c.fontWeight}
                 color={bytesToColorString(c.color)}
