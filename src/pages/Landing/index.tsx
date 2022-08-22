@@ -25,7 +25,7 @@ export default function Landing() {
         <AboveFold weight={weight} setWeight={setWeight} />
       </div>
 
-      <div style={{ maxWidth: 960, margin: "0 auto" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding }}>
         <Fonts />
       </div>
 
