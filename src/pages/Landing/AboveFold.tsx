@@ -54,10 +54,40 @@ export default function AboveFold({
               reservedColors[Math.floor(Math.random() * reservedColors.length)],
           }}
           rows={8}
-          placeholder="Mono typeface&#13;&#10;·&#13;&#10;328 characters × 7 fonts&#13;&#10;·&#13;&#10;Stored on Ethereum&#13;&#10;·&#13;&#10;Available to any smart contract for free, forever"
+          // placeholder="Mono typeface&#13;&#10;·&#13;&#10;328 characters × 7 fonts&#13;&#10;·&#13;&#10;Stored on Ethereum&#13;&#10;·&#13;&#10;Available to any smart contract for free, forever"
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
+
+        {!text?.length && (
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              right: 0,
+              bottom: 0,
+              padding: "2rem",
+              fontSize: isMobile ? "1rem" : "2rem",
+              boxSizing: "border-box",
+              textAlign: "left",
+              lineHeight: "normal",
+              userSelect: "none",
+              pointerEvents: "none",
+            }}
+          >
+            Mono typeface
+            <br />
+            <br />
+            328 characters × 7 fonts
+            <br />
+            <br />
+            Stored on Ethereum
+            <br />
+            <br />
+            Available to any smart contract for free, forever
+          </div>
+        )}
 
         <div
           style={{
