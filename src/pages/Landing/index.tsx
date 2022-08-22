@@ -10,16 +10,15 @@ import Typeface from "./Typeface";
 export default function Landing() {
   const [weight, setWeight] = useState<number>(400);
 
+  const padding = isMobile ? "1rem" : undefined;
+
   return (
-    <div
-      style={{
-        padding: isMobile ? 20 : 0,
-      }}
-    >
+    <div>
       <div
         style={{
           maxWidth: isMobile ? 360 : 600,
           margin: "0 auto",
+          padding,
           paddingTop: isMobile ? 50 : 0,
         }}
       >
@@ -34,15 +33,24 @@ export default function Landing() {
         style={{
           maxWidth: 960,
           margin: "0 auto",
+          padding,
           paddingTop: 100,
         }}
       >
         <NftDemo />
       </div>
 
-      <Colors />
+      <div style={{ padding }}>
+        <Colors />
+      </div>
 
-      <div style={{ margin: "0 auto", paddingTop: 100 }}>
+      <div
+        style={{
+          margin: "0 auto",
+          paddingTop: 100,
+          padding,
+        }}
+      >
         <Typeface weight={weight} setWeight={setWeight} />
       </div>
     </div>

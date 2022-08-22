@@ -98,6 +98,7 @@ input, textarea {
   border: none;
   outline: none;
   color: white;
+  white-space: pre-wrap;
 }
 
 textarea::placeholder {
