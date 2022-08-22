@@ -92,6 +92,7 @@ export default function Minter() {
         }}
       >
         <Button
+          style={{ color: "white" }}
           text="Connect your wallet"
           onClick={() =>
             selectWallet?.((success) => {
@@ -256,7 +257,7 @@ export default function Minter() {
             text={`Mint Capsule (Ξ${formatEther(mintPrice)})`}
             size="large"
             onClick={mint}
-            style={{ margin: "0 auto" }}
+            style={{ margin: "0 auto", color: "white" }}
             loading={loadingTx ? "Transaction pending..." : false}
           />
         </div>

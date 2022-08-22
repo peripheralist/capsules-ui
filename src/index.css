@@ -5,7 +5,7 @@ body, button, .bn-onboard-modal {
 }
 
 body, div, span, p, textarea, input, a {
-  transition: font-weight .25s ease-in !important;
+  transition: font-weight .1s ease-out !important;
 }
 
 .hov-fat:hover {

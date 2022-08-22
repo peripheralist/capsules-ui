@@ -32,41 +32,95 @@ export default function Fonts() {
     [contracts, transactor]
   );
 
-  const FontElem = (weight: Weight, color: string, minter?: string | null) => (
-    <div
-      key={weight}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: isMobile ? "50vh" : "100%",
-      }}
-    >
-      <h1 style={{ fontWeight: weight }}>{weight}</h1>
-      <div style={{ fontWeight: 600, color }}>{color}</div>
-      <br />
-      {minter ? (
-        <div style={{ textAlign: "center", color, fontWeight: 700 }}>
-          <div>♥ minted ♥</div>
-          <FormattedAddress address={minter} />
+  const FontElem = (weight: Weight, color: string, minter?: string | null) =>
+    isMobile ? (
+      <div
+        key={weight}
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingTop: 20,
+          paddingBottom: 20,
+        }}
+      >
+        <div>
+          <h1 style={{ fontWeight: weight, margin: 0 }}>{weight}</h1>
+          <div style={{ fontWeight: 600, color }}>{color}</div>
         </div>
-      ) : (
-        <Button
-          style={{ color: "#fff" }}
-          text="Mint"
-          onClick={() => unlockFont(weight)}
-          loading={loadingTxForWeight === weight}
-        />
-      )}
-    </div>
-  );
+
+        <div>
+          {minter ? (
+            <div style={{ textAlign: "center", color, fontWeight: 700 }}>
+              <div>♥ minted ♥</div>
+              <FormattedAddress address={minter} />
+            </div>
+          ) : (
+            <Button
+              style={{ color: "#fff" }}
+              text="Mint"
+              onClick={() => unlockFont(weight)}
+              loading={loadingTxForWeight === weight}
+            />
+          )}
+        </div>
+      </div>
+    ) : (
+      <div
+        key={weight}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100%",
+        }}
+      >
+        <h1 style={{ fontWeight: weight }}>{weight}</h1>
+        <div style={{ fontWeight: 600, color }}>{color}</div>
+        <br />
+        {minter ? (
+          <div style={{ textAlign: "center", color, fontWeight: 700 }}>
+            <div>♥ minted ♥</div>
+            <FormattedAddress address={minter} />
+          </div>
+        ) : (
+          <Button
+            style={{ color: "#fff" }}
+            text="Mint"
+            onClick={() => unlockFont(weight)}
+            loading={loadingTxForWeight === weight}
+          />
+        )}
+      </div>
+    );
 
   return (
     <div>
       <div
         style={{
-          maxWidth: 960,
+          maxWidth: isMobile ? "90vw" : 400,
+          margin: "0 auto",
+          paddingTop: 100,
+          paddingBottom: 50,
+          fontWeight: 500,
+        }}
+      >
+        Fonts need to be stored on-chain before they're available to other
+        contracts.
+        <br />
+        <br />
+        <b>
+          A font can be stored by minting its NFT, which just costs the gas for
+          storage.
+        </b>
+        <br />
+        <br />
+        Out of 7,957 total NFTs, only these 7 have pure colors.
+      </div>
+
+      <div
+        style={{
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
           justifyContent: "space-evenly",

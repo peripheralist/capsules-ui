@@ -9,11 +9,13 @@ export default function WeightSelector({
   onSelectWeight,
   style,
 }: {
-  selectedWeight: Weight;
+  selectedWeight: number;
   onSelectWeight: (w: Weight) => void;
   style?: CSSProperties;
 }) {
   const [useVariableWeight, setUseVariableWeight] = useState<boolean>();
+
+  // height = isMobile ? "3.5rem" : "4.5rem";
 
   return (
     <div

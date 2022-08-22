@@ -5,10 +5,12 @@ export default function GlyphElem({
   charCode,
   includeCode,
   style,
+  onCopyGlyph,
 }: {
   charCode: number;
   includeCode?: boolean;
   style?: CSSProperties;
+  onCopyGlyph?: VoidFunction;
 }) {
   const [didCopy, setDidCopy] = useState<boolean>();
 
@@ -17,6 +19,8 @@ export default function GlyphElem({
 
   const copyToClipboard = () => {
     if (didCopy) return;
+
+    onCopyGlyph?.();
 
     const input = document.getElementById(id) as HTMLInputElement;
 
