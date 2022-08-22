@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import GlyphPicker from "../../components/GlyphPicker";
 import WeightSelector from "../../components/WeightSelector";
 import { reservedColors } from "../../constants/colors";
@@ -13,6 +13,11 @@ export default function AboveFold({
   setWeight: (w: Weight) => void;
 }) {
   const [text, setText] = useState<string>();
+
+  const textAreaStyle: CSSProperties = {
+    padding: isMobile ? "1rem 1rem 2.5rem" : "2rem",
+    fontSize: isMobile ? "1.25rem" : "2rem",
+  };
 
   return (
     <div>
@@ -41,17 +46,16 @@ export default function AboveFold({
         }}
       >
         <textarea
-          autoFocus
+          autoFocus={!isMobile}
           autoCorrect="false"
           style={{
-            fontSize: isMobile ? "1rem" : "2rem",
             background: "#ffffff16",
-            padding: "2rem",
             width: "100%",
             boxSizing: "border-box",
             fontWeight: weight,
             caretColor:
               reservedColors[Math.floor(Math.random() * reservedColors.length)],
+            ...textAreaStyle,
           }}
           rows={8}
           // placeholder="Mono typeface&#13;&#10;·&#13;&#10;328 characters × 7 fonts&#13;&#10;·&#13;&#10;Stored on Ethereum&#13;&#10;·&#13;&#10;Available to any smart contract for free, forever"
@@ -67,13 +71,12 @@ export default function AboveFold({
               top: 0,
               right: 0,
               bottom: 0,
-              padding: "2rem",
-              fontSize: isMobile ? "1rem" : "2rem",
               boxSizing: "border-box",
               textAlign: "left",
               lineHeight: "normal",
               userSelect: "none",
               pointerEvents: "none",
+              ...textAreaStyle,
             }}
           >
             Mono typeface
@@ -94,7 +97,7 @@ export default function AboveFold({
             position: "absolute",
             right: "1rem",
             bottom: "1rem",
-            fontWeight: 500,
+            fontWeight: 600,
           }}
         >
           <GlyphPicker
