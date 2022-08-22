@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
+import { isMobile } from "../constants/isMobile";
 import { charGroups } from "../constants/orderedUnicodes";
 import { unicodeNames } from "../fonts/unicode";
 import GlyphElem from "./GlyphElem";
 import Modal from "./Modal";
 
-export default function GlyphPicker() {
+export default function GlyphPicker({
+  onClickGlyph,
+}: {
+  onClickGlyph?: (char: string) => boolean | void;
+}) {
   const [modalVisible, setModalVisible] = useState<boolean>();
   const [searchText, setSearchText] = useState<string>();
   const [results, setResults] = useState<number[]>([]);
@@ -84,10 +89,15 @@ export default function GlyphPicker() {
               <GlyphElem
                 key={x}
                 charCode={x}
-                onCopyGlyph={() => {
-                  setTimeout(() => {
-                    setModalVisible(false);
-                  }, 250);
+                onClickGlyph={(glyph) => {
+                  setTimeout(
+                    () => {
+                      setModalVisible(false);
+                    },
+                    isMobile ? 500 : 250
+                  );
+
+                  return onClickGlyph?.(glyph) ?? false;
                 }}
               />
             ))}

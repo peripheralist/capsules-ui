@@ -5,22 +5,34 @@ export default function GlyphElem({
   charCode,
   includeCode,
   style,
-  onCopyGlyph,
+  onClickGlyph,
 }: {
   charCode: number;
   includeCode?: boolean;
   style?: CSSProperties;
-  onCopyGlyph?: VoidFunction;
+  /// Return true to cancel copy to clipboard
+  onClickGlyph?: (glyph: string) => boolean;
 }) {
   const [didCopy, setDidCopy] = useState<boolean>();
+  const [didClick, setDidClick] = useState<boolean>();
 
   const id = charCode.toString();
   const char = String.fromCharCode(charCode);
 
+  const onClick = () => {
+    if (didClick) return;
+
+    setDidClick(true);
+
+    if (!onClickGlyph?.(char)) copyToClipboard();
+
+    setTimeout(() => {
+      setDidClick(undefined);
+    }, 1500);
+  };
+
   const copyToClipboard = () => {
     if (didCopy) return;
-
-    onCopyGlyph?.();
 
     const input = document.getElementById(id) as HTMLInputElement;
 
@@ -53,9 +65,9 @@ export default function GlyphElem({
           cursor: "default",
           position: "relative",
           ...style,
-          fontWeight: didCopy ? 700 : style?.fontWeight,
+          fontWeight: didClick ? 700 : style?.fontWeight,
         }}
-        onClick={copyToClipboard}
+        onClick={onClick}
       >
         {char}
 

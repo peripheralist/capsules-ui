@@ -75,7 +75,7 @@ export default function Navbar() {
         }}
         onClick={() => setMenuIsOpen(true)}
       >
-        [☰] {mintedColors.length ?? "--"}
+        [☰]
       </div>
 
       <div style={{ display: "flex" }}>
@@ -136,7 +136,7 @@ export default function Navbar() {
               style={{ cursor: "crosshair", padding: "1rem" }}
               onClick={() => setMenuIsOpen(false)}
             >
-              [×] {mintedColors.length ?? "--"}
+              [×]
             </div>
             {Link("⌂ Intro", "")}
             {Link(

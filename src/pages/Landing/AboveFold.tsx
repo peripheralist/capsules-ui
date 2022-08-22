@@ -1,7 +1,8 @@
+import { useState } from "react";
+import GlyphPicker from "../../components/GlyphPicker";
 import WeightSelector from "../../components/WeightSelector";
 import { reservedColors } from "../../constants/colors";
 import { isMobile } from "../../constants/isMobile";
-import { unicodes } from "../../fonts/unicode";
 import { Weight } from "../../models/weight";
 
 export default function AboveFold({
@@ -11,6 +12,8 @@ export default function AboveFold({
   weight: number;
   setWeight: (w: Weight) => void;
 }) {
+  const [text, setText] = useState<string>();
+
   return (
     <div>
       <div
@@ -34,6 +37,7 @@ export default function AboveFold({
           margin: "0 auto",
           fontWeight: weight,
           textAlign: "center",
+          position: "relative",
         }}
       >
         <textarea
@@ -50,8 +54,26 @@ export default function AboveFold({
               reservedColors[Math.floor(Math.random() * reservedColors.length)],
           }}
           rows={8}
-          placeholder={`Mono typeface\n\n${unicodes.length} characters × 7 fonts\n\nStored on Ethereum\n\nAvailable to any smart contract for free, forever`}
+          placeholder="Mono typeface&#13;&#10;·&#13;&#10;328 characters × 7 fonts&#13;&#10;·&#13;&#10;Stored on Ethereum&#13;&#10;·&#13;&#10;Available to any smart contract for free, forever"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
         />
+
+        <div
+          style={{
+            position: "absolute",
+            right: "1rem",
+            bottom: "1rem",
+            fontWeight: 500,
+          }}
+        >
+          <GlyphPicker
+            onClickGlyph={(glyph) => {
+              setText((t) => (t ?? "") + glyph);
+              return true;
+            }}
+          />
+        </div>
       </div>
 
       <div style={{ margin: "0 auto" }}>
