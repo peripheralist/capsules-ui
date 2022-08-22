@@ -24,10 +24,9 @@ export default function Typeface({
           key={x}
           charCode={x}
           style={{
-            fontSize: isMobile ? "2rem" : "3rem",
-            width: isMobile ? "3rem" : "5rem",
+            fontSize: isMobile ? "1rem" : "3rem",
+            width: isMobile ? "1.5rem" : "5rem",
             fontWeight: weight,
-            marginBottom: 20,
           }}
           includeCode={!isMobile}
         />

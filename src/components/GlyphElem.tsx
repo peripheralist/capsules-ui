@@ -1,4 +1,5 @@
 import { CSSProperties, useState } from "react";
+import { isMobile } from "../constants/isMobile";
 import { unicodeNames } from "../fonts/unicode";
 
 export default function GlyphElem({
@@ -57,8 +58,8 @@ export default function GlyphElem({
       <div
         style={{
           padding: "1rem",
-          fontSize: "1.5rem",
-          width: "1.5rem",
+          fontSize: isMobile ? "1rem" : "1.5rem",
+          width: isMobile ? "1rem" : "1.5rem",
           whiteSpace: "pre",
           background: "#ffffff16",
           userSelect: "none",
@@ -66,6 +67,7 @@ export default function GlyphElem({
           position: "relative",
           ...style,
           fontWeight: didClick ? 700 : style?.fontWeight,
+          marginBottom: includeCode ? "1rem" : undefined,
         }}
         onClick={onClick}
       >

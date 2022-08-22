@@ -16,6 +16,7 @@ export const charGroups = {
   digits: unicodes.filter((x) => x >= 0x30 && x <= 0x39),
   uppercase: unicodes.filter((x) => x >= 0x41 && x <= 0x5a),
   lowercase: unicodes.filter((x) => x >= 0x61 && x <= 0x7a),
+  // specials: unicodes.filter((x) => x >= 0xc0 && x <= 0x0178),
   specials: [
     0x00c0, 0x00c1, 0x00c2, 0x00c3, 0x00c4, 0x00c7, 0x00c8, 0x00c9, 0x00ca,
     0x00cb, 0x00d1, 0x00d2, 0x00d3, 0x00d4, 0x00d5, 0x00d6, 0x00d9, 0x00da,
@@ -48,3 +49,21 @@ export const charGroups = {
 charGroups.others = unicodes.filter(
   (x) => !Object.values(charGroups).flat().includes(x)
 );
+
+if (process.env.NODE_ENV !== "production") {
+  const charOccurences: { [key: number]: number } = {};
+
+  Object.values(charGroups)
+    .flat()
+    .map((x) => (charOccurences[x] = (charOccurences[x] ?? 0) + 1));
+
+  // Make sure no characters are included twice
+  Object.entries(charOccurences).forEach(([k, v]) => {
+    if (v > 1) console.log("u fucked up", k, v);
+  });
+
+  // Make sure all characters are included
+  if (Object.entries(charOccurences).length !== unicodes.length) {
+    console.log("u missed some");
+  }
+}

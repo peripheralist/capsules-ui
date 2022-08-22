@@ -146,6 +146,7 @@ export default function Navbar() {
               "minted"
             )}
             {Link("⚡ Mint", "mint")}
+            {/* {Link(" Contracts", "contracts")} */}
             {Link(" Contracts", "contracts")}
           </div>
         </menu>
