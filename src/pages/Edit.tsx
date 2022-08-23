@@ -142,7 +142,7 @@ export default function Edit() {
                 style={{ cursor: "pointer", fontWeight: 500 }}
                 onClick={() => setShouldLock((l) => !l)}
               >
-                {shouldLock ? " Don't lock" : " Lock"}
+                {shouldLock ? " Don't lock" : " Lock"}
               </div>
             )}
           </div>

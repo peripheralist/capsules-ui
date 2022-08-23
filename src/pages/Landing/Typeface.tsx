@@ -24,8 +24,9 @@ export default function Typeface({
           key={x}
           charCode={x}
           style={{
-            fontSize: isMobile ? "1rem" : "3rem",
-            width: isMobile ? "1.5rem" : "5rem",
+            fontSize: isMobile ? "1.83rem" : "3rem",
+            width: isMobile ? "2.75rem" : "4.5rem",
+            // height: isMobile ? "1.5rem" : "4.5rem",
             fontWeight: weight,
           }}
           includeCode={!isMobile}
@@ -61,7 +62,7 @@ export default function Typeface({
 
       <div style={{ textAlign: "center" }}>
         <a href="/CapsulesTypeface.zip" download="CapsulesTypeface">
-           Download
+           Download fonts
         </a>
       </div>
 

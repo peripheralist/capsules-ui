@@ -47,8 +47,8 @@ export default function Landing() {
       <div
         style={{
           margin: "0 auto",
-          paddingTop: 100,
           padding,
+          paddingTop: 100,
         }}
       >
         <Typeface weight={weight} setWeight={setWeight} />

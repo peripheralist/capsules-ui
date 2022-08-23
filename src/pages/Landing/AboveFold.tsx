@@ -3,6 +3,7 @@ import GlyphPicker from "../../components/GlyphPicker";
 import WeightSelector from "../../components/WeightSelector";
 import { reservedColors } from "../../constants/colors";
 import { isMobile } from "../../constants/isMobile";
+import { unicodes } from "../../fonts/unicode";
 import { Weight } from "../../models/weight";
 
 export default function AboveFold({
@@ -16,7 +17,7 @@ export default function AboveFold({
 
   const textAreaStyle: CSSProperties = {
     padding: isMobile ? "1rem 1rem 2.5rem" : "2rem",
-    fontSize: isMobile ? "1.25rem" : "2rem",
+    fontSize: isMobile ? "1.1rem" : "2rem",
   };
 
   return (
@@ -82,7 +83,7 @@ export default function AboveFold({
             Mono typeface
             <br />
             <br />
-            328 characters × 7 fonts
+            {unicodes.length} characters × 7 fonts
             <br />
             <br />
             Stored on Ethereum
