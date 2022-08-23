@@ -8,6 +8,10 @@ body, div, span, p, textarea, input, a {
   transition: font-weight .1s ease-out !important;
 }
 
+h1 {
+  font-weight: 600;
+}
+
 .hov-fat:hover {
   font-weight: 700 !important;
 }

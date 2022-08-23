@@ -53,10 +53,22 @@ export default function Capsules() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h1 style={{ textAlign: "center", paddingTop: isMobile ? 50 : 0 }}>
+      <h1
+        style={{
+          textAlign: "center",
+          paddingTop: isMobile ? 50 : 0,
+          fontWeight: 600,
+        }}
+      >
         {_wallet ? (
-          <span>
-            Owned by <FormattedAddress address={_wallet} />
+          <span
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "2rem",
+            }}
+          >
+            ☀☀☀ <FormattedAddress address={_wallet} /> ☀☀☀
           </span>
         ) : (
           `${supply?.toString() ?? "--"} Capsules Minted`
