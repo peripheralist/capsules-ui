@@ -48,10 +48,11 @@ export default function TransactionsStateProvider({
   // Set poller to periodically refresh transactions
   useEffect(() => {
     async function refreshTransactions() {
-      const txs = getLocalStorageTxRecords().filter(txShouldPersistOnRefresh);
+      console.log("asdf 1", getLocalStorageTxRecords());
+      const txs = getLocalStorageTxRecords();
+      // .filter(txShouldPersistOnRefresh);
 
-      // Only refresh pending txs
-      if (!txs.some((tx) => tx.status === TxStatus.pending)) return;
+      console.log("asdf 2");
 
       _setTransactions(
         await Promise.all(
@@ -94,14 +95,14 @@ export default function TransactionsStateProvider({
     // Single initial refresh before setting interval
     refreshTransactions();
 
-    const _poller = setInterval(() => {
-      refreshTransactions();
-    }, POLL_INTERVAL_MILLIS);
-
-    setPoller(_poller);
+    setPoller(
+      setInterval(() => {
+        refreshTransactions();
+      }, POLL_INTERVAL_MILLIS)
+    );
 
     // Clean up after yourself
-    return () => clearInterval(_poller);
+    return () => clearInterval(poller);
   }, [poller, _setTransactions]);
 
   const addTransaction = useCallback(

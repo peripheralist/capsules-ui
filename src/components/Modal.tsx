@@ -36,9 +36,8 @@ export default function Modal({
             width: "100%",
             height: "100%",
           }}
-          onClick={(e) => e.stopPropagation()}
         >
-          {children}
+          <div onClick={(e) => e.stopPropagation()}>{children}</div>
         </div>
       ) : (
         <span onClick={(e) => e.stopPropagation()}>{children}</span>

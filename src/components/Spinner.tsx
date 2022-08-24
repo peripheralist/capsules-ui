@@ -4,8 +4,8 @@ export default function Spinner({ style }: { style?: CSSProperties }) {
   const [charIdx, setCharIdx] = useState<number>(0);
   const [interval, _setInterval] = useState<NodeJS.Timer>();
 
-  const charOpts = useMemo(() => ["", "☰", "", ""], []);
-  // const charOpts = useMemo(() => ["", "", "", ""], []);
+  // const charOpts = useMemo(() => ["", "☰", "", ""], []); // lines
+  const charOpts = useMemo(() => ["", "", "", ""], []); // corners
 
   useEffect(() => {
     if (interval) return;
@@ -13,7 +13,7 @@ export default function Spinner({ style }: { style?: CSSProperties }) {
     _setInterval(
       setInterval(() => {
         setCharIdx((idx) => (idx + 1) % charOpts.length);
-      }, 250)
+      }, 150)
     );
 
     return () => {

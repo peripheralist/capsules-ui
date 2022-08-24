@@ -8,8 +8,9 @@ export const formatDate = (
 ) => moment(BigNumber.from(dateMillis).toNumber()).format(format);
 
 export function formatHistoricalDate(dateMillis: BigNumberish): string {
-  return `${moment(BigNumber.from(dateMillis).toNumber()).fromNow(true)} ago`
-    .replaceAll("a few seconds ago", "now")
+  return `${moment(BigNumber.from(dateMillis).toNumber()).fromNow(true)}`
+    .replaceAll("a minute", "1m")
+    .replaceAll("a few seconds", "now")
     .replaceAll(" minutes", "m")
     .replaceAll(" minute", "m")
     .replaceAll(" seconds", "s")

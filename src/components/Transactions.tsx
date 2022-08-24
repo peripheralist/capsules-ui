@@ -31,59 +31,61 @@ export default function Transactions({ style }: { style?: CSSProperties }) {
       }}
     >
       {transactions?.length ? (
-        transactions.map((tx) => (
-          <div
-            key={tx.tx.hash}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-              padding: "0.5rem 1rem",
-              border: "1px solid #ffffff33",
-              background: "#000",
-              boxSizing: "border-box",
-            }}
-          >
-            <a
+        transactions
+          .sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1))
+          .map((tx) => (
+            <div
+              key={tx.tx.hash}
               style={{
-                fontWeight: 600,
                 display: "flex",
-                alignItems: "baseline",
-                gap: "1rem",
-                color: "white",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                padding: "0.5rem 1rem",
+                border: "1px solid #ffffff33",
+                background: "#000",
+                boxSizing: "border-box",
               }}
-              href={`https://${readNetwork.name}${
-                readNetwork.name !== NetworkName.mainnet ? "." : ""
-              }etherscan.io/tx/${tx.tx.hash}`}
-              target="_blank"
-              rel="noopener noreferrer"
             >
-              {TxStatusElem(tx.status)}{" "}
-              <span style={{ fontSize: "0.8rem" }}>{tx.title}</span>{" "}
-              <span style={{ fontSize: "0.8rem", fontWeight: 300 }}>
-                {formatHistoricalDate(
-                  // Use the mined timestamp if available
-                  // Otherwise use the timestamp of when tx was queued
-                  ((tx.tx as TransactionResponse).timestamp ?? tx.timestamp) *
-                    1000
-                )}
-              </span>
-            </a>
+              <a
+                style={{
+                  fontWeight: 600,
+                  display: "flex",
+                  alignItems: "baseline",
+                  gap: "1rem",
+                  color: "white",
+                }}
+                href={`https://${readNetwork.name}${
+                  readNetwork.name !== NetworkName.mainnet ? "." : ""
+                }etherscan.io/tx/${tx.tx.hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {TxStatusElem(tx.status)}{" "}
+                <span style={{ fontSize: "0.8rem" }}>{tx.title}</span>{" "}
+                <span style={{ fontSize: "0.8rem", fontWeight: 300 }}>
+                  {formatHistoricalDate(
+                    // Use the mined timestamp if available
+                    // Otherwise use the timestamp of when tx was queued
+                    ((tx.tx as TransactionResponse).timestamp ?? tx.timestamp) *
+                      1000
+                  )}
+                </span>
+              </a>
 
-            <span
-              style={{ cursor: "default" }}
-              onClick={(e) => {
-                e.stopPropagation();
-                removeTransaction?.(tx.id);
-              }}
-            >
-              ×
-            </span>
-          </div>
-        ))
+              <span
+                style={{ cursor: "crosshair" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeTransaction?.(tx.id);
+                }}
+              >
+                ×
+              </span>
+            </div>
+          ))
       ) : (
-        <div style={{ fontWeight: 600 }}>No transactions</div>
+        <div style={{ fontWeight: 600 }}>No tx history</div>
       )}
     </div>
   );
