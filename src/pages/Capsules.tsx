@@ -10,7 +10,7 @@ import useContractReader from "../hooks/ContractReader";
 import useSubgraphQuery from "../hooks/SubgraphQuery";
 import { Text } from "../models/text";
 import { Weight } from "../models/weight";
-import { bytesToColorString, trimText } from "../utils";
+import { bytesToColorString } from "../utils";
 
 export default function Capsules() {
   const { contracts } = useContext(WalletContext);

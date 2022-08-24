@@ -26,6 +26,7 @@ export default function Fonts() {
         [{ weight, style: "normal" }, Buffer.from(FONTS[weight])],
         {
           onDone: (tx) => setLoadingTxForWeight(undefined),
+          txTitle: `Unlock font ${weight}`,
         }
       );
     },

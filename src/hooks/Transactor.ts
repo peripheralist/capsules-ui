@@ -1,4 +1,5 @@
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
+import { TransactionResponse } from "@ethersproject/providers";
 import { hexlify } from "@ethersproject/bytes";
 import { Contract } from "@ethersproject/contracts";
 import { Deferrable } from "@ethersproject/properties";
@@ -8,9 +9,11 @@ import { Transaction } from "ethers";
 import { useCallback, useContext } from "react";
 
 import { NetworkContext } from "../contexts/networkContext";
+import { TransactionsContext } from "../contexts/transactionsContext";
 
 export type TransactorOptions = {
   value?: BigNumberish;
+  txTitle?: string;
   onDone?: (tx?: Transaction) => void;
 };
 
@@ -43,6 +46,8 @@ export function useTransactor({
 }: {
   gasPrice?: BigNumber;
 }): Transactor | undefined {
+  const { addTransaction } = useContext(TransactionsContext);
+
   const {
     signingProvider: provider,
     selectWallet,
@@ -92,11 +97,15 @@ export function useTransactor({
       );
 
       try {
-        let result;
+        const txTitle = options?.txTitle ?? functionName;
+
+        let result: TransactionResponse;
 
         if (tx instanceof Promise) {
           console.info("AWAITING TX", tx);
           result = await tx;
+
+          addTransaction?.(txTitle, result);
         } else {
           console.info("RUNNING TX", tx);
 
@@ -105,6 +114,9 @@ export function useTransactor({
           if (!tx.gasLimit) tx.gasLimit = hexlify(120000);
 
           result = await signer.sendTransaction(tx);
+
+          addTransaction?.(txTitle, result);
+
           await result.wait();
         }
         console.info("RESULT:", result);
@@ -120,6 +132,6 @@ export function useTransactor({
         return false;
       }
     },
-    [selectWallet, provider, gasPrice, connectedWallet]
+    [selectWallet, provider, gasPrice, connectedWallet, addTransaction]
   );
 }

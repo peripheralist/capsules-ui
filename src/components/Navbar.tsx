@@ -1,17 +1,35 @@
-import { CSSProperties, useContext, useState } from "react";
+import { CSSProperties, useContext, useEffect, useState } from "react";
+
 import { isMobile } from "../constants/isMobile";
 import { NetworkContext } from "../contexts/networkContext";
+import { TransactionsContext, TxStatus } from "../contexts/transactionsContext";
 import { useMintedColors } from "../hooks/mintedColors";
 import useSubgraphQuery from "../hooks/SubgraphQuery";
 import FormattedAddress from "./FormattedAddress";
 import Modal from "./Modal";
+import Transactions from "./Transactions";
 
 export default function Navbar() {
   const { connectedWallet, selectWallet } = useContext(NetworkContext);
+  const { transactions } = useContext(TransactionsContext);
 
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>();
+  const [txsOpen, setTxsOpen] = useState<boolean>();
 
-  const padding: CSSProperties["padding"] = "1rem";
+  useEffect(() => {
+    // Auto open tx menu if any txs are pending/failed or <2 min old
+    if (
+      transactions?.some(
+        (tx) =>
+          tx.status !== TxStatus.success ||
+          tx.timestamp >= new Date().valueOf() - 120
+      )
+    ) {
+      setTxsOpen(true);
+    }
+  }, [transactions]);
+
+  const padding: CSSProperties["padding"] = "1rem 0.5rem";
 
   const capsules = useSubgraphQuery({
     entity: "capsule",
@@ -46,9 +64,10 @@ export default function Navbar() {
           fontWeight: hash === path ? 700 : 400,
           padding,
           boxSizing: "border-box",
+          whiteSpace: "pre",
         }}
       >
-        <span>{text}</span>
+        <span style={{ flex: 1 }}>{text}</span>
         {hash === path ? "" : ">"}
       </div>
     </a>
@@ -61,67 +80,110 @@ export default function Navbar() {
         top: 0,
         left: 0,
         right: 0,
-        display: "flex",
-        justifyContent: "space-between",
-        zIndex: 10,
+        zIndex: 1,
       }}
     >
       <div
-        className="hov-fat"
         style={{
-          cursor: "crosshair",
-          width: isMobile ? undefined : 240,
-          padding,
+          display: "flex",
+          justifyContent: "space-between",
+          zIndex: 10,
+          padding: "0 0.5rem",
         }}
-        onClick={() => setMenuIsOpen(true)}
       >
-        [☰]
+        <div
+          className="hov-fat"
+          style={{
+            cursor: "crosshair",
+            width: isMobile ? undefined : 240,
+            padding,
+          }}
+          onClick={() => setMenuIsOpen(true)}
+        >
+          [☰]
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            gap: "0.5rem",
+          }}
+        >
+          {connectedWallet && (
+            <a
+              href={"/#/minted/" + connectedWallet}
+              style={{
+                color: "white",
+                fontWeight: 400,
+                padding,
+              }}
+              className="hov-fat"
+            >
+              CAPS {capsules.data?.capsules?.length ?? "--"}
+            </a>
+          )}
+          {connectedWallet && (
+            <div
+              className="hov-fat"
+              style={{ cursor: "crosshair", padding, userSelect: "none" }}
+              onClick={() => setTxsOpen(!txsOpen)}
+            >
+              {/* <span style={{ fontWeight: 600 }}></span>{" "} */}
+              {/* [{txsOpen ? "×" : "⚡"}] */}[{txsOpen ? "⌃" : "⚡"}]{" "}
+              {transactions?.length ?? "0"}
+              {/* {txsOpen ? " -" : " +"} */}
+              {/* {txsOpen ? " ⌄" : " ˃"} */}
+            </div>
+          )}
+          {connectedWallet && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                padding: "0 0.5rem",
+              }}
+            >
+              <FormattedAddress address={connectedWallet} align="right" />
+              <div className="hov-fat" style={{ cursor: "pointer", padding }}>
+                X
+              </div>
+            </div>
+          )}
+          {!connectedWallet && selectWallet && (
+            <div
+              style={{ cursor: "pointer", padding }}
+              onClick={() => selectWallet()}
+            >
+              Connect
+            </div>
+          )}
+        </div>
       </div>
 
-      <div style={{ display: "flex" }}>
-        {connectedWallet && (
-          <a
-            href={"/#/minted/" + connectedWallet}
-            style={{
-              color: "white",
-              fontWeight: 400,
-              padding,
-            }}
-            className="hov-fat"
-          >
-            {capsules.data?.capsules?.length ?? "--"} Owned
-          </a>
-        )}
-
-        {connectedWallet && (
-          <div style={{ padding }}>
-            <FormattedAddress address={connectedWallet} align="right" />
-          </div>
-        )}
-        {connectedWallet && (
-          <div className="hov-fat" style={{ cursor: "pointer", padding }}>
-            X
-          </div>
-        )}
-        {!connectedWallet && selectWallet && (
-          <div
-            style={{ cursor: "pointer", padding }}
-            onClick={() => selectWallet()}
-          >
-            Connect
-          </div>
-        )}
-      </div>
+      {txsOpen && (
+        <Transactions
+          style={{
+            position: "absolute",
+            top: "100%",
+            right: "1rem",
+            zIndex: 1,
+            textAlign: "center",
+          }}
+        />
+      )}
 
       <Modal visible={menuIsOpen} onClose={() => setMenuIsOpen(false)}>
         <menu
           style={{
+            display: "inline-block",
             width: isMobile ? "100vw" : 240,
             maxHeight: "80vh",
             overflow: "auto",
             background: "#000",
             margin: 0,
             padding: 0,
+            paddingLeft: "0.5rem",
           }}
           onClick={() => setMenuIsOpen(false)}
         >
@@ -133,21 +195,23 @@ export default function Navbar() {
           >
             <div
               className="hov-fat"
-              style={{ cursor: "crosshair", padding: "1rem" }}
+              style={{ cursor: "crosshair", padding }}
               onClick={() => setMenuIsOpen(false)}
             >
-              [×]
+              {/* [×] */}
+              [⌃]
             </div>
-            {Link("⌂ Intro", "")}
+            {Link("[⌂] Intro", "")}
             {Link(
-              `# Minted${
+              `[#] Minted${
                 mintedColors.length ? ` (${mintedColors.length})` : ""
               }`,
               "minted"
             )}
-            {Link("⚡ Mint", "mint")}
+            {Link("[⚡] Mint", "mint")}
             {/* {Link(" Contracts", "contracts")} */}
-            {Link(" Contracts", "contracts")}
+            {Link("[@] Typeface", "typeface")}
+            {Link("[] Contracts", "contracts")}
           </div>
         </menu>
       </Modal>

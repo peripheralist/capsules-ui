@@ -70,6 +70,7 @@ export default function Minter() {
       {
         value: mintPrice,
         onDone: () => setLoadingTx(false),
+        txTitle: `Mint ${color}`,
       }
     );
   }, [contracts, transactor, color, text, weight]);

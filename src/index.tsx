@@ -8,15 +8,18 @@ import NetworkProvider from "./providers/NetworkProvider";
 import WalletProvider from "./providers/WalletProvider";
 import reportWebVitals from "./reportWebVitals";
 import ReactQueryProvider from "./providers/ReactQueryProvider";
+import TransactionsStateProvider from "./providers/TransactionsProvider";
 
 ReactDOM.render(
   <React.StrictMode>
     <ReactQueryProvider>
-      <NetworkProvider>
-        <WalletProvider>
-          <App />
-        </WalletProvider>
-      </NetworkProvider>
+      <TransactionsStateProvider>
+        <NetworkProvider>
+          <WalletProvider>
+            <App />
+          </WalletProvider>
+        </NetworkProvider>
+      </TransactionsStateProvider>
     </ReactQueryProvider>
   </React.StrictMode>,
   document.getElementById("root")

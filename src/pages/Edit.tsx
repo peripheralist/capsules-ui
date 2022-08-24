@@ -77,9 +77,10 @@ export default function Edit() {
       [id, textToBytesText(text), weight, shouldLock],
       {
         onDone: () => setLoadingTx(false),
+        txTitle: `Edit ${bytesToColorString(capsuleColor)}`,
       }
     );
-  }, [transactor, contracts, id, text, weight, shouldLock]);
+  }, [transactor, contracts, id, text, weight, shouldLock, capsuleColor]);
 
   if (!capsuleText || !capsuleColor || !capsuleFontWeight) return null;
 
@@ -137,7 +138,7 @@ export default function Edit() {
               locked={shouldLock || isLocked}
             />
 
-            {!isLocked && (
+            {!isLocked && isOwner && (
               <div
                 style={{ cursor: "pointer", fontWeight: 500 }}
                 onClick={() => setShouldLock((l) => !l)}

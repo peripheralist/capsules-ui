@@ -48,7 +48,7 @@ export default function Button({
   }, [text, href, loading]);
 
   useEffect(() => {
-    if (!loading) return;
+    if (!loading || interval) return;
 
     _setInterval(
       setInterval(() => {
