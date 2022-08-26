@@ -15,8 +15,6 @@ export default function WeightSelector({
 }) {
   const [useVariableWeight, setUseVariableWeight] = useState<boolean>();
 
-  // height = isMobile ? "3.5rem" : "4.5rem";
-
   return (
     <div
       style={{

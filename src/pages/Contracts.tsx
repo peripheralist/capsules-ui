@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { WalletContext } from "../contexts/walletContext";
+
 export default function Contracts() {
+  const { contracts } = useContext(WalletContext);
+
   return (
     <div style={{ maxWidth: 800, margin: "0 auto", padding: 30 }}>
       <h1>Contracts</h1>
@@ -20,22 +25,20 @@ export default function Contracts() {
             fontSize: "0.9rem",
             fontWeight: "bold",
             whiteSpace: "pre",
-            color: "#888",
+            color: "#FFDC5A",
             padding: "1rem",
             textAlign: "left",
           }}
         >
-          {`
-|  address capsulesTypeface = 0xasdf;
-|
-|  ITypeface capsules = ITypeface(capsulesTypeface);
+          {`|  ITypeface capsulesTypeface =
+|    ITypeface(${contracts?.CapsulesTypeface.address});
 |
 |  ITypeface.Font font = Font({
 |    weight: 400, 
 |    style: "normal"
 |  });
 |
-|  bytes src = capsules.sourceOf(font);`}
+|  bytes src = capsulesTypeface.sourceOf(font);`}
         </div>
         <br />
         <br />
@@ -66,7 +69,7 @@ export default function Contracts() {
         >
           CapsulesRenderer
         </a>
-        : Renders images for Capsule NFTs. Can be upgraded.
+        : Renders images & metadata for Capsule NFTs. (Can be upgraded)
       </div>
     </div>
   );

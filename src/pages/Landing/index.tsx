@@ -5,7 +5,7 @@ import AboveFold from "./AboveFold";
 import Colors from "./Colors";
 import Fonts from "./Fonts";
 import NftDemo from "./NftDemo";
-import Typeface from "./Typeface";
+import TypefaceGlyphs from "../../components/TypefaceGlyphs";
 
 export default function Landing() {
   const [weight, setWeight] = useState<number>(400);
@@ -51,7 +51,7 @@ export default function Landing() {
           paddingTop: 100,
         }}
       >
-        <Typeface weight={weight} setWeight={setWeight} />
+        <TypefaceGlyphs weight={weight} setWeight={setWeight} />
       </div>
     </div>
   );

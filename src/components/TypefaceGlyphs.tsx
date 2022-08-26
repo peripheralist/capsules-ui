@@ -1,9 +1,9 @@
-import GlyphElem from "../../components/GlyphElem";
-import WeightSelector from "../../components/WeightSelector";
-import { isMobile } from "../../constants/isMobile";
-import { charGroups } from "../../constants/orderedUnicodes";
+import GlyphElem from "./GlyphElem";
+import WeightSelector from "./WeightSelector";
+import { isMobile } from "../constants/isMobile";
+import { charGroups } from "../constants/orderedUnicodes";
 
-export default function Typeface({
+export default function TypefaceGlyphs({
   weight,
   setWeight,
 }: {
@@ -46,16 +46,21 @@ export default function Typeface({
       <div
         style={{
           position: "sticky",
-          zIndex: 20,
+          display: "inline-block",
+          zIndex: 10,
           top: 0,
-          left: 0,
-          right: 0,
           margin: "0 auto",
           background: "#000",
-          paddingBottom: 20,
+          paddingBottom: "1rem",
         }}
       >
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
+        <div
+          style={{
+            margin: "0 auto",
+            paddingLeft: "2rem",
+            paddingRight: "2rem",
+          }}
+        >
           <WeightSelector selectedWeight={weight} onSelectWeight={setWeight} />
         </div>
       </div>

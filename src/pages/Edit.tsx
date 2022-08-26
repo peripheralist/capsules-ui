@@ -132,7 +132,7 @@ export default function Edit() {
             <Capsule
               text={text}
               color={capsuleColor}
-              width={320}
+              width={isMobile ? 320 : isLocked || !isOwner ? 420 : 320}
               weight={weight}
               square
               locked={shouldLock || isLocked}
@@ -150,7 +150,7 @@ export default function Edit() {
         </div>
       </div>
 
-      {isLocked && <div> Capsule is locked</div>}
+      {isLocked && <div></div>}
 
       {!isLocked && isOwner && (
         <Button

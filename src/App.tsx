@@ -10,7 +10,7 @@ import Landing from "./pages/Landing";
 import Minter from "./pages/Minter";
 import Pause from "./pages/Pause";
 import Withdraw from "./pages/Withdraw";
-import Typeface from "./pages/Landing/Typeface";
+import Typeface from "./pages/Typeface";
 
 export default function App() {
   return (
