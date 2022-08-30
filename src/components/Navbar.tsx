@@ -11,7 +11,8 @@ import Transactions from "./Transactions";
 
 export default function Navbar() {
   const { mintedSupply } = useContext(CapsulesContext);
-  const { connectedWallet, selectWallet } = useContext(NetworkContext);
+  const { connectedWallet, selectWallet, onLogOut } =
+    useContext(NetworkContext);
   const { transactions } = useContext(TransactionsContext);
 
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>();
@@ -144,7 +145,11 @@ export default function Navbar() {
               }}
             >
               <FormattedAddress address={connectedWallet} align="right" />
-              <div className="hov-fat" style={{ cursor: "pointer", padding }}>
+              <div
+                className="hov-fat"
+                style={{ cursor: "pointer", padding }}
+                onClick={onLogOut}
+              >
                 X
               </div>
             </div>

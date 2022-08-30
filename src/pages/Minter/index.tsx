@@ -60,30 +60,6 @@ export default function Minter() {
   //   document.getElementById(spectrumContainerId)?.scrollBy(200, 200);
   // }, [spectrumSize, window.innerWidth]);
 
-  if (!connectedWallet) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: 20,
-          height: "90vh",
-        }}
-      >
-        <Button
-          style={{ color: "white" }}
-          text="Connect your wallet"
-          onClick={() =>
-            selectWallet?.((success) => {
-              if (success) setSelectedTab("edit");
-            })
-          }
-        />
-      </div>
-    );
-  }
-
   return (
     <div style={{ height: "100vh" }}>
       {selectedTab === "edit" && (
@@ -154,9 +130,13 @@ export default function Minter() {
           <Capsule text={text} color={color} width={320} square />
 
           <Button
-            text={`Mint Capsule (Ξ${formatEther(mintPrice)})`}
+            text={
+              connectedWallet
+                ? `Mint Capsule (Ξ${formatEther(mintPrice)})`
+                : "Connect wallet"
+            }
             size="large"
-            onClick={mint}
+            onClick={connectedWallet ? mint : selectWallet}
             style={{ margin: "0 auto", color: "white" }}
             loading={loadingTx ? "Transaction pending..." : false}
           />
