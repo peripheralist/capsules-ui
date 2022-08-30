@@ -1,5 +1,12 @@
 import { TransactionResponse } from "@ethersproject/providers";
-import { ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import {
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { clearInterval, setInterval } from "timers";
 
 import { readProvider } from "../constants/readProvider";
@@ -23,23 +30,35 @@ export default function TxHistoryProvider({
 }: {
   children: ReactNode;
 }) {
-  const { connectedWallet } = useContext(NetworkContext);
+  const { connectedWallet, signingProvider } = useContext(NetworkContext);
   const [transactions, setTransactions] = useState<TransactionLog[]>([]);
   const [poller, setPoller] = useState<NodeJS.Timer>();
 
-  const KEY_TRANSACTIONS = "transactions_" + connectedWallet;
+  const localStorageKey = useMemo(
+    () =>
+      signingProvider?.network.chainId && connectedWallet
+        ? `transactions_${signingProvider?.network.chainId}_${connectedWallet}`
+        : undefined,
+    [connectedWallet, signingProvider]
+  );
 
   // Sets TransactionLogs in both localStorage and state
   // Ensures localStorage is always up to date, so we can persist good data on refresh
-  const _setTransactions = useCallback((txs: TransactionLog[]) => {
-    localStorage.setItem(KEY_TRANSACTIONS, JSON.stringify(txs));
-    setTransactions(txs);
-  }, []);
+  const _setTransactions = useCallback(
+    (txs: TransactionLog[]) => {
+      if (!localStorageKey) return;
+      localStorage.setItem(localStorageKey, JSON.stringify(txs));
+      setTransactions(txs);
+    },
+    [localStorageKey]
+  );
 
   // Load initial state
   useEffect(() => {
+    if (!localStorageKey) return;
+
     _setTransactions(
-      JSON.parse(localStorage.getItem(KEY_TRANSACTIONS) || "[]")
+      JSON.parse(localStorage.getItem(localStorageKey) || "[]")
         // Only persist txs that are failed/pending
         // or were created within history window
         .filter(
@@ -48,7 +67,7 @@ export default function TxHistoryProvider({
             nowSeconds() - TX_HISTORY_TIME_SECS < tx.createdAt
         ) as TransactionLog[]
     );
-  }, [_setTransactions]);
+  }, [_setTransactions, localStorageKey]);
 
   // Setup poller for refreshing transactions
   useEffect(() => {
