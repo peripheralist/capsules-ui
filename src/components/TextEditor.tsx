@@ -1,24 +1,30 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import Button from "./Button";
 import { isMobile } from "../constants/isMobile";
 import { maxLineLength, maxLinesCount } from "../constants/text";
 import { useFonts } from "../hooks/fonts";
 import { Weight } from "../models/weight";
+import { Text } from "../models/text";
+import GlyphPicker from "./GlyphPicker";
+import Modal from "./Modal";
+import ColorPicker from "./ColorPicker";
 import {
-  bytesToColorString,
   defaultText,
   isAllowedChar,
   isEmptyText,
   randPlaceholders,
-} from "../utils";
-import { Text } from "../models/text";
-import GlyphPicker from "./GlyphPicker";
+} from "../utils/text";
+import { bytesToColorString } from "../constants/colors";
+
+const fontSize = isMobile ? 20 : 24;
+const charWidth = fontSize * 0.6;
 
 export default function TextEditor({
   text,
   setText,
   color,
+  setColor,
   weight,
   setWeight,
   locked,
@@ -26,16 +32,16 @@ export default function TextEditor({
   autofocus,
 }: {
   text: Text;
-  setText: (text: string[] | ((text: Text) => Text)) => void;
+  setText?: React.Dispatch<React.SetStateAction<Text>>;
   color: string | undefined;
+  setColor?: React.Dispatch<React.SetStateAction<string>>;
   weight: Weight;
-  setWeight: (weight: Weight | ((weight: Weight) => Weight)) => void;
+  setWeight?: React.Dispatch<React.SetStateAction<Weight>>;
   locked?: boolean;
   setLocked?: (locked: boolean | ((locked: boolean) => boolean)) => void;
   autofocus?: boolean;
 }) {
-  const fontSize = isMobile ? 20 : 24;
-  const charWidth = fontSize * 0.6;
+  const [colorPickerVisible, setColorPickerVisible] = useState<boolean>();
 
   const fonts = useFonts();
 
@@ -82,7 +88,7 @@ export default function TextEditor({
               padding: 0,
               caretColor: bytesToColorString(color),
             }}
-            value={text[i] ?? ""}
+            value={text[i]}
             type="text"
             maxLength={maxLineLength}
             name={`input${i}`}
@@ -144,7 +150,9 @@ export default function TextEditor({
                 return _text.reverse();
               };
 
-              setText((_text) => {
+              setText?.((_text) => {
+                _text = _text ?? [];
+
                 if (_text.length < i + 1) {
                   let newText: Text = [];
 
@@ -189,7 +197,7 @@ export default function TextEditor({
     }
 
     return elems;
-  }, [text, setText, charWidth, fontSize, color, placeholders, autofocus]);
+  }, [text, setText, color, placeholders, autofocus]);
 
   const options = useMemo(
     () =>
@@ -215,23 +223,44 @@ export default function TextEditor({
           left: 0,
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            gap: 20,
-            alignItems: "baseline",
-            fontWeight: 600,
-          }}
-        >
-          <div>FONT:</div>
-          <select
-            style={{ flex: 1, fontSize: "1rem", fontWeight: 600 }}
-            value={weight}
-            onChange={(e) => setWeight(parseInt(e.target.value) as Weight)}
+        {setColor && (
+          <div
+            style={{
+              display: "flex",
+              gap: 20,
+              alignItems: "baseline",
+              fontWeight: 600,
+            }}
           >
-            {options}
-          </select>
-        </div>
+            <div>Color:</div>
+            <span
+              style={{ color, cursor: "pointer" }}
+              onClick={() => setColorPickerVisible(true)}
+            >
+              {color} ▶
+            </span>
+          </div>
+        )}
+
+        {setWeight && (
+          <div
+            style={{
+              display: "flex",
+              gap: 20,
+              alignItems: "baseline",
+              fontWeight: 600,
+            }}
+          >
+            <div>FONT:</div>
+            <select
+              style={{ flex: 1, fontSize: "1rem", fontWeight: 600 }}
+              value={weight}
+              onChange={(e) => setWeight(parseInt(e.target.value) as Weight)}
+            >
+              {options}
+            </select>
+          </div>
+        )}
 
         <div style={{ display: "flex", flexDirection: "column" }}>
           {textInputs}
@@ -245,16 +274,42 @@ export default function TextEditor({
           alignItems: "baseline",
         }}
       >
-        <Button
-          style={{ color: "#fff" }}
-          size="small"
-          onClick={() => setText([])}
-          isDisabled={isEmptyText(text)}
-          text="Clear"
-        />
+        {setText ? (
+          <Button
+            style={{ color: "#fff" }}
+            size="small"
+            onClick={() => setText([])}
+            isDisabled={isEmptyText(text)}
+            text="Clear"
+          />
+        ) : (
+          <div></div>
+        )}
 
         <GlyphPicker />
       </div>
+
+      <Modal
+        visible={colorPickerVisible}
+        onClose={() => setColorPickerVisible(false)}
+      >
+        <div
+          style={{
+            background: "#000000",
+            height: "100vh",
+            width: "100vw",
+          }}
+        >
+          <ColorPicker
+            color={color}
+            onDone={(color: string | undefined) => {
+              if (color) setColor?.(color);
+
+              setColorPickerVisible(false);
+            }}
+          />
+        </div>
+      </Modal>
     </div>
   );
 }

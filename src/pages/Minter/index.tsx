@@ -4,54 +4,34 @@ import { useCallback, useContext, useState } from "react";
 import Button from "../../components/Button";
 import Capsule from "../../components/Capsule";
 import TextEditor from "../../components/TextEditor";
-import { reservedColors } from "../../constants/colors";
+import { colorStringToBytes } from "../../constants/colors";
 import { isMobile } from "../../constants/isMobile";
 import { mintPrice } from "../../constants/mintPrice";
+import { EditingContext } from "../../contexts/editingContext";
 import { NetworkContext } from "../../contexts/networkContext";
 import { WalletContext } from "../../contexts/walletContext";
-import { useMintedColors } from "../../hooks/mintedColors";
-import { Text } from "../../models/text";
-import { Weight } from "../../models/weight";
-import Spectrum from "../../Spectrum";
-import {
-  colorStringToBytes,
-  isEmptyBytesText,
-  textToBytesText,
-} from "../../utils";
+import { isEmptyBytesText, textToBytesText } from "../../utils/text";
 import TabBar, { Tab } from "./TabBar";
 
-const screenSize = isMobile ? window.innerWidth : window.innerHeight;
-const spectrumContainerId = "spectrum-container";
 const tabBarHeight = Math.max(window.innerHeight * 0.1, 60);
-const bodyHeight = window.innerHeight - tabBarHeight;
 
-type TabKey = "color" | "mint" | "text";
+type TabKey = "edit" | "mint";
 
 export default function Minter() {
+  const { text, setText, color, setColor, weight, setWeight } =
+    useContext(EditingContext);
   const { connectedWallet, selectWallet } = useContext(NetworkContext);
   const { transactor, contracts } = useContext(WalletContext);
-  const [spectrumScale, setSpectrumScale] = useState<number>(0);
-  const [selectedTab, setSelectedTab] = useState<TabKey>("color");
-  const [color, setColor] = useState<string>();
-  const [text, setText] = useState<Text>([]);
-  const [weight, setWeight] = useState<Weight>(400);
+  const [selectedTab, setSelectedTab] = useState<TabKey>("edit");
   const [loadingTx, setLoadingTx] = useState<boolean>();
-
-  const mintedColors = useMintedColors();
-
-  const spectrumScaleMultiplier =
-    (isMobile ? 0.9 : 0.75) * (1 + spectrumScale) ** (isMobile ? 4 : 2);
-
-  const spectrumSize = screenSize * spectrumScaleMultiplier;
 
   const tabs: Tab<TabKey>[] = [
     {
-      key: "color",
-      title: "1. " + (color ?? "Color"),
+      key: "edit",
+      title: "1. Edit",
       color,
     },
-    { key: "text", title: "2. Text" },
-    { key: "mint", title: "3. Mint" },
+    { key: "mint", title: "2. Mint" },
   ];
 
   const mint = useCallback(() => {
@@ -88,8 +68,7 @@ export default function Minter() {
           alignItems: "center",
           justifyContent: "center",
           padding: 20,
-          paddingBottom: tabBarHeight + 40,
-          height: bodyHeight,
+          height: "90vh",
         }}
       >
         <Button
@@ -97,7 +76,7 @@ export default function Minter() {
           text="Connect your wallet"
           onClick={() =>
             selectWallet?.((success) => {
-              if (success) setSelectedTab("color");
+              if (success) setSelectedTab("edit");
             })
           }
         />
@@ -106,98 +85,15 @@ export default function Minter() {
   }
 
   return (
-    <div>
-      {selectedTab === "color" && (
-        <div
-          style={{
-            position: "relative",
-            height: bodyHeight,
-            width: "100%",
-          }}
-        >
-          <div
-            id={spectrumContainerId}
-            style={{
-              height: "100%",
-              width: "100%",
-              overflow: "auto",
-              textAlign: "center",
-            }}
-          >
-            <div
-              style={{
-                display: "inline-block",
-                paddingLeft: "5%",
-                paddingRight: "5%",
-                paddingTop: isMobile ? "30%" : "5%",
-                height: spectrumSize,
-                width: spectrumSize,
-              }}
-            >
-              <Spectrum
-                color={color}
-                onSelectColor={setColor}
-                inactiveColors={[...reservedColors, ...mintedColors]}
-              />
-            </div>
-          </div>
-
-          <div
-            style={{
-              position: "absolute",
-              bottom: tabBarHeight * 0.5,
-              left: 0,
-              right: 0,
-              textAlign: "center",
-            }}
-          >
-            {isMobile ? (
-              <div
-                style={{
-                  display: "inline-flex",
-                  justifyContent: "space-between",
-                  width: 120,
-                  background: "#000",
-                  padding: 15,
-                }}
-              >
-                <div
-                  onClick={() => setSpectrumScale((s) => Math.max(s - 0.2, 0))}
-                >
-                  -
-                </div>
-                <div>{Math.round(spectrumScale * 100)}%</div>
-                <div
-                  onClick={() => setSpectrumScale((s) => Math.min(s + 0.2, 1))}
-                >
-                  +
-                </div>
-              </div>
-            ) : (
-              <input
-                style={{ width: 200 }}
-                value={spectrumScale}
-                type="range"
-                min={0}
-                step={0.01}
-                max={1}
-                onInput={(e) =>
-                  setSpectrumScale(parseFloat((e.target as any).value))
-                }
-              />
-            )}
-          </div>
-        </div>
-      )}
-
-      {selectedTab === "text" && (
+    <div style={{ height: "100vh" }}>
+      {selectedTab === "edit" && (
         <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: isMobile ? "initial" : "center",
             overflow: "auto",
-            height: bodyHeight,
+            height: "100%",
             padding: 20,
             boxSizing: "border-box",
           }}
@@ -212,14 +108,17 @@ export default function Minter() {
               minHeight: isMobile ? 750 : 0,
             }}
           >
-            <TextEditor
-              text={text}
-              setText={setText}
-              color={color}
-              weight={weight}
-              setWeight={setWeight}
-              autofocus
-            />
+            {setText && setWeight && (
+              <TextEditor
+                text={text}
+                setText={setText}
+                color={color}
+                setColor={setColor}
+                weight={weight}
+                setWeight={setWeight}
+                autofocus
+              />
+            )}
 
             <div style={{ padding: isMobile ? 10 : 0 }}>
               <Capsule
@@ -247,7 +146,7 @@ export default function Minter() {
             alignItems: isMobile ? "initial" : "center",
             justifyContent: "center",
             gap: 50,
-            height: bodyHeight,
+            height: "100%",
             padding: 20,
             boxSizing: "border-box",
           }}
@@ -281,7 +180,7 @@ export default function Minter() {
           tabs={tabs}
           selectedTab={selectedTab}
           onClickTab={setSelectedTab}
-          disabledTabs={color ? undefined : ["mint", "text"]}
+          disabledTabs={color ? undefined : ["edit", "mint"]}
         />
       </div>
     </div>

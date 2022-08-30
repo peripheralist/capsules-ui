@@ -203,6 +203,17 @@ ul.dashed > li:before {
   display: block;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hidden-scrollbar  {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
+
 /* @font-face {
   font-family: 'Capsules';
   font-weight: 100;

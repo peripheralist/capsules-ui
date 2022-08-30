@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from "react";
+import { rgbToHex } from "./constants/colors";
 
 import { isMobile } from "./constants/isMobile";
 import { RGB } from "./models/rgb";
-import { rgbToHex } from "./utils";
 
 export default function Spectrum({
   onSelectColor,
@@ -138,7 +138,7 @@ export default function Spectrum({
           }
         : {
             r: 1.5,
-            opacity: .75,
+            opacity: 0.75,
             ...activeStyle,
             ...(onSelectColor
               ? { onClick: () => onSelectColor(rgbToHex(c)) }

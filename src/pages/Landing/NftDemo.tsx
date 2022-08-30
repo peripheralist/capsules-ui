@@ -1,24 +1,20 @@
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import Button from "../../components/Button";
 import Capsule from "../../components/Capsule";
 import TextEditor from "../../components/TextEditor";
 import { ALL_COLORS } from "../../constants/colors";
 import { isMobile } from "../../constants/isMobile";
-import { Text } from "../../models/text";
-import { Weight } from "../../models/weight";
+import { EditingContext } from "../../contexts/editingContext";
 
 export default function NftDemo() {
-  const [weight, setWeight] = useState<Weight>(400);
-  const [text, setText] = useState<Text>([]);
-  const [color, setColor] = useState<string>();
+  const { color, setColor, text, setText, weight, setWeight } =
+    useContext(EditingContext);
   const [locked, setLocked] = useState<boolean>(false);
 
-  useEffect(() => {
-    setRandomColor();
-  }, []);
-
-  const setRandomColor = () =>
-    setColor(ALL_COLORS[Math.floor(Math.random() * ALL_COLORS.length)]);
+  const setRandomColor = useCallback(
+    () => setColor?.(ALL_COLORS[Math.floor(Math.random() * ALL_COLORS.length)]),
+    [setColor]
+  );
 
   return (
     <div>
@@ -47,8 +43,7 @@ export default function NftDemo() {
         <br />
         <Button href="/#/mint" text="Mint a Capsule" />
         <br />
-        <br />
-        ⬇ Or play around ⬇
+        <br />⬇ Or play around ⬇
       </div>
 
       <div
@@ -67,7 +62,7 @@ export default function NftDemo() {
             textAlign: "left",
           }}
         >
-          <div>
+          {setText && setWeight && (
             <TextEditor
               text={text}
               setText={setText}
@@ -75,7 +70,7 @@ export default function NftDemo() {
               weight={weight}
               setWeight={setWeight}
             />
-          </div>
+          )}
 
           <div style={{ padding: isMobile ? 10 : 0, flex: 1 }}>
             <div

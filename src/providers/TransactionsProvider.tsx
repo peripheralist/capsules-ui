@@ -48,11 +48,8 @@ export default function TransactionsStateProvider({
   // Set poller to periodically refresh transactions
   useEffect(() => {
     async function refreshTransactions() {
-      console.log("asdf 1", getLocalStorageTxRecords());
       const txs = getLocalStorageTxRecords();
       // .filter(txShouldPersistOnRefresh);
-
-      console.log("asdf 2");
 
       _setTransactions(
         await Promise.all(

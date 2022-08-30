@@ -15,7 +15,7 @@
       },
       {
         "internalType": "bytes3[]",
-        "name": "_reservedColors",
+        "name": "_RESERVED_COLORS",
         "type": "bytes3[]"
       },
       {
@@ -310,7 +310,7 @@
         "type": "bytes3[]"
       }
     ],
-    "name": "SetReservedColors",
+    "name": "SetRESERVED_COLORS",
     "type": "event"
   },
   {

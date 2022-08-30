@@ -1,10 +1,11 @@
 import { CSSProperties, useMemo } from "react";
+import { bytesToColorString } from "../constants/colors";
 
 import { maxLineLength } from "../constants/text";
 import { FONTS } from "../fonts/fonts";
 import { Text } from "../models/text";
 import { Weight } from "../models/weight";
-import { bytesToColorString, defaultText, isEmptyText } from "../utils";
+import { defaultText, isEmptyText } from "../utils/text";
 
 export default function Capsule({
   text,

@@ -1,7 +1,7 @@
 import { CSSProperties, useState } from "react";
 import GlyphPicker from "../../components/GlyphPicker";
 import WeightSelector from "../../components/WeightSelector";
-import { reservedColors } from "../../constants/colors";
+import { RESERVED_COLORS } from "../../constants/colors";
 import { isMobile } from "../../constants/isMobile";
 import { unicodes } from "../../fonts/unicode";
 import { Weight } from "../../models/weight";
@@ -55,7 +55,7 @@ export default function AboveFold({
             boxSizing: "border-box",
             fontWeight: weight,
             caretColor:
-              reservedColors[Math.floor(Math.random() * reservedColors.length)],
+              RESERVED_COLORS[Math.floor(Math.random() * RESERVED_COLORS.length)],
             ...textAreaStyle,
           }}
           rows={8}

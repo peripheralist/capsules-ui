@@ -1,15 +1,16 @@
 import { CSSProperties, useContext, useEffect, useState } from "react";
 
 import { isMobile } from "../constants/isMobile";
+import { CapsulesContext } from "../contexts/capsulesContext";
 import { NetworkContext } from "../contexts/networkContext";
 import { TransactionsContext, TxStatus } from "../contexts/transactionsContext";
-import { useMintedColors } from "../hooks/mintedColors";
 import useSubgraphQuery from "../hooks/SubgraphQuery";
 import FormattedAddress from "./FormattedAddress";
 import Modal from "./Modal";
 import Transactions from "./Transactions";
 
 export default function Navbar() {
+  const { mintedSupply } = useContext(CapsulesContext);
   const { connectedWallet, selectWallet } = useContext(NetworkContext);
   const { transactions } = useContext(TransactionsContext);
 
@@ -49,8 +50,6 @@ export default function Navbar() {
   };
 
   const hash = window.location.hash.split("#/")[1];
-
-  const mintedColors = useMintedColors();
 
   const Link = (text: string, path: string) => (
     <a href={"/#/" + path}>
@@ -203,13 +202,10 @@ export default function Navbar() {
             </div>
             {Link("[⌂] Intro", "")}
             {Link(
-              `[#] Minted${
-                mintedColors.length ? ` (${mintedColors.length})` : ""
-              }`,
+              `[#] Minted${mintedSupply ? ` (${mintedSupply})` : ""}`,
               "minted"
             )}
             {Link("[⚡] Mint", "mint")}
-            {/* {Link(" Contracts", "contracts")} */}
             {Link("[@] Typeface", "typeface")}
             {Link("[] Contracts", "contracts")}
           </div>

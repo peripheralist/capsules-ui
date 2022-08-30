@@ -1,10 +1,9 @@
-import { bytesToColorString } from "../utils";
+import { bytesToColorString } from "../constants/colors";
 import useSubgraphQuery from "./SubgraphQuery";
 
 export function useMintedColors() {
   const fonts = useSubgraphQuery({
     entity: "list",
-    first: 1,
     keys: ["mintedColors"],
   }) as {
     data?: {

@@ -4,13 +4,13 @@ import { useParams } from "react-router-dom";
 
 import Capsule from "../components/Capsule";
 import FormattedAddress from "../components/FormattedAddress";
+import { bytesToColorString } from "../constants/colors";
 import { isMobile } from "../constants/isMobile";
 import { WalletContext } from "../contexts/walletContext";
 import useContractReader from "../hooks/ContractReader";
 import useSubgraphQuery from "../hooks/SubgraphQuery";
 import { Text } from "../models/text";
 import { Weight } from "../models/weight";
-import { bytesToColorString } from "../utils";
 
 export default function Capsules() {
   const { contracts } = useContext(WalletContext);

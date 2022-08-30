@@ -9,6 +9,8 @@ import WalletProvider from "./providers/WalletProvider";
 import reportWebVitals from "./reportWebVitals";
 import ReactQueryProvider from "./providers/ReactQueryProvider";
 import TransactionsStateProvider from "./providers/TransactionsProvider";
+import EditingContextProvider from "./providers/EditingContextProvider";
+import CapsulesContextProvider from "./providers/CapsulesContextProvider";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,7 +18,11 @@ ReactDOM.render(
       <TransactionsStateProvider>
         <NetworkProvider>
           <WalletProvider>
-            <App />
+            <CapsulesContextProvider>
+              <EditingContextProvider>
+                <App />
+              </EditingContextProvider>
+            </CapsulesContextProvider>
           </WalletProvider>
         </NetworkProvider>
       </TransactionsStateProvider>

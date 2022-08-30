@@ -1,27 +1,26 @@
+import { BigNumber } from "ethers";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import Capsule from "../components/Capsule";
 import Button from "../components/Button";
+import Capsule from "../components/Capsule";
+import FormattedAddress from "../components/FormattedAddress";
+import TextEditor from "../components/TextEditor";
+import { bytesToColorString } from "../constants/colors";
 import { isMobile } from "../constants/isMobile";
+import { EditingContext } from "../contexts/editingContext";
+import { NetworkContext } from "../contexts/networkContext";
 import { WalletContext } from "../contexts/walletContext";
 import useContractReader from "../hooks/ContractReader";
-import { Text } from "../models/text";
 import { Weight } from "../models/weight";
-import TextEditor from "../components/TextEditor";
 import {
-  bytesToColorString,
   deepEqBytesTexts,
   parseBytesText,
   textToBytesText,
-} from "../utils";
-import { NetworkContext } from "../contexts/networkContext";
-import { BigNumber } from "ethers";
-import FormattedAddress from "../components/FormattedAddress";
+} from "../utils/text";
 
 export default function Edit() {
-  const [weight, setWeight] = useState<Weight>(400);
-  const [text, setText] = useState<Text>([]);
+  const { text, setText, weight, setWeight } = useContext(EditingContext);
   const [shouldLock, setShouldLock] = useState<boolean>(false);
   const [loadingTx, setLoadingTx] = useState<boolean>();
   const { contracts, transactor } = useContext(WalletContext);
@@ -62,9 +61,9 @@ export default function Edit() {
     owner && connectedWallet?.toLowerCase() === owner?.toLowerCase();
 
   useEffect(() => {
-    if (!capsuleText) return;
+    if (!capsuleText || !setText) return;
     setText(parseBytesText(capsuleText));
-  }, [capsuleText]);
+  }, [capsuleText, setText]);
 
   const save = useCallback(() => {
     if (!transactor || !contracts) return;
@@ -118,7 +117,7 @@ export default function Edit() {
             minHeight: isMobile ? 750 : 0,
           }}
         >
-          {isOwner && isLocked === false && (
+          {isOwner && isLocked === false && setText && setWeight && (
             <TextEditor
               text={text}
               setText={setText}
