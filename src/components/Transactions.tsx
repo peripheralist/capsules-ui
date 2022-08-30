@@ -1,18 +1,21 @@
-import { TransactionResponse } from "@ethersproject/abstract-provider";
 import { CSSProperties, useContext } from "react";
 import { readNetwork } from "../constants/networks";
-import { TransactionsContext, TxStatus } from "../contexts/transactionsContext";
+import {
+  timestampForTxLog,
+  TxHistoryContext,
+  TxStatus,
+} from "../contexts/txHistoryContext";
 import { NetworkName } from "../models/networkName";
 import { formatHistoricalDate } from "../utils/date";
 import Spinner from "./Spinner";
 
 export default function Transactions({ style }: { style?: CSSProperties }) {
-  const { transactions, removeTransaction } = useContext(TransactionsContext);
+  const { transactions, removeTransaction } = useContext(TxHistoryContext);
 
   const TxStatusElem = (status: TxStatus) => {
     switch (status) {
       case TxStatus.pending:
-        return <Spinner style={{ opacity: 0.5 }} />;
+        return <Spinner />;
       case TxStatus.success:
         return <div style={{ color: "#00ff00" }}>✓</div>;
       case TxStatus.failed:
@@ -32,7 +35,9 @@ export default function Transactions({ style }: { style?: CSSProperties }) {
     >
       {transactions?.length ? (
         transactions
-          .sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1))
+          .sort((a, b) =>
+            timestampForTxLog(a) > timestampForTxLog(b) ? -1 : 1
+          )
           .map((tx) => (
             <div
               key={tx.tx.hash}
@@ -64,12 +69,7 @@ export default function Transactions({ style }: { style?: CSSProperties }) {
                 {TxStatusElem(tx.status)}{" "}
                 <span style={{ fontSize: "0.8rem" }}>{tx.title}</span>{" "}
                 <span style={{ fontSize: "0.8rem", fontWeight: 300 }}>
-                  {formatHistoricalDate(
-                    // Use the mined timestamp if available
-                    // Otherwise use the timestamp of when tx was queued
-                    ((tx.tx as TransactionResponse).timestamp ?? tx.timestamp) *
-                      1000
-                  )}
+                  {formatHistoricalDate(timestampForTxLog(tx) * 1000)}
                 </span>
               </a>
 

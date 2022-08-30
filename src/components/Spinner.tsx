@@ -5,7 +5,8 @@ export default function Spinner({ style }: { style?: CSSProperties }) {
   const [interval, _setInterval] = useState<NodeJS.Timer>();
 
   // const charOpts = useMemo(() => ["", "☰", "", ""], []); // lines
-  const charOpts = useMemo(() => ["", "", "", ""], []); // corners
+  // const charOpts = useMemo(() => ["", "", "", ""], []); // corners
+  const charOpts = useMemo(() => ["", "", "", ""], []); // orbital
 
   useEffect(() => {
     if (interval) return;
@@ -13,7 +14,7 @@ export default function Spinner({ style }: { style?: CSSProperties }) {
     _setInterval(
       setInterval(() => {
         setCharIdx((idx) => (idx + 1) % charOpts.length);
-      }, 150)
+      }, 190)
     );
 
     return () => {

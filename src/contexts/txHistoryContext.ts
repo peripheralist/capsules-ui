@@ -8,16 +8,20 @@ export enum TxStatus {
   failed = "FAILED",
 }
 
-export type TransactionRecord = {
+export type TransactionLog = {
   id: number
   tx: Transaction | TransactionResponse;
   title: string;
   status: TxStatus;
-  timestamp: number;
+  createdAt: number;
 };
 
-export const TransactionsContext: React.Context<{
-  transactions?: TransactionRecord[];
+// Prefer using tx.timestamp if tx has been mined. Otherwise use createdAt timestamp
+export const timestampForTxLog = (txLog: TransactionLog) =>
+  (txLog.tx as TransactionResponse).timestamp ?? txLog.createdAt
+
+export const TxHistoryContext: React.Context<{
+  transactions?: TransactionLog[];
   addTransaction?: (title: string, tx: TransactionResponse) => void;
   removeTransaction?: (id: number) => void;
 }> = createContext({});

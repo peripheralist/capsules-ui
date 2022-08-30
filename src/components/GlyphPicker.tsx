@@ -94,7 +94,7 @@ export default function GlyphPicker({
                     () => {
                       setModalVisible(false);
                     },
-                    isMobile ? 500 : 250
+                    isMobile ? 750 : 500
                   );
 
                   return onClickGlyph?.(glyph) ?? false;

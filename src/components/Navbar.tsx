@@ -3,7 +3,7 @@ import { CSSProperties, useContext, useEffect, useState } from "react";
 import { isMobile } from "../constants/isMobile";
 import { CapsulesContext } from "../contexts/capsulesContext";
 import { NetworkContext } from "../contexts/networkContext";
-import { TransactionsContext, TxStatus } from "../contexts/transactionsContext";
+import { TxHistoryContext, TxStatus } from "../contexts/txHistoryContext";
 import useSubgraphQuery from "../hooks/SubgraphQuery";
 import FormattedAddress from "./FormattedAddress";
 import Modal from "./Modal";
@@ -13,7 +13,7 @@ export default function Navbar() {
   const { mintedSupply } = useContext(CapsulesContext);
   const { connectedWallet, selectWallet, onLogOut } =
     useContext(NetworkContext);
-  const { transactions } = useContext(TransactionsContext);
+  const { transactions } = useContext(TxHistoryContext);
 
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>();
   const [txsOpen, setTxsOpen] = useState<boolean>();
@@ -24,7 +24,7 @@ export default function Navbar() {
       transactions?.some(
         (tx) =>
           tx.status !== TxStatus.success ||
-          tx.timestamp >= new Date().valueOf() - 120
+          tx.createdAt >= new Date().valueOf() - 120
       )
     ) {
       setTxsOpen(true);
@@ -80,7 +80,7 @@ export default function Navbar() {
         top: 0,
         left: 0,
         right: 0,
-        zIndex: 1,
+        zIndex: 5,
       }}
     >
       <div
@@ -120,7 +120,7 @@ export default function Navbar() {
               }}
               className="hov-fat"
             >
-              CAPS {capsules.data?.capsules?.length ?? "--"}
+              [C] {capsules.data?.capsules?.length ?? "--"}
             </a>
           )}
           {connectedWallet && (

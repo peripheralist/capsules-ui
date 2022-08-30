@@ -55,11 +55,11 @@ export default function ColorPicker({
     setRgb(hexToRgb(_color));
   }, [_color]);
 
-  const rgbOpts = useCallback(
+  const byteScroller = useCallback(
     (opt: "r" | "g" | "b") => {
       if (!rgb || !mintedColors) return null;
 
-      // Only 1 value is FF
+      // True if only 1 RGB byte == FF
       const lockFF = Object.values(rgb).filter((v) => v === 255).length === 1;
 
       return (
@@ -67,7 +67,7 @@ export default function ColorPicker({
           className="hidden-scrollbar"
           style={{
             maxHeight: 300,
-            overflow: "auto",
+            overflow: "scroll",
             paddingLeft: "1rem",
             paddingRight: "1rem",
             fontSize: "2rem",
@@ -84,7 +84,7 @@ export default function ColorPicker({
                 id={key}
                 key={key}
                 style={{
-                  fontWeight: disabled ? 100 : rgb[opt] === val ? 600 : 300,
+                  fontWeight: disabled ? 100 : rgb[opt] === val ? 700 : 300,
                   cursor: disabled ? "default" : "crosshair",
                   color: hexValue,
                   opacity: disabled ? 0.4 : 1,
@@ -115,10 +115,11 @@ export default function ColorPicker({
           position: "absolute",
           display: "flex",
           justifyContent: "space-between",
+          alignItems: "center",
           top: 0,
           left: 0,
           right: 0,
-          padding: 30,
+          padding: isMobile ? "2rem" : "2rem",
           width: "100%",
           boxSizing: "border-box",
         }}
@@ -135,20 +136,35 @@ export default function ColorPicker({
           </div>
         </div>
 
-        <div>
+        {isMobile ? (
           <div
-            style={{ cursor: "pointer", fontWeight: 600 }}
-            onClick={() => onDone(_color)}
+            style={{
+              display: "inline-flex",
+              gap: "2rem",
+              fontSize: "3rem",
+              fontWeight: 600,
+              lineHeight: "3rem",
+            }}
           >
-            ✓ Save
+            <div onClick={() => onDone(color)}>×</div>
+            <div onClick={() => onDone(_color)}>✓</div>
           </div>
-          <div
-            style={{ cursor: "pointer", fontWeight: 600 }}
-            onClick={() => onDone(_color)}
-          >
-            × Cancel
+        ) : (
+          <div>
+            <div
+              style={{ cursor: "pointer", fontWeight: 600 }}
+              onClick={() => onDone(_color)}
+            >
+              ✓ Save
+            </div>
+            <div
+              style={{ cursor: "pointer", fontWeight: 600 }}
+              onClick={() => onDone(color)}
+            >
+              × Cancel
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {mode === "spectrum" && (
@@ -158,7 +174,7 @@ export default function ColorPicker({
             maxHeight: "100%",
             width: "100%",
             maxWidth: "100%",
-            overflow: "scroll",
+            overflow: "auto",
             textAlign: "center",
           }}
         >
@@ -168,7 +184,7 @@ export default function ColorPicker({
               paddingLeft: "5%",
               paddingRight: "5%",
               boxSizing: "border-box",
-              paddingTop: isMobile ? "30%" : "5%",
+              paddingTop: isMobile ? "30vh" : "5%",
               height: spectrumSize * 0.866,
               width: spectrumSize,
             }}
@@ -234,13 +250,13 @@ export default function ColorPicker({
           style={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
+            alignItems: isMobile ? "flex-end" : "center",
             width: "100%",
             height: "100%",
             textAlign: "center",
           }}
         >
-          <div style={{ padding: 40 }}>
+          <div style={{ padding: "2rem" }}>
             <div
               style={{
                 display: "inline-flex",
@@ -249,7 +265,7 @@ export default function ColorPicker({
             >
               <div
                 style={{
-                  marginTop: "3rem",
+                  marginTop: isMobile ? "2rem" : "3rem",
                   fontSize: "3rem",
                   color: _color,
                   width: 0,
@@ -261,25 +277,25 @@ export default function ColorPicker({
               </div>
 
               <div>
-                <div style={{ height: "3rem" }}>R</div>
+                <div style={{ height: isMobile ? "2rem" : "3rem" }}>R</div>
                 <div style={{ color: _color, fontSize: "3rem" }}>
                   {_color?.substring(1, 3)}
                 </div>
-                {rgbOpts("r")}
+                {byteScroller("r")}
               </div>
               <div>
-                <div style={{ height: "3rem" }}>G</div>
+                <div style={{ height: isMobile ? "2rem" : "3rem" }}>G</div>
                 <div style={{ color: _color, fontSize: "3rem" }}>
                   {_color?.substring(3, 5)}
                 </div>
-                {rgbOpts("g")}
+                {byteScroller("g")}
               </div>
               <div>
-                <div style={{ height: "3rem" }}>B</div>
+                <div style={{ height: isMobile ? "2rem" : "3rem" }}>B</div>
                 <div style={{ color: _color, fontSize: "3rem" }}>
                   {_color?.substring(5)}
                 </div>
-                {rgbOpts("b")}
+                {byteScroller("b")}
               </div>
             </div>
 

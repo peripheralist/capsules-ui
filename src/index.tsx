@@ -8,15 +8,15 @@ import NetworkProvider from "./providers/NetworkProvider";
 import WalletProvider from "./providers/WalletProvider";
 import reportWebVitals from "./reportWebVitals";
 import ReactQueryProvider from "./providers/ReactQueryProvider";
-import TransactionsStateProvider from "./providers/TransactionsProvider";
+import TxHistoryProvider from "./providers/TxHistoryProvider";
 import EditingContextProvider from "./providers/EditingContextProvider";
 import CapsulesContextProvider from "./providers/CapsulesContextProvider";
 
 ReactDOM.render(
   <React.StrictMode>
     <ReactQueryProvider>
-      <TransactionsStateProvider>
-        <NetworkProvider>
+      <NetworkProvider>
+        <TxHistoryProvider>
           <WalletProvider>
             <CapsulesContextProvider>
               <EditingContextProvider>
@@ -24,8 +24,8 @@ ReactDOM.render(
               </EditingContextProvider>
             </CapsulesContextProvider>
           </WalletProvider>
-        </NetworkProvider>
-      </TransactionsStateProvider>
+        </TxHistoryProvider>
+      </NetworkProvider>
     </ReactQueryProvider>
   </React.StrictMode>,
   document.getElementById("root")

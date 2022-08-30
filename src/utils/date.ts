@@ -9,6 +9,7 @@ export const formatDate = (
 
 export function formatHistoricalDate(dateMillis: BigNumberish): string {
   return `${moment(BigNumber.from(dateMillis).toNumber()).fromNow(true)}`
+    .replaceAll("an hour", "1h")
     .replaceAll("a minute", "1m")
     .replaceAll("a few seconds", "now")
     .replaceAll(" minutes", "m")

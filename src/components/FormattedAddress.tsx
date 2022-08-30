@@ -1,5 +1,6 @@
 import { utils } from "ethers";
 import { useLayoutEffect, useState } from "react";
+import { isMobile } from "../constants/isMobile";
 import { readNetwork } from "../constants/networks";
 
 import { readProvider } from "../constants/readProvider";
@@ -42,9 +43,9 @@ export default function FormattedAddress({
 
   if (!address) return null;
 
-  const formattedAddress = `${address.substring(0, 6)}…${address.substring(
-    address.length - 4
-  )}`;
+  const formattedAddress = `${
+    isMobile ? "0x" : address.substring(0, 6)
+  }…${address.substring(address.length - 4)}`;
 
   return (
     <span

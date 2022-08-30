@@ -9,7 +9,7 @@ import { Transaction } from "ethers";
 import { useCallback, useContext } from "react";
 
 import { NetworkContext } from "../contexts/networkContext";
-import { TransactionsContext } from "../contexts/transactionsContext";
+import { TxHistoryContext } from "../contexts/txHistoryContext";
 
 export type TransactorOptions = {
   value?: BigNumberish;
@@ -46,7 +46,7 @@ export function useTransactor({
 }: {
   gasPrice?: BigNumber;
 }): Transactor | undefined {
-  const { addTransaction } = useContext(TransactionsContext);
+  const { addTransaction } = useContext(TxHistoryContext);
 
   const {
     signingProvider: provider,

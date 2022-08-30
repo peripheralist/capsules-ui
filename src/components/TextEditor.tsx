@@ -292,12 +292,15 @@ export default function TextEditor({
       <Modal
         visible={colorPickerVisible}
         onClose={() => setColorPickerVisible(false)}
+        centered
       >
         <div
           style={{
             background: "#000000",
             height: "100vh",
             width: "100vw",
+            maxWidth: "100vh",
+            margin: "0 auto",
           }}
         >
           <ColorPicker

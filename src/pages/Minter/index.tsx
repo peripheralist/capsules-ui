@@ -105,8 +105,8 @@ export default function Minter() {
                 square
               />
               {!text.length && (
-                <div style={{ width: 320 }}>
-                  ↑ Leave text empty to use the default image
+                <div style={{ width: 320, textAlign: "center" }}>
+                  ↑ Leave text empty to use a default image
                 </div>
               )}
             </div>

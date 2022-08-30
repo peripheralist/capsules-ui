@@ -46,21 +46,15 @@ export default function TypefaceGlyphs({
       <div
         style={{
           position: "sticky",
-          display: "inline-block",
-          zIndex: 10,
+          zIndex: 1,
           top: 0,
           margin: "0 auto",
           background: "#000",
+          paddingTop: isMobile ? "2.5rem" : 0,
           paddingBottom: "1rem",
         }}
       >
-        <div
-          style={{
-            margin: "0 auto",
-            paddingLeft: "2rem",
-            paddingRight: "2rem",
-          }}
-        >
+        <div style={{ margin: "0 auto" }}>
           <WeightSelector selectedWeight={weight} onSelectWeight={setWeight} />
         </div>
       </div>
