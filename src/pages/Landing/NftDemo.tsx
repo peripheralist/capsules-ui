@@ -94,7 +94,7 @@ export default function NftDemo() {
                 style={{ cursor: "pointer" }}
                 onClick={() => setLocked((l) => !l)}
               >
-                {locked ? " Locked" : " Unlocked"}
+                {locked ? " Locked" : " Unlocked"}
               </div>
             </div>
 
