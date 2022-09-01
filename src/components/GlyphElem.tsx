@@ -63,7 +63,7 @@ export default function GlyphElem({
           whiteSpace: "pre",
           background: "#ffffff16",
           userSelect: "none",
-          cursor: "default",
+          cursor: "crosshair",
           position: "relative",
           ...style,
           fontWeight: didClick ? 700 : style?.fontWeight,
