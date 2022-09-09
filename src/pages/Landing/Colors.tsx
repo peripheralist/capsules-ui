@@ -1,3 +1,4 @@
+import ColorHeader from "../../components/ColorHeader";
 import { spectrumAuctionColors } from "../../constants/elements/spectrumAuctionColors";
 import { spectrumMintColors } from "../../constants/elements/spectrumMintColors";
 import { isMobile } from "../../constants/isMobile";
@@ -11,7 +12,16 @@ export default function Colors() {
         paddingTop: 100,
       }}
     >
-      <h1 style={{ textAlign: "center" }}>7,957 colors</h1>
+      <h1
+        style={{
+          lineHeight: 6 / 10,
+          fontWeight: 500,
+          textAlign: "center",
+          fontSize: isMobile ? "3rem" : "6rem",
+        }}
+      >
+        <ColorHeader text="7957 Colors" style={{ margin: 0 }} />
+      </h1>
       <div
         style={{
           display: "flex",
@@ -21,7 +31,7 @@ export default function Colors() {
         }}
       >
         <div style={{ minWidth: 320, flex: 1 }}>
-          <b>7 pure colors</b> can only be minted by storing a Capsule font,
+          <b>7 pure colors</b> can only be minted by storing a Capsules font,
           which just costs gas
           <br />
           <br />

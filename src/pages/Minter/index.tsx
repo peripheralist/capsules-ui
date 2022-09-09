@@ -45,8 +45,8 @@ export default function Minter() {
       contracts.CapsulesToken,
       isEmptyBytesText(bytesText) ? "mint" : "mintWithText",
       isEmptyBytesText(bytesText)
-        ? [colorStringToBytes(color), weight]
-        : [colorStringToBytes(color), weight, bytesText],
+        ? [colorStringToBytes(color), { weight, style: "normal" }]
+        : [colorStringToBytes(color), { weight, style: "normal" }, bytesText],
       {
         value: mintPrice,
         onDone: () => setLoadingTx(false),

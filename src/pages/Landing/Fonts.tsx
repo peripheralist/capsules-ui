@@ -22,7 +22,7 @@ export default function Fonts() {
 
       transactor(
         contracts.CapsulesTypeface,
-        "setFontSrc",
+        "setSource",
         [{ weight, style: "normal" }, Buffer.from(FONTS[weight])],
         {
           onDone: (tx) => setLoadingTxForWeight(undefined),
@@ -47,7 +47,11 @@ export default function Fonts() {
       >
         <div>
           <h1 style={{ fontWeight: weight, margin: 0 }}>{weight}</h1>
-          <div style={{ fontWeight: 600, color }}>{color}</div>
+          <div style={{ fontWeight: 500, color, lineHeight: 0.9 }}>
+            CAPSULE
+            <br />
+            {color}
+          </div>
         </div>
 
         <div>
@@ -78,7 +82,20 @@ export default function Fonts() {
         }}
       >
         <h1 style={{ fontWeight: weight }}>{weight}</h1>
-        <div style={{ fontWeight: 600, color }}>{color}</div>
+        <div
+          style={{
+            fontWeight: 500,
+            color,
+            lineHeight: 0.9,
+            textAlign: "center",
+          }}
+        >
+          {/* ᴍɪɴᴛs
+          <br /> */}
+          CAPSULE
+          <br />
+          {color}
+        </div>
         <br />
         {minter ? (
           <div style={{ textAlign: "center", color, fontWeight: 700 }}>
@@ -100,11 +117,13 @@ export default function Fonts() {
     <div>
       <div
         style={{
-          maxWidth: isMobile ? "90vw" : 400,
+          maxWidth: isMobile ? "90vw" : 600,
           margin: "0 auto",
           paddingTop: 100,
           paddingBottom: 50,
           fontWeight: 500,
+          fontSize: "1.4rem",
+          textAlign: "center",
         }}
       >
         Fonts need to be stored on-chain before they're available to other
@@ -112,14 +131,15 @@ export default function Fonts() {
         <br />
         <br />
         <b>
-          A font can be stored by minting its NFT, which just costs the gas for
-          storage.
+          Anyone can store a font by minting its Capsule NFT, which only costs
+          gas.
         </b>
+        {/* <br />
         <br />
-        <br />
-        Out of 7,957 total NFTs, only these 7 have pure colors.
+        These are the only 7 Capsules with pure colors. */}
       </div>
 
+      <h1 style={{ textAlign: "center" }}>FONTS</h1>
       <div
         style={{
           display: "flex",

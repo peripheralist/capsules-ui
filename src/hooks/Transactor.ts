@@ -93,7 +93,8 @@ export function useTransactor({
       console.info(
         "🧃 Calling " + functionName + "() with args:",
         reportArgs,
-        tx
+        tx,
+        options
       );
 
       try {

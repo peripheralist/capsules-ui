@@ -4,13 +4,13 @@ import { useParams } from "react-router-dom";
 
 import Capsule from "../components/Capsule";
 import FormattedAddress from "../components/FormattedAddress";
+import SVGURIRenderer from "../components/SVGURIRenderer";
 import { bytesToColorString } from "../constants/colors";
 import { isMobile } from "../constants/isMobile";
 import { WalletContext } from "../contexts/walletContext";
 import useContractReader from "../hooks/ContractReader";
 import useSubgraphQuery from "../hooks/SubgraphQuery";
-import { Text } from "../models/text";
-import { Weight } from "../models/weight";
+import { Capsule as CapsuleType } from "../models/Capsule";
 
 export default function Capsules() {
   const { contracts } = useContext(WalletContext);
@@ -27,7 +27,7 @@ export default function Capsules() {
   const capsules = useSubgraphQuery({
     entity: "capsule",
     first: 25,
-    keys: ["owner", "text", "fontWeight", "color", "id", "locked"],
+    keys: ["owner", "text", "fontWeight", "color", "id", "locked", "svg"],
     orderBy: "mintedAt",
     orderDirection: "desc",
     where: _wallet
@@ -40,14 +40,7 @@ export default function Capsules() {
       : [],
   }) as {
     data?: {
-      capsules?: {
-        id: string;
-        color: string;
-        owner: string;
-        fontWeight: Weight;
-        text: Text;
-        locked: boolean;
-      }[];
+      capsules?: CapsuleType[];
     };
   };
 
@@ -79,11 +72,20 @@ export default function Capsules() {
           display: "flex",
           flexWrap: "wrap",
           gap: "0.5rem",
-          paddingBottom: isMobile ? 50 : 0,
+          padding: isMobile ? "0 0 5rem 0" : "5rem",
         }}
       >
         {capsules.data?.capsules?.map((c) => (
-          <a key={c.id} href={`/#/edit/${c.id}`}>
+          <a key={c.id} href={`/#/c/${c.id}`}>
+            {/* <SVGURIRenderer
+              uri={c.svg}
+              style={{
+                fontWeight: "initial",
+                cursor: "pointer",
+                height: isMobile ? undefined : "10rem",
+                width: isMobile ? "90vw" : undefined,
+              }}
+            /> */}
             <div>
               <Capsule
                 height={isMobile ? undefined : "10rem"}

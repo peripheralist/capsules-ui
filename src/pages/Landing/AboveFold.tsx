@@ -1,4 +1,5 @@
 import { CSSProperties, useState } from "react";
+import ColorHeader from "../../components/ColorHeader";
 import GlyphPicker from "../../components/GlyphPicker";
 import WeightSelector from "../../components/WeightSelector";
 import { RESERVED_COLORS } from "../../constants/colors";
@@ -24,17 +25,39 @@ export default function AboveFold({
     <div>
       <div
         style={{
-          margin: "5vh auto 0",
+          margin: isMobile ? "2rem auto" : "4.5rem auto",
           fontWeight: weight,
           textAlign: "center",
         }}
       >
         <h1
           style={{
-            fontSize: isMobile ? "2rem" : "4rem",
+            fontSize: isMobile ? "3rem" : "6rem",
+            lineHeight: 6 / 10,
+            margin: 0,
+            fontWeight: 500,
           }}
         >
-          Capsules
+          {/* <ColorHeader
+            text="CAPSULES"
+            style={{ margin: 0, fontSize: isMobile ? "3rem" : "6rem" }}
+          /> */}
+          CAPSULES
+          {/* COMPOSIT */}
+          {/* Primitiv */}
+          {/* Strata */}
+          {/* Silica */}
+          {/* Precursa */}
+          {/* Habita mono */}
+          {/* Boule mono */}
+          {/* Achira */}
+          {/* ISOMER */}
+          {/* Thesis */}
+          {/* Minori */}
+          {/* Particle */}
+          {/* Isomene */}
+          <br />
+          <span style={{ fontWeight: 200 }}>ᴛʏᴘᴇꜰᴀcᴇ</span>
         </h1>
       </div>
 
@@ -54,11 +77,13 @@ export default function AboveFold({
             width: "100%",
             boxSizing: "border-box",
             fontWeight: weight,
-            caretColor:
-              RESERVED_COLORS[Math.floor(Math.random() * RESERVED_COLORS.length)],
+            // caretColor:
+            //   RESERVED_COLORS[
+            //     Math.floor(Math.random() * RESERVED_COLORS.length)
+            //   ],
             ...textAreaStyle,
           }}
-          rows={8}
+          rows={6}
           // placeholder="Mono typeface&#13;&#10;·&#13;&#10;328 characters × 7 fonts&#13;&#10;·&#13;&#10;Stored on Ethereum&#13;&#10;·&#13;&#10;Available to any smart contract for free, forever"
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -80,16 +105,13 @@ export default function AboveFold({
               ...textAreaStyle,
             }}
           >
-            Mono typeface
-            <br />
-            <br />
             {unicodes.length} characters × 7 fonts
             <br />
             <br />
             Stored on Ethereum
             <br />
             <br />
-            Available to any smart contract for free, forever
+            Free to use by any smart contract, forever
           </div>
         )}
 

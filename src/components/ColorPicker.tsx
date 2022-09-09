@@ -129,10 +129,10 @@ export default function ColorPicker({
             style={{ cursor: "pointer" }}
             onClick={() => setMode("spectrum")}
           >
-            {mode === "spectrum" ? "" : ""} Spectrum
+            {mode === "spectrum" ? "" : ""} Spectrum
           </div>
           <div style={{ cursor: "pointer" }} onClick={() => setMode("code")}>
-            {mode === "code" ? "" : ""} Code
+            {mode === "code" ? "" : ""} Code
           </div>
         </div>
 

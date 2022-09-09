@@ -2,25 +2,20 @@ import { CSSProperties, useEffect, useMemo, useState } from "react";
 
 export default function Spinner({ style }: { style?: CSSProperties }) {
   const [charIdx, setCharIdx] = useState<number>(0);
-  const [interval, _setInterval] = useState<NodeJS.Timer>();
 
   // const charOpts = useMemo(() => ["", "☰", "", ""], []); // lines
   // const charOpts = useMemo(() => ["", "", "", ""], []); // corners
-  const charOpts = useMemo(() => ["", "", "", ""], []); // orbital
+  const charOpts = useMemo(() => ["", "", "", ""], []); // orbital
 
   useEffect(() => {
-    if (interval) return;
-
-    _setInterval(
-      setInterval(() => {
-        setCharIdx((idx) => (idx + 1) % charOpts.length);
-      }, 190)
-    );
+    const interval = setInterval(() => {
+      setCharIdx((idx) => (idx + 1) % charOpts.length);
+    }, 190);
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [interval, charOpts]);
+  }, [charOpts]);
 
   return <div style={style}>{charOpts[charIdx]}</div>;
 }

@@ -1,5 +1,5 @@
 {
-  "address": "0x181FD117960f97fC099633DB200D297446ee7C7a", 
+  "address": "0x700835e9403260f7F603c0C90cf7CEa01258db7F", 
   "abi": [
 {
 "inputs": [
@@ -10,12 +10,17 @@
   },
   {
     "internalType": "address",
-    "name": "_capsulesRenderer",
+    "name": "_defaultCapsuleRenderer",
     "type": "address"
   },
   {
     "internalType": "address",
-    "name": "_creatorFeeReceiver",
+    "name": "_capsuleMetadata",
+    "type": "address"
+  },
+  {
+    "internalType": "address",
+    "name": "_feeReceiver",
     "type": "address"
   },
   {
@@ -63,11 +68,6 @@
 "type": "error"
 },
 {
-"inputs": [],
-"name": "CapsuleRendererLocked",
-"type": "error"
-},
-{
 "inputs": [
   {
     "internalType": "uint256",
@@ -84,13 +84,14 @@
 "type": "error"
 },
 {
-"inputs": [],
-"name": "InvalidFontWeight",
-"type": "error"
-},
-{
-"inputs": [],
-"name": "InvalidText",
+"inputs": [
+  {
+    "internalType": "address",
+    "name": "renderer",
+    "type": "address"
+  }
+],
+"name": "InvalidFontForRenderer",
 "type": "error"
 },
 {
@@ -221,9 +222,9 @@
 "anonymous": false,
 "inputs": [
   {
-    "indexed": false,
+    "indexed": true,
     "internalType": "uint256",
-    "name": "capsuleId",
+    "name": "id",
     "type": "uint256"
   }
 ],
@@ -299,11 +300,11 @@
   {
     "indexed": false,
     "internalType": "address",
-    "name": "_capsulesRenderer",
+    "name": "metadata",
     "type": "address"
   }
 ],
-"name": "SetCapsulesRenderer",
+"name": "SetCapsuleMetadata",
 "type": "event"
 },
 {
@@ -312,11 +313,24 @@
   {
     "indexed": false,
     "internalType": "address",
-    "name": "_address",
+    "name": "renderer",
     "type": "address"
   }
 ],
-"name": "SetCreatorFeeReceiver",
+"name": "SetDefaultCapsuleRenderer",
+"type": "event"
+},
+{
+"anonymous": false,
+"inputs": [
+  {
+    "indexed": false,
+    "internalType": "address",
+    "name": "receiver",
+    "type": "address"
+  }
+],
+"name": "SetFeeReceiver",
 "type": "event"
 },
 {
@@ -330,6 +344,25 @@
   }
 ],
 "name": "SetPureColors",
+"type": "event"
+},
+{
+"anonymous": false,
+"inputs": [
+  {
+    "indexed": true,
+    "internalType": "uint256",
+    "name": "id",
+    "type": "uint256"
+  },
+  {
+    "indexed": false,
+    "internalType": "address",
+    "name": "renderer",
+    "type": "address"
+  }
+],
+"name": "SetRendererOf",
 "type": "event"
 },
 {
@@ -466,6 +499,19 @@
 "type": "function"
 },
 {
+"inputs": [],
+"name": "capsuleMetadata",
+"outputs": [
+  {
+    "internalType": "address",
+    "name": "",
+    "type": "address"
+  }
+],
+"stateMutability": "view",
+"type": "function"
+},
+{
 "inputs": [
   {
     "internalType": "uint256",
@@ -488,9 +534,21 @@
         "type": "bytes3"
       },
       {
-        "internalType": "uint256",
-        "name": "fontWeight",
-        "type": "uint256"
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "weight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "style",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct Font",
+        "name": "font",
+        "type": "tuple"
       },
       {
         "internalType": "bytes4[16][8]",
@@ -509,21 +567,8 @@
       }
     ],
     "internalType": "struct Capsule",
-    "name": "capsule",
-    "type": "tuple"
-  }
-],
-"stateMutability": "view",
-"type": "function"
-},
-{
-"inputs": [],
-"name": "capsulesRenderer",
-"outputs": [
-  {
-    "internalType": "address",
     "name": "",
-    "type": "address"
+    "type": "tuple"
   }
 ],
 "stateMutability": "view",
@@ -554,7 +599,7 @@
 "outputs": [
   {
     "internalType": "bytes3",
-    "name": "color",
+    "name": "",
     "type": "bytes3"
   }
 ],
@@ -563,7 +608,7 @@
 },
 {
 "inputs": [],
-"name": "creatorFeeReceiver",
+"name": "defaultCapsuleRenderer",
 "outputs": [
   {
     "internalType": "address",
@@ -587,9 +632,21 @@
     "type": "bytes4[16][8]"
   },
   {
-    "internalType": "uint256",
-    "name": "fontWeight",
-    "type": "uint256"
+    "components": [
+      {
+        "internalType": "uint256",
+        "name": "weight",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "style",
+        "type": "string"
+      }
+    ],
+    "internalType": "struct Font",
+    "name": "font",
+    "type": "tuple"
   },
   {
     "internalType": "bool",
@@ -603,6 +660,19 @@
 "type": "function"
 },
 {
+"inputs": [],
+"name": "feeReceiver",
+"outputs": [
+  {
+    "internalType": "address",
+    "name": "",
+    "type": "address"
+  }
+],
+"stateMutability": "view",
+"type": "function"
+},
+{
 "inputs": [
   {
     "internalType": "uint256",
@@ -610,12 +680,24 @@
     "type": "uint256"
   }
 ],
-"name": "fontWeightOf",
+"name": "fontOf",
 "outputs": [
   {
-    "internalType": "uint256",
-    "name": "fontWeight",
-    "type": "uint256"
+    "components": [
+      {
+        "internalType": "uint256",
+        "name": "weight",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "style",
+        "type": "string"
+      }
+    ],
+    "internalType": "struct Font",
+    "name": "",
+    "type": "tuple"
   }
 ],
 "stateMutability": "view",
@@ -635,25 +717,6 @@
     "internalType": "address",
     "name": "",
     "type": "address"
-  }
-],
-"stateMutability": "view",
-"type": "function"
-},
-{
-"inputs": [
-  {
-    "internalType": "uint256",
-    "name": "capsuleId",
-    "type": "uint256"
-  }
-],
-"name": "htmlSafeTextOf",
-"outputs": [
-  {
-    "internalType": "string[8]",
-    "name": "safeText",
-    "type": "string[8]"
   }
 ],
 "stateMutability": "view",
@@ -695,7 +758,7 @@
 "outputs": [
   {
     "internalType": "bool",
-    "name": "_isLocked",
+    "name": "",
     "type": "bool"
   }
 ],
@@ -724,19 +787,67 @@
 {
 "inputs": [
   {
+    "internalType": "bytes3",
+    "name": "color",
+    "type": "bytes3"
+  }
+],
+"name": "isValidColor",
+"outputs": [
+  {
+    "internalType": "bool",
+    "name": "",
+    "type": "bool"
+  }
+],
+"stateMutability": "pure",
+"type": "function"
+},
+{
+"inputs": [
+  {
+    "components": [
+      {
+        "internalType": "uint256",
+        "name": "weight",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "style",
+        "type": "string"
+      }
+    ],
+    "internalType": "struct Font",
+    "name": "font",
+    "type": "tuple"
+  },
+  {
+    "internalType": "address",
+    "name": "renderer",
+    "type": "address"
+  }
+],
+"name": "isValidFontForRenderer",
+"outputs": [
+  {
+    "internalType": "bool",
+    "name": "",
+    "type": "bool"
+  }
+],
+"stateMutability": "view",
+"type": "function"
+},
+{
+"inputs": [
+  {
     "internalType": "uint256",
     "name": "capsuleId",
     "type": "uint256"
   }
 ],
 "name": "lockCapsule",
-"outputs": [],
-"stateMutability": "nonpayable",
-"type": "function"
-},
-{
-"inputs": [],
-"name": "lockRenderer",
 "outputs": [],
 "stateMutability": "nonpayable",
 "type": "function"
@@ -749,16 +860,28 @@
     "type": "bytes3"
   },
   {
-    "internalType": "uint256",
-    "name": "fontWeight",
-    "type": "uint256"
+    "components": [
+      {
+        "internalType": "uint256",
+        "name": "weight",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "style",
+        "type": "string"
+      }
+    ],
+    "internalType": "struct Font",
+    "name": "font",
+    "type": "tuple"
   }
 ],
 "name": "mint",
 "outputs": [
   {
     "internalType": "uint256",
-    "name": "capsuleId",
+    "name": "",
     "type": "uint256"
   }
 ],
@@ -773,16 +896,28 @@
     "type": "address"
   },
   {
-    "internalType": "uint256",
-    "name": "fontWeight",
-    "type": "uint256"
+    "components": [
+      {
+        "internalType": "uint256",
+        "name": "weight",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "style",
+        "type": "string"
+      }
+    ],
+    "internalType": "struct Font",
+    "name": "font",
+    "type": "tuple"
   }
 ],
-"name": "mintPureColorForFontWeight",
+"name": "mintPureColorForFont",
 "outputs": [
   {
     "internalType": "uint256",
-    "name": "capsuleId",
+    "name": "",
     "type": "uint256"
   }
 ],
@@ -797,9 +932,21 @@
     "type": "bytes3"
   },
   {
-    "internalType": "uint256",
-    "name": "fontWeight",
-    "type": "uint256"
+    "components": [
+      {
+        "internalType": "uint256",
+        "name": "weight",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "style",
+        "type": "string"
+      }
+    ],
+    "internalType": "struct Font",
+    "name": "font",
+    "type": "tuple"
   },
   {
     "internalType": "bytes4[16][8]",
@@ -895,7 +1042,7 @@
 "outputs": [
   {
     "internalType": "bytes3",
-    "name": "color",
+    "name": "",
     "type": "bytes3"
   }
 ],
@@ -922,13 +1069,19 @@
 "type": "function"
 },
 {
-"inputs": [],
-"name": "rendererLocked",
+"inputs": [
+  {
+    "internalType": "uint256",
+    "name": "capsuleId",
+    "type": "uint256"
+  }
+],
+"name": "rendererOf",
 "outputs": [
   {
-    "internalType": "bool",
+    "internalType": "address",
     "name": "",
-    "type": "bool"
+    "type": "address"
   }
 ],
 "stateMutability": "view",
@@ -1056,11 +1209,11 @@
 "inputs": [
   {
     "internalType": "address",
-    "name": "_capsulesRenderer",
+    "name": "_capsuleMetadata",
     "type": "address"
   }
 ],
-"name": "setCapsulesRenderer",
+"name": "setCapsuleMetadata",
 "outputs": [],
 "stateMutability": "nonpayable",
 "type": "function"
@@ -1069,11 +1222,24 @@
 "inputs": [
   {
     "internalType": "address",
-    "name": "_creatorFeeReceiver",
+    "name": "renderer",
     "type": "address"
   }
 ],
-"name": "setCreatorFeeReceiver",
+"name": "setDefaultCapsuleRenderer",
+"outputs": [],
+"stateMutability": "nonpayable",
+"type": "function"
+},
+{
+"inputs": [
+  {
+    "internalType": "address",
+    "name": "newFeeReceiver",
+    "type": "address"
+  }
+],
+"name": "setFeeReceiver",
 "outputs": [],
 "stateMutability": "nonpayable",
 "type": "function"
@@ -1082,13 +1248,50 @@
 "inputs": [
   {
     "internalType": "uint256",
-    "name": "_royalty",
+    "name": "capsuleId",
+    "type": "uint256"
+  },
+  {
+    "internalType": "address",
+    "name": "renderer",
+    "type": "address"
+  }
+],
+"name": "setRendererOf",
+"outputs": [],
+"stateMutability": "nonpayable",
+"type": "function"
+},
+{
+"inputs": [
+  {
+    "internalType": "uint256",
+    "name": "royaltyAmount",
     "type": "uint256"
   }
 ],
 "name": "setRoyalty",
 "outputs": [],
 "stateMutability": "nonpayable",
+"type": "function"
+},
+{
+"inputs": [
+  {
+    "internalType": "uint256",
+    "name": "capsuleId",
+    "type": "uint256"
+  }
+],
+"name": "stringTextOf",
+"outputs": [
+  {
+    "internalType": "string[8]",
+    "name": "",
+    "type": "string[8]"
+  }
+],
+"stateMutability": "view",
 "type": "function"
 },
 {
@@ -1116,11 +1319,6 @@
     "internalType": "uint256",
     "name": "capsuleId",
     "type": "uint256"
-  },
-  {
-    "internalType": "bool",
-    "name": "square",
-    "type": "bool"
   }
 ],
 "name": "svgOf",
@@ -1159,7 +1357,7 @@
 "outputs": [
   {
     "internalType": "bytes4[16][8]",
-    "name": "text",
+    "name": "",
     "type": "bytes4[16][8]"
   }
 ],

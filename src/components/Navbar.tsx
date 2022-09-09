@@ -29,6 +29,9 @@ export default function Navbar() {
     ) {
       setTxsOpen(true);
     }
+
+    // Auto close if all txs are removed
+    if (transactions?.length === 0) setTxsOpen(false);
   }, [transactions]);
 
   const padding: CSSProperties["padding"] = "1rem 0.5rem";
@@ -81,6 +84,7 @@ export default function Navbar() {
         left: 0,
         right: 0,
         zIndex: 5,
+        height: 0,
       }}
     >
       <div
@@ -89,6 +93,7 @@ export default function Navbar() {
           justifyContent: "space-between",
           zIndex: 10,
           padding: "0 0.5rem",
+          height: 0,
         }}
       >
         <div
@@ -123,7 +128,7 @@ export default function Navbar() {
               [C] {capsules.data?.capsules?.length ?? "--"}
             </a>
           )}
-          {connectedWallet && (
+          {connectedWallet && !!transactions?.length && (
             <div
               className="hov-fat"
               style={{ cursor: "crosshair", padding, userSelect: "none" }}
@@ -169,7 +174,7 @@ export default function Navbar() {
         <Transactions
           style={{
             position: "absolute",
-            top: "100%",
+            top: "3rem",
             right: "1rem",
             zIndex: 1,
             textAlign: "center",
@@ -207,10 +212,10 @@ export default function Navbar() {
             </div>
             {Link("[⌂] Intro", "")}
             {Link(
-              `[#] Minted${mintedSupply ? ` (${mintedSupply})` : ""}`,
+              `[#] Capsules${mintedSupply ? ` (${mintedSupply})` : ""}`,
               "minted"
             )}
-            {Link("[⚡] Mint", "mint")}
+            {Link("[⚡] Mint Capsule", "mint")}
             {Link("[@] Typeface", "typeface")}
             {Link("[] Contracts", "contracts")}
           </div>

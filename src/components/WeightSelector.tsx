@@ -24,7 +24,15 @@ export default function WeightSelector({
       }}
     >
       {useVariableWeight ? (
-        <div style={{ paddingBottom: 9, paddingTop: 8 }}>
+        <div
+          style={{
+            paddingBottom: 9,
+            paddingTop: 8,
+            maxWidth: 600,
+            margin: "0 auto",
+            position: "relative",
+          }}
+        >
           <div
             style={{
               position: "absolute",
@@ -68,6 +76,7 @@ export default function WeightSelector({
             <div
               key={w}
               style={{
+                position: "relative",
                 padding: "1rem 0",
                 opacity: parseInt(w) === selectedWeight ? 1 : 0.5,
                 fontWeight: w,
@@ -75,6 +84,18 @@ export default function WeightSelector({
               }}
               onClick={() => onSelectWeight(parseInt(w) as Weight)}
             >
+              {parseInt(w) === selectedWeight && (
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "-5%",
+                    textAlign: "center",
+                    width: "100%",
+                  }}
+                >
+                  ▲
+                </div>
+              )}
               {w}
             </div>
           ))}

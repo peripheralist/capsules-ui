@@ -33,9 +33,9 @@ export default function Edit() {
     args: useMemo(() => [id], [id]),
   });
 
-  const capsuleFontWeight = useContractReader<BigNumber>({
+  const capsuleFont = useContractReader<{ weight: BigNumber }>({
     contract: contracts?.CapsulesToken,
-    functionName: "fontWeightOf",
+    functionName: "fontOf",
     args: useMemo(() => [id], [id]),
   });
 
@@ -73,7 +73,7 @@ export default function Edit() {
     transactor(
       contracts.CapsulesToken,
       "editCapsule",
-      [id, textToBytesText(text), weight, shouldLock],
+      [id, textToBytesText(text), { weight, style: "normal" }, shouldLock],
       {
         onDone: () => setLoadingTx(false),
         txTitle: `Edit ${bytesToColorString(capsuleColor)}`,
@@ -81,7 +81,7 @@ export default function Edit() {
     );
   }, [transactor, contracts, id, text, weight, shouldLock, capsuleColor]);
 
-  if (!capsuleText || !capsuleColor || !capsuleFontWeight) return null;
+  if (!capsuleText || !capsuleColor || !capsuleFont) return null;
 
   return (
     <div style={{ textAlign: "center", padding: 20 }}>
@@ -122,7 +122,7 @@ export default function Edit() {
               text={text}
               setText={setText}
               color={capsuleColor}
-              weight={capsuleFontWeight.toNumber() as Weight}
+              weight={capsuleFont.weight.toNumber() as Weight}
               setWeight={setWeight}
             />
           )}
@@ -142,7 +142,7 @@ export default function Edit() {
                 style={{ cursor: "pointer", fontWeight: 500 }}
                 onClick={() => setShouldLock((l) => !l)}
               >
-                {shouldLock ? " Don't lock" : " Lock"}
+                {shouldLock ? " Don't lock" : " Lock"}
               </div>
             )}
           </div>

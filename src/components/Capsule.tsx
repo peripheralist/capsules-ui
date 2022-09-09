@@ -5,7 +5,7 @@ import { maxLineLength } from "../constants/text";
 import { FONTS } from "../fonts/fonts";
 import { Text } from "../models/text";
 import { Weight } from "../models/weight";
-import { defaultText, isEmptyText } from "../utils/text";
+import { defaultText, isEmptyText, textWidth } from "../utils/text";
 
 export default function Capsule({
   text,
@@ -53,14 +53,7 @@ export default function Capsule({
   }, []);
 
   // Number of characters in longest line
-  const longestLine: number = useMemo(
-    () =>
-      Math.min(
-        text.reduce((acc, curr) => (curr.length > acc ? curr.length : acc), 0),
-        maxLineLength
-      ),
-    [text]
-  );
+  const longestLine: number = useMemo(() => textWidth(text), [text]);
 
   // Equal to index of last non-empty line
   const linesCount: number = useMemo(

@@ -83,6 +83,7 @@ export default function GlyphPicker({
               flexWrap: "wrap",
               gap: "0.5rem",
               justifyContent: "center",
+              fontWeight: 400
             }}
           >
             {results.map((x) => (

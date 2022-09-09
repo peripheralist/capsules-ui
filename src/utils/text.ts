@@ -1,4 +1,5 @@
 import { bytesToColorString } from "../constants/colors";
+import { maxLineLength } from "../constants/text";
 import { unicodes } from "../fonts/unicode";
 import { BytesText, Text } from "../models/text";
 
@@ -39,14 +40,14 @@ export const textToBytesText = (text: string[]) => {
 export const stringToBytes4Line = (str?: string) => {
   const arr: string[] = [];
   for (let i = 0; i < 16; i++) {
-    let byte = "00000000";
-    if (str && str.length > i) {
-      byte = Buffer.from(str[i], "utf8").toString("hex").padStart(8, "0");
-    }
-    arr.push("0x" + byte);
+    arr.push(charToBytes4(str?.[i]));
   }
   return arr;
 };
+
+export const charToBytes4 = (char?: string) =>
+  "0x" +
+  (char ? Buffer.from(char).toString("hex").padStart(8, "0") : "00000000");
 
 export const parseBytesText = (text: BytesText): string[] =>
   isEmptyBytesText(text)
@@ -71,6 +72,12 @@ export const trimText = (text: Text): Text => {
   return output;
 };
 
+export const textWidth = (text: Text) =>
+  Math.min(
+    text.reduce((acc, curr) => (curr.length > acc ? curr.length : acc), 0),
+    maxLineLength
+  );
+
 export const deepEqBytesTexts = (text1: BytesText, text2: BytesText): boolean =>
   text1.every((line, i) => line.every((bytes4, j) => bytes4 === text2[i][j]));
 
@@ -78,3 +85,47 @@ export const isAllowedChar = (char: string) =>
   char?.length === 1 && isAllowedCode(char.codePointAt(0));
 
 export const isAllowedCode = (code?: number) => code && unicodes.includes(code);
+
+export const toSmallCaps = (str: string) =>
+  str.split("").map((x) => {
+    switch (x.toLowerCase()) {
+      case "a":
+        return "ᴀ";
+      case "b":
+        return "ʙ";
+      case "d":
+        return "ᴅ";
+      case "e":
+        return "ᴇ";
+      case "f":
+        return "ꜰ";
+      case "g":
+        return "ɢ";
+      case "h":
+        return "ʜ";
+      case "i":
+        return "ɪ";
+      case "j":
+        return "ᴊ";
+      case "k":
+        return "ᴋ";
+      case "l":
+        return "ʟ";
+      case "m":
+        return "ᴍ";
+      case "n":
+        return "ɴ";
+      case "p":
+        return "ᴘ";
+      case "q":
+        return "ꞯ";
+      case "r":
+        return "ʀ";
+      case "t":
+        return "ᴛ";
+      case "y":
+        return "ʏ";
+      default:
+        return x.toLowerCase();
+    }
+  });

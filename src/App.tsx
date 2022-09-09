@@ -13,6 +13,8 @@ import Withdraw from "./pages/Withdraw";
 import Typeface from "./pages/Typeface";
 
 export default function App() {
+  // console.log(unicodes.map((code) => charToUtf8Bytes4(String.fromCharCode(code))));
+
   return (
     <div>
       <Navbar />
@@ -26,7 +28,7 @@ export default function App() {
           <Route path="/pause" component={Pause} />
           <Route path="/withdraw" component={Withdraw} />
           <Route path="/typeface" component={Typeface} />
-          <Route path="/edit/:id" component={Edit} />
+          <Route path="/c/:id" component={Edit} />
         </Switch>
       </HashRouter>
     </div>

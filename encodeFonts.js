@@ -52,11 +52,11 @@ function writeUnicode() {
   const groups = [];
   let temp = [];
   unicodes
-    .sort((a, b) => (parseInt(a, 16) > parseInt(b, 16) ? 1 : -1))
+    .sort((a, b) => (a > b ? 1 : -1))
     .forEach((curr, i) => {
       const prev = unicodes[i - 1];
       const formatted = `0x${curr.toString(16)}`;
-      if (prev && curr - prev > 1) {
+      if (prev && parseInt(curr, 16) - parseInt(prev, 16) > 1) {
         groups.push(temp);
         temp = [formatted];
       } else {
@@ -64,11 +64,66 @@ function writeUnicode() {
       }
     });
 
+  // temp = [];
+  // const bytes1Groups = [];
+  // unicodes
+  //   .sort((a, b) => (a > b ? 1 : -1))
+  //   .forEach((curr, i) => {
+  //     const prev = unicodes[i - 1];
+  //     const formatted = `0x${curr.toString(16)}`;
+  //     const isBytes1 = formatted.startsWith("0x00");
+
+  //     if (!isBytes1 || (prev && parseInt(curr, 16) - parseInt(prev, 16) > 1)) {
+  //       if (temp.length) bytes1Groups.push(temp);
+  //       temp = isBytes1 ? [formatted] : [];
+  //     } else if (isBytes1) {
+  //       temp.push(formatted);
+  //     }
+  //   });
+
+  // function trimBytes1(char) {
+  //   return `0x${char.toString().split("0x00")[1]}`;
+  // }
+  // let bytes1Comparison = "(";
+  // bytes1Groups.forEach((g, i) => {
+  //   if (g.length === 1) {
+  //     bytes1Comparison += ` char == ${trimBytes1(g)}`;
+  //   } else {
+  //     bytes1Comparison += ` (char >= ${trimBytes1(
+  //       g[0]
+  //     )} && char <= ${trimBytes1(g[g.length - 1])})`;
+  //   }
+
+  //   if (i < groups.length - 1) bytes1Comparison += " ||";
+  // });
+  // bytes1Comparison += ")";
+  // bytes1Comparison = bytes1Comparison.toLowerCase();
+
+  function toBytes4(char) {
+    return encodeURIComponent(char);
+  }
+  let bytes4Comparison = "(";
+  groups.forEach((g, i) => {
+    if (g.length === 1) {
+      bytes4Comparison += ` char == ${toBytes4(g)}`;
+    } else {
+      bytes4Comparison += ` (char >= ${toBytes4(g[0])} && char <= ${toBytes4(
+        g[g.length - 1]
+      )})`;
+    }
+
+    if (i < groups.length - 1) bytes4Comparison += " ||";
+  });
+  bytes4Comparison += ")";
+  bytes4Comparison = bytes4Comparison.toLowerCase();
+
   fs.writeFileSync(
     dir + "/unicode.ts",
     `export const unicodes = [${unicodes.map((x) => "0x" + x)}];
   
 export const unicodeGroups = [${groups.map((g) => `[${g}]`)}];
+
+export const bytes4Comparison = '${bytes4Comparison}';
   
 export const unicodeNames: Record<string, string> = ${JSON.stringify(charMap)};`
   );

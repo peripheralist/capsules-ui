@@ -2,6 +2,7 @@ import GlyphElem from "./GlyphElem";
 import WeightSelector from "./WeightSelector";
 import { isMobile } from "../constants/isMobile";
 import { charGroups } from "../constants/orderedUnicodes";
+import { unicodes } from "../fonts/unicode";
 
 export default function TypefaceGlyphs({
   weight,
@@ -41,7 +42,7 @@ export default function TypefaceGlyphs({
         textAlign: "center",
       }}
     >
-      <h1>Capsules Typeface</h1>
+      <h1>{unicodes.length} Capsules glyphs</h1>
 
       <div
         style={{
@@ -61,7 +62,7 @@ export default function TypefaceGlyphs({
 
       <div style={{ textAlign: "center" }}>
         <a href="/CapsulesTypeface.zip" download="CapsulesTypeface">
-           Download fonts
+           Download
         </a>
       </div>
 
@@ -77,6 +78,7 @@ export default function TypefaceGlyphs({
       >
         {GlyphSection(charGroups.uppercase)}
         {GlyphSection(charGroups.lowercase)}
+        {GlyphSection(charGroups.toSmallCaps)}
         {GlyphSection(charGroups.specials)}
         {GlyphSection(charGroups.digits)}
         {GlyphSection(charGroups.punctuationSymbols)}

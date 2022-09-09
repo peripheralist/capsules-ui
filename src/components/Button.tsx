@@ -20,7 +20,6 @@ export default function Button({
   underline?: boolean;
   loading?: string | boolean;
 }) {
-  const [interval, _setInterval] = useState<NodeJS.Timer>();
   const [loadingCharStartIndex, setLoadingCharStartIndex] = useState<number>(0);
 
   const defaultLoadingText = "...";
@@ -48,18 +47,16 @@ export default function Button({
   }, [text, href, loading]);
 
   useEffect(() => {
-    if (!loading || interval) return;
+    if (!loading) return;
 
-    _setInterval(
-      setInterval(() => {
-        setLoadingCharStartIndex((idx) => (idx + 1) % _text.length);
-      }, 150)
-    );
+    const interval = setInterval(() => {
+      setLoadingCharStartIndex((idx) => (idx + 1) % _text.length);
+    }, 150);
 
     return () => {
-      if (interval) clearInterval(interval);
+      clearInterval(interval);
     };
-  }, [loading, _text, interval]);
+  }, [loading, _text]);
 
   const underlineStr = useMemo(() => {
     if (!underline) return null;
