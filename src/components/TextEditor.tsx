@@ -88,7 +88,7 @@ export default function TextEditor({
               padding: 0,
               caretColor: bytesToColorString(color),
             }}
-            value={text[i]}
+            value={text[i] ?? ""}
             type="text"
             maxLength={maxLineLength}
             name={`input${i}`}
@@ -276,7 +276,6 @@ export default function TextEditor({
       >
         {setText ? (
           <Button
-            style={{ color: "#fff" }}
             size="small"
             onClick={() => setText([])}
             isDisabled={isEmptyText(text)}

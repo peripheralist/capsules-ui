@@ -1,5 +1,5 @@
 {
-  "address": "0x4a4A9AE59F787a4aD5A84409fE508cd3eD640d30", 
+  "address": "0xEDD6C9eF1223F0bb3bB1AF0E01614b39E7C9E98E", 
   "abi": [
 {
 "inputs": [
@@ -135,25 +135,6 @@
 "type": "function"
 },
 {
-"inputs": [
-  {
-    "internalType": "bytes4",
-    "name": "char",
-    "type": "bytes4"
-  }
-],
-"name": "isSupportedChar",
-"outputs": [
-  {
-    "internalType": "bool",
-    "name": "",
-    "type": "bool"
-  }
-],
-"stateMutability": "pure",
-"type": "function"
-},
-{
 "inputs": [],
 "name": "name",
 "outputs": [
@@ -256,6 +237,25 @@
   }
 ],
 "stateMutability": "view",
+"type": "function"
+},
+{
+"inputs": [
+  {
+    "internalType": "bytes3",
+    "name": "cp",
+    "type": "bytes3"
+  }
+],
+"name": "supportsCodePoint",
+"outputs": [
+  {
+    "internalType": "bool",
+    "name": "",
+    "type": "bool"
+  }
+],
+"stateMutability": "pure",
 "type": "function"
 }
 ]

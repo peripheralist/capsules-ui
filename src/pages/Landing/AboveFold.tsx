@@ -1,9 +1,8 @@
-import { CSSProperties, useState } from "react";
-import ColorHeader from "../../components/ColorHeader";
+import { CSSProperties, useContext, useState } from "react";
 import GlyphPicker from "../../components/GlyphPicker";
 import WeightSelector from "../../components/WeightSelector";
-import { RESERVED_COLORS } from "../../constants/colors";
 import { isMobile } from "../../constants/isMobile";
+import { EditingContext } from "../../contexts/editingContext";
 import { unicodes } from "../../fonts/unicode";
 import { Weight } from "../../models/weight";
 
@@ -14,6 +13,7 @@ export default function AboveFold({
   weight: number;
   setWeight: (w: Weight) => void;
 }) {
+  const { color } = useContext(EditingContext);
   const [text, setText] = useState<string>();
 
   const textAreaStyle: CSSProperties = {
@@ -73,10 +73,15 @@ export default function AboveFold({
           autoFocus={!isMobile}
           autoCorrect="false"
           style={{
+            // background: "#FFDC5A19",
+            // background: color + "19",
+            // color: "#FFDC5A",
+            // color: "#FFDC5A",
             background: "#ffffff16",
             width: "100%",
             boxSizing: "border-box",
             fontWeight: weight,
+            caretColor: "#fff",
             // caretColor:
             //   RESERVED_COLORS[
             //     Math.floor(Math.random() * RESERVED_COLORS.length)
@@ -102,6 +107,7 @@ export default function AboveFold({
               lineHeight: "normal",
               userSelect: "none",
               pointerEvents: "none",
+              // color: "#FFDC5A",
               ...textAreaStyle,
             }}
           >

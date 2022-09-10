@@ -1,7 +1,6 @@
-import { useCallback, useContext, useState } from "react";
+import { CSSProperties, useCallback, useContext, useState } from "react";
 import Button from "../../components/Button";
 import Capsule from "../../components/Capsule";
-import ColorHeader from "../../components/ColorHeader";
 import TextEditor from "../../components/TextEditor";
 import { ALL_COLORS } from "../../constants/colors";
 import { isMobile } from "../../constants/isMobile";
@@ -17,6 +16,8 @@ export default function NftDemo() {
     [setColor]
   );
 
+  const maxWidth: CSSProperties["maxWidth"] = isMobile ? "96vw" : 600;
+
   return (
     <div>
       <div
@@ -24,15 +25,16 @@ export default function NftDemo() {
           margin: "0 auto",
           textAlign: "center",
           paddingBottom: 50,
-          maxWidth: isMobile ? "96vw" : 600,
+          maxWidth,
         }}
       >
         <div>
           <h1
             style={{
               fontSize: isMobile ? "3rem" : "6rem",
-              lineHeight: 6 / 10,
+              lineHeight: 0.6,
               fontWeight: 500,
+              marginBottom: "3rem",
             }}
           >
             {/* <ColorHeader
@@ -44,12 +46,11 @@ export default function NftDemo() {
             <span style={{ fontWeight: 200 }}>ɴꜰᴛs</span>
           </h1>
         </div>
-        {/* <h1>7,957 Capsule NFTs</h1> */}
         <div style={{ fontSize: "1.4rem" }}>
           <b>7,957 total</b>
           <br />
           <br />
-          Each Capsule has <b>1 unique color</b> and <b>128 text characters</b>,
+          Each Capsule has <b>1 unique color</b> + <b>128 text characters</b>{" "}
           rendered as an on-chain SVG in the Capsules typeface.
         </div>
       </div>
@@ -110,21 +111,25 @@ export default function NftDemo() {
               color={color}
               width={isMobile ? 320 : 400}
               weight={weight}
-              square
               locked={locked}
+              square
             />
           </div>
         </div>
       </div>
-      <Button href="/#/mint" text="Mint a Capsule" />
+      <Button href="/#/mint" text="Minter" size="large" />
       <br />
       <br />
-      Text and font can be changed whenever by the owner. Leave the text blank
-      for a default image.
-      <br />
-      <br />
-      Capsules can also be locked. Locked Capsules <b>can never be changed</b>
-      ——even when transferred——and their images have super special sharp corners.
+      <div style={{ margin: "0 auto", maxWidth, textAlign: "center" }}>
+        Text and font can be changed anytime by the owner. Leave the text blank
+        for a default image.
+        <br />
+        <br />
+        Capsules can also be locked. Locked Capsules <b>
+          can never be edited
+        </b>{" "}
+        and their images have sharp corners.
+      </div>
     </div>
   );
 }

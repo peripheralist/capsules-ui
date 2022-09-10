@@ -12,6 +12,7 @@ import { EditingContext } from "../contexts/editingContext";
 import { NetworkContext } from "../contexts/networkContext";
 import { WalletContext } from "../contexts/walletContext";
 import useContractReader from "../hooks/ContractReader";
+import { BytesText } from "../models/text";
 import { Weight } from "../models/weight";
 import {
   deepEqBytesTexts,
@@ -27,7 +28,7 @@ export default function Edit() {
   const { connectedWallet } = useContext(NetworkContext);
   const { id } = useParams<{ id: string }>();
 
-  const capsuleText = useContractReader<string[][]>({
+  const capsuleText = useContractReader<BytesText>({
     contract: contracts?.CapsulesToken,
     functionName: "textOf",
     args: useMemo(() => [id], [id]),
@@ -84,7 +85,12 @@ export default function Edit() {
   if (!capsuleText || !capsuleColor || !capsuleFont) return null;
 
   return (
-    <div style={{ textAlign: "center", padding: 20 }}>
+    <div
+      style={{
+        textAlign: "center",
+        padding: isMobile ? "20px 20px 40px 20px" : 20,
+      }}
+    >
       <h1 style={{ color: bytesToColorString(capsuleColor) }}>
         {bytesToColorString(capsuleColor)}
       </h1>

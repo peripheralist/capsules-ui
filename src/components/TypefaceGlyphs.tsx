@@ -17,7 +17,7 @@ export default function TypefaceGlyphs({
         display: "inline-flex",
         flexWrap: "wrap",
         justifyContent: "center",
-        gap: isMobile ? "0.5rem" : "1rem",
+        gap: "0.5rem",
       }}
     >
       {chars.map((x) => (
@@ -52,7 +52,7 @@ export default function TypefaceGlyphs({
           margin: "0 auto",
           background: "#000",
           paddingTop: isMobile ? "2.5rem" : 0,
-          paddingBottom: "1rem",
+          paddingBottom: "0.5rem",
         }}
       >
         <div style={{ margin: "0 auto" }}>

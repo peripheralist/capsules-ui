@@ -77,7 +77,7 @@ export default function Capsules() {
       >
         {capsules.data?.capsules?.map((c) => (
           <a key={c.id} href={`/#/c/${c.id}`}>
-            {/* <SVGURIRenderer
+            <SVGURIRenderer
               uri={c.svg}
               style={{
                 fontWeight: "initial",
@@ -85,8 +85,8 @@ export default function Capsules() {
                 height: isMobile ? undefined : "10rem",
                 width: isMobile ? "90vw" : undefined,
               }}
-            /> */}
-            <div>
+            />
+            {/* <div>
               <Capsule
                 height={isMobile ? undefined : "10rem"}
                 width={isMobile ? "90vw" : undefined}
@@ -96,7 +96,7 @@ export default function Capsules() {
                 locked={c.locked}
                 style={{ fontWeight: "initial", cursor: "pointer" }}
               />
-            </div>
+            </div> */}
           </a>
         ))}
       </div>

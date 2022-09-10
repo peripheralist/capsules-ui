@@ -19,7 +19,9 @@ export default function ColorPicker({
 }) {
   const [_color, setColor] = useState<string>();
   const { mintedColors } = useContext(CapsulesContext);
-  const [mode, setMode] = useState<"spectrum" | "code">("spectrum");
+  const [mode, setMode] = useState<"spectrum" | "code">(
+    isMobile ? "code" : "spectrum"
+  );
   const [spectrumScale, setSpectrumScale] = useState<number>(0);
   const [rgb, setRgb] = useState<RGB>();
 
@@ -31,6 +33,7 @@ export default function ColorPicker({
     return vals;
   }, []);
 
+  // Scroll to current code picker values
   useEffect(() => {
     if (mode !== "code" || !rgb) return;
     setTimeout(() => {

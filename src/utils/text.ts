@@ -3,8 +3,6 @@ import { maxLineLength } from "../constants/text";
 import { unicodes } from "../fonts/unicode";
 import { BytesText, Text } from "../models/text";
 
-const zeroBytes4 = "0x00000000";
-
 export const defaultText = (color: string | undefined): string[] => [
   `CAPSULE`,
   `${color?.startsWith("0x") ? bytesToColorString(color) : color}`,
@@ -26,50 +24,73 @@ export const randPlaceholders = () => {
 
 export const isEmptyText = (text: Text) => text.every((line) => !line.length);
 
-export const isEmptyBytesText = (text: BytesText) =>
-  text.every((line) => line.every((char) => char === zeroBytes4));
+export const isEmptyBytesText = (text: BytesText) => {
+  for (let i = 0; i < 8; i++) {
+    const line = text[i];
+    for (let j = 0; j < 64; j += 4) {
+      if (line.substring(j, j + 4) !== "0000") return false;
+    }
+  }
+  return true;
+};
 
-export const textToBytesText = (text: string[]) => {
+export const textToBytesText = (text: string[]): BytesText => {
   const lines = [];
   for (let i = 0; i < 8; i++) {
-    lines.push(stringToBytes4Line(text.length > i ? text[i] : ""));
+    lines.push(stringToBytes32(text.length > i ? text[i] : ""));
   }
-  return lines;
+  return lines as BytesText;
 };
 
-export const stringToBytes4Line = (str?: string) => {
-  const arr: string[] = [];
+export const stringToBytes32 = (str?: string) => {
+  let bytes32: string = "";
   for (let i = 0; i < 16; i++) {
-    arr.push(charToBytes4(str?.[i]));
+    let byte = "0000";
+    if (str && str.length > i) {
+      byte = str[i].charCodeAt(0).toString(16).padStart(4, "0");
+    }
+    bytes32 += byte;
   }
-  return arr;
+  return "0x" + bytes32;
 };
 
-export const charToBytes4 = (char?: string) =>
+export const charToBytes2 = (char?: string) =>
   "0x" +
-  (char ? Buffer.from(char).toString("hex").padStart(8, "0") : "00000000");
+  (char
+    ? // get unicode
+      char.charCodeAt(0).toString(16).padStart(4, "0")
+    : "0000");
 
 export const parseBytesText = (text: BytesText): string[] =>
   isEmptyBytesText(text)
     ? []
     : trimText(
-        text.map((line) =>
-          line
-            .map((bytes4) =>
-              Buffer.from(bytes4.split("0x")[1], "hex").toString()
-            )
-            .join("")
-            .replaceAll("\x00", "")
-        )
+        text.map((line) => {
+          line = line.split("0x")[1];
+          let str = "";
+          for (let i = 0; i < 64; i += 4) {
+            str += String.fromCharCode(parseInt(line.substring(i, i + 4), 16));
+          }
+          return str;
+        })
       );
 
 // Remove trailing empty lines
 export const trimText = (text: Text): Text => {
   let output = [];
   for (let i = text.length - 1; i >= 0; i--) {
-    if (text[i].length || output.length) output.unshift(text[i]);
+    const line = trimLine(text[i]);
+    if (line.length || output.length) output.unshift(line);
   }
   return output;
+};
+
+// Remove trailing
+export const trimLine = (line: string) => {
+  while (line.length && line.endsWith(`\x00`)) {
+    line = line.substring(0, line.length - 3);
+  }
+  return line;
 };
 
 export const textWidth = (text: Text) =>
@@ -79,7 +100,7 @@ export const textWidth = (text: Text) =>
   );
 
 export const deepEqBytesTexts = (text1: BytesText, text2: BytesText): boolean =>
-  text1.every((line, i) => line.every((bytes4, j) => bytes4 === text2[i][j]));
+  text1.every((line, i) => line === text2[i]);
 
 export const isAllowedChar = (char: string) =>
   char?.length === 1 && isAllowedCode(char.codePointAt(0));

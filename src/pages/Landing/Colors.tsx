@@ -20,7 +20,7 @@ export default function Colors() {
           fontSize: isMobile ? "3rem" : "6rem",
         }}
       >
-        <ColorHeader text="7957 Colors" style={{ margin: 0 }} />
+        <ColorHeader text="7,957 COLORS" style={{ margin: 0 }} />
       </h1>
       <div
         style={{
@@ -42,7 +42,7 @@ export default function Colors() {
         </div>
 
         <div style={{ minWidth: 320, flex: 1 }}>
-          <b>7,950 colors</b> can be minted for Ξ0.01
+          <b>7,950 colors</b> can be minted by anyone for Ξ0.01
           <br />
           <br />
           <br />

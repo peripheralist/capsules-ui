@@ -36,16 +36,6 @@ export default function ColorHeader({
       >
         {text}
       </div>
-      {/* blue */}
-      {/* <div
-        style={{
-          position: "absolute",
-          left: ".1rem",
-          color: "#0000ff",
-        }}
-      >
-        {text}
-      </div> */}
       {/* cyan */}
       <div
         style={{
@@ -61,17 +51,6 @@ export default function ColorHeader({
       >
         {text}
       </div>
-      {/* green */}
-      {/* <div
-        style={{
-          position: "absolute",
-          top: ".1rem",
-          left: "-.05rem",
-          color: "#00ff00",
-        }}
-      >
-        {text}
-      </div> */}
       {/* yellow */}
       <div
         style={{
@@ -86,24 +65,6 @@ export default function ColorHeader({
       >
         {text}
       </div>
-      {/* red */}
-      {/* <div
-        style={{
-          position: "absolute",
-          top: "-.1rem",
-          left: "-.05rem",
-          color: "#ff0000",
-        }}
-      >
-        {text}
-      </div> */}
-      {/* <div
-        style={{
-          position: "absolute",
-        }}
-      >
-        {text}
-      </div> */}
       <div style={{ visibility: "hidden" }}>{text}</div>
     </div>
   );

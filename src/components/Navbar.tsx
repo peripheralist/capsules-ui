@@ -212,10 +212,10 @@ export default function Navbar() {
             </div>
             {Link("[⌂] Intro", "")}
             {Link(
-              `[#] Capsules${mintedSupply ? ` (${mintedSupply})` : ""}`,
+              `[#] Minted${mintedSupply ? ` (${mintedSupply})` : ""}`,
               "minted"
             )}
-            {Link("[⚡] Mint Capsule", "mint")}
+            {Link("[⚡] Mint", "mint")}
             {Link("[@] Typeface", "typeface")}
             {Link("[] Contracts", "contracts")}
           </div>

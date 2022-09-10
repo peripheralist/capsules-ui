@@ -29,7 +29,7 @@ export default function Button({
       case "small":
         return "1rem";
       case "large":
-        return "1.5rem";
+        return "1.7rem";
       case "medium":
       default:
         return "1.3rem";
@@ -41,7 +41,8 @@ export default function Button({
       return typeof loading === "string" ? loading : defaultLoadingText;
     }
     if (href) {
-      return "▶ " + text;
+      // return text + " →";
+      return text + " ▶";
     }
     return text;
   }, [text, href, loading]);
@@ -102,7 +103,7 @@ export default function Button({
     opacity: isDisabled ? 0.5 : 1,
     textTransform: "uppercase",
     fontSize,
-    color: "#00ffff",
+    color: "#fff",
   };
 
   if (href) {

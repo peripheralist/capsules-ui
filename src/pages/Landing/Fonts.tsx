@@ -26,7 +26,7 @@ export default function Fonts() {
         [{ weight, style: "normal" }, Buffer.from(FONTS[weight])],
         {
           onDone: (tx) => setLoadingTxForWeight(undefined),
-          txTitle: `Unlock font ${weight}`,
+          txTitle: `Store font ${weight}`,
         }
       );
     },
@@ -39,32 +39,40 @@ export default function Fonts() {
         key={weight}
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           alignItems: "center",
-          paddingTop: 20,
-          paddingBottom: 20,
+          paddingTop: "2rem",
+          paddingBottom: "2rem",
         }}
       >
         <div>
           <h1 style={{ fontWeight: weight, margin: 0 }}>{weight}</h1>
-          <div style={{ fontWeight: 500, color, lineHeight: 0.9 }}>
-            CAPSULE
-            <br />
-            {color}
-          </div>
         </div>
 
-        <div>
+        <div
+          style={{
+            fontWeight: 500,
+            color,
+            lineHeight: 0.9,
+            textAlign: "center",
+            flex: 1,
+          }}
+        >
+          CAPSULE
+          <br />
+          {color}
+        </div>
+
+        <div style={{ textAlign: "center", flex: 1 }}>
           {minter ? (
-            <div style={{ textAlign: "center", color, fontWeight: 700 }}>
-              <div>♥ minted ♥</div>
+            <div style={{ color, fontWeight: 700 }}>
+              <div>♥ stored ♥</div>
               <FormattedAddress address={minter} />
             </div>
           ) : (
             <Button
-              style={{ color: "#fff" }}
-              text="Mint"
-              onClick={() => unlockFont(weight)}
+              text="Store"
+              onClick={minter ? undefined : () => unlockFont(weight)}
               loading={loadingTxForWeight === weight}
             />
           )}
@@ -79,7 +87,9 @@ export default function Fonts() {
           alignItems: "center",
           justifyContent: "center",
           height: "100%",
+          cursor: minter ? "default" : "pointer",
         }}
+        onClick={minter ? undefined : () => unlockFont(weight)}
       >
         <h1 style={{ fontWeight: weight }}>{weight}</h1>
         <div
@@ -90,8 +100,8 @@ export default function Fonts() {
             textAlign: "center",
           }}
         >
-          {/* ᴍɪɴᴛs
-          <br /> */}
+          ᴍɪɴᴛs
+          <br />
           CAPSULE
           <br />
           {color}
@@ -99,16 +109,11 @@ export default function Fonts() {
         <br />
         {minter ? (
           <div style={{ textAlign: "center", color, fontWeight: 700 }}>
-            <div>♥ minted ♥</div>
+            <div>♥ stored ♥</div>
             <FormattedAddress address={minter} />
           </div>
         ) : (
-          <Button
-            style={{ color: "#fff" }}
-            text="Mint"
-            onClick={() => unlockFont(weight)}
-            loading={loadingTxForWeight === weight}
-          />
+          <Button text="STORE" loading={loadingTxForWeight === weight} />
         )}
       </div>
     );
@@ -131,12 +136,11 @@ export default function Fonts() {
         <br />
         <br />
         <b>
-          Anyone can store a font by minting its Capsule NFT, which only costs
-          gas.
+          Storing a font just costs gas, and will mint 1 of 7 pure-color Capsule
+          NFTs for free.
+          {/* Anyone can store a font by minting its Capsule NFT, which only costs
+          gas. */}
         </b>
-        {/* <br />
-        <br />
-        These are the only 7 Capsules with pure colors. */}
       </div>
 
       <h1 style={{ textAlign: "center" }}>FONTS</h1>

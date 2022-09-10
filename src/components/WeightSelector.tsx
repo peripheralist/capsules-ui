@@ -20,13 +20,51 @@ export default function WeightSelector({
       style={{
         position: "relative",
         lineHeight: 1,
+        color: "#fff",
         ...style,
       }}
     >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "0.9rem",
+          textTransform: "uppercase",
+          fontWeight: 300,
+          gap: "0.9rem",
+          paddingTop: "1rem",
+        }}
+      >
+        <span
+          style={{
+            fontWeight: useVariableWeight ? "inherit" : 600,
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setUseVariableWeight(false);
+            if (selectedWeight % 100 !== 0) {
+              onSelectWeight(
+                (Math.round(selectedWeight / 100) * 100) as Weight
+              );
+            }
+          }}
+        >
+          On-chain fonts
+        </span>{" "}
+        <span
+          style={{
+            fontWeight: useVariableWeight ? 600 : "inherit",
+            cursor: "pointer",
+          }}
+          onClick={() => setUseVariableWeight(true)}
+        >
+          Variable font
+        </span>
+      </div>
+
       {useVariableWeight ? (
         <div
           style={{
-            paddingBottom: 9,
             paddingTop: 8,
             maxWidth: 600,
             margin: "0 auto",
@@ -68,8 +106,6 @@ export default function WeightSelector({
             justifyContent: "center",
             gap: isMobile ? "1rem" : "1.6rem",
             fontSize: isMobile ? "1rem" : "1.6rem",
-            paddingTop: isMobile ? 0 : "0.2rem",
-            paddingBottom: isMobile ? 0 : "0.2rem",
           }}
         >
           {Object.keys(FONTS).map((w) => (
@@ -88,7 +124,7 @@ export default function WeightSelector({
                 <div
                   style={{
                     position: "absolute",
-                    bottom: "-5%",
+                    bottom: isMobile ? 0 : "-5%",
                     textAlign: "center",
                     width: "100%",
                   }}
@@ -101,43 +137,6 @@ export default function WeightSelector({
           ))}
         </div>
       )}
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          fontSize: "0.9rem",
-          textTransform: "uppercase",
-          fontWeight: 300,
-          gap: "0.9rem",
-        }}
-      >
-        <span
-          style={{
-            fontWeight: useVariableWeight ? "inherit" : 600,
-            cursor: "pointer",
-          }}
-          onClick={() => {
-            setUseVariableWeight(false);
-            if (selectedWeight % 100 !== 0) {
-              onSelectWeight(
-                (Math.round(selectedWeight / 100) * 100) as Weight
-              );
-            }
-          }}
-        >
-          On-chain fonts
-        </span>{" "}
-        <span
-          style={{
-            fontWeight: useVariableWeight ? 600 : "inherit",
-            cursor: "pointer",
-          }}
-          onClick={() => setUseVariableWeight(true)}
-        >
-          Variable font
-        </span>
-      </div>
     </div>
   );
 }

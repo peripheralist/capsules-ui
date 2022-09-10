@@ -18,7 +18,8 @@ export default function Contracts() {
         : CapsulesTypeface contract
         <br />
         <br />
-        To read Capsules Typeface fonts on-chain:
+        To read on-chain fonts:
+        <br />
         <div
           style={{
             display: "inline-block",
@@ -30,15 +31,14 @@ export default function Contracts() {
             textAlign: "left",
           }}
         >
-          {`|  ITypeface capsulesTypeface =
-|    ITypeface(${contracts?.CapsulesTypeface.address});
+          {`|  ITypeface typeface = ITypeface(address);
 |
 |  ITypeface.Font font = Font({
 |    weight: 400, 
 |    style: "normal"
 |  });
 |
-|  bytes src = capsulesTypeface.sourceOf(font);`}
+|  bytes source = typeface.sourceOf(font);`}
         </div>
         <br />
         <br />
@@ -57,7 +57,7 @@ export default function Contracts() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          CapsulesToken
+          CapsuleToken
         </a>
         : Capsules NFT contract.
         <br />
@@ -67,9 +67,20 @@ export default function Contracts() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          CapsulesRenderer
+          CapsulesMetadata
         </a>
-        : Renders images & metadata for Capsule NFTs. (Can be upgraded)
+        : Generates metadata for Capsule NFTs. (Can be upgraded)
+        <br />
+        <br />
+        <a
+          href="https://etherscan.io/asdf"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          DefaultCapsuleRenderer
+        </a>
+        : Renders images for Capsule NFTs. (Can be upgraded). Capsule owners may
+        choose any renderer for a Capsule.
       </div>
     </div>
   );

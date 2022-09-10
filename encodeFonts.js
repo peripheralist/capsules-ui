@@ -99,17 +99,18 @@ function writeUnicode() {
   // bytes1Comparison += ")";
   // bytes1Comparison = bytes1Comparison.toLowerCase();
 
-  function toBytes4(char) {
-    return encodeURIComponent(char);
+  function padBytes3(char) {
+    return `0x${char.toString().split("0x")[1].padStart(6, "0")}`;
   }
+  const varName = "cp";
   let bytes4Comparison = "(";
   groups.forEach((g, i) => {
     if (g.length === 1) {
-      bytes4Comparison += ` char == ${toBytes4(g)}`;
+      bytes4Comparison += ` ${varName} == ${padBytes3(g)}`;
     } else {
-      bytes4Comparison += ` (char >= ${toBytes4(g[0])} && char <= ${toBytes4(
-        g[g.length - 1]
-      )})`;
+      bytes4Comparison += ` (${varName} >= ${padBytes3(
+        g[0]
+      )} && ${varName} <= ${padBytes3(g[g.length - 1])})`;
     }
 
     if (i < groups.length - 1) bytes4Comparison += " ||";

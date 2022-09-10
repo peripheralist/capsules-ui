@@ -47,7 +47,7 @@ export default function Transactions({ style }: { style?: CSSProperties }) {
                 justifyContent: "space-between",
                 width: "100%",
                 padding: "0.5rem 1rem",
-                border: "1px solid #ffffff33",
+                border: "1px solid #ffffff20",
                 background: "#000",
                 boxSizing: "border-box",
               }}

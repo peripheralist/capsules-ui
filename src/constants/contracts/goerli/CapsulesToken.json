@@ -1,5 +1,5 @@
 {
-  "address": "0x700835e9403260f7F603c0C90cf7CEa01258db7F", 
+  "address": "0x3Fc66A14B294AFc25bF0B051cab88D5436CF45F0", 
   "abi": [
 {
 "inputs": [
@@ -10,7 +10,7 @@
   },
   {
     "internalType": "address",
-    "name": "_defaultCapsuleRenderer",
+    "name": "_defaultRenderer",
     "type": "address"
   },
   {
@@ -92,6 +92,11 @@
   }
 ],
 "name": "InvalidFontForRenderer",
+"type": "error"
+},
+{
+"inputs": [],
+"name": "InvalidRenderer",
 "type": "error"
 },
 {
@@ -317,7 +322,7 @@
     "type": "address"
   }
 ],
-"name": "SetDefaultCapsuleRenderer",
+"name": "SetDefaultRenderer",
 "type": "event"
 },
 {
@@ -551,9 +556,9 @@
         "type": "tuple"
       },
       {
-        "internalType": "bytes4[16][8]",
+        "internalType": "bytes32[8]",
         "name": "text",
-        "type": "bytes4[16][8]"
+        "type": "bytes32[8]"
       },
       {
         "internalType": "bool",
@@ -608,7 +613,7 @@
 },
 {
 "inputs": [],
-"name": "defaultCapsuleRenderer",
+"name": "defaultRenderer",
 "outputs": [
   {
     "internalType": "address",
@@ -627,9 +632,9 @@
     "type": "uint256"
   },
   {
-    "internalType": "bytes4[16][8]",
+    "internalType": "bytes32[8]",
     "name": "text",
-    "type": "bytes4[16][8]"
+    "type": "bytes32[8]"
   },
   {
     "components": [
@@ -787,6 +792,25 @@
 {
 "inputs": [
   {
+    "internalType": "uint256",
+    "name": "capsuleId",
+    "type": "uint256"
+  }
+],
+"name": "isValidCapsuleText",
+"outputs": [
+  {
+    "internalType": "bool",
+    "name": "",
+    "type": "bool"
+  }
+],
+"stateMutability": "view",
+"type": "function"
+},
+{
+"inputs": [
+  {
     "internalType": "bytes3",
     "name": "color",
     "type": "bytes3"
@@ -829,6 +853,25 @@
   }
 ],
 "name": "isValidFontForRenderer",
+"outputs": [
+  {
+    "internalType": "bool",
+    "name": "",
+    "type": "bool"
+  }
+],
+"stateMutability": "view",
+"type": "function"
+},
+{
+"inputs": [
+  {
+    "internalType": "address",
+    "name": "renderer",
+    "type": "address"
+  }
+],
+"name": "isValidRenderer",
 "outputs": [
   {
     "internalType": "bool",
@@ -949,9 +992,9 @@
     "type": "tuple"
   },
   {
-    "internalType": "bytes4[16][8]",
+    "internalType": "bytes32[8]",
     "name": "text",
-    "type": "bytes4[16][8]"
+    "type": "bytes32[8]"
   }
 ],
 "name": "mintWithText",
@@ -1226,7 +1269,7 @@
     "type": "address"
   }
 ],
-"name": "setDefaultCapsuleRenderer",
+"name": "setDefaultRenderer",
 "outputs": [],
 "stateMutability": "nonpayable",
 "type": "function"
@@ -1356,9 +1399,9 @@
 "name": "textOf",
 "outputs": [
   {
-    "internalType": "bytes4[16][8]",
+    "internalType": "bytes32[8]",
     "name": "",
-    "type": "bytes4[16][8]"
+    "type": "bytes32[8]"
   }
 ],
 "stateMutability": "view",

@@ -52,7 +52,8 @@ body {
   margin: 0;
   background: black;
   color: #fff;
-  /* color: #ddd; */
+  /* color: #947641; */
+  /* color: #ffd219; */
   line-height: 1.5;
   font-size: 1rem;
 }
@@ -62,7 +63,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a, button {
-  font-weight: bold;
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -71,8 +72,7 @@ button {
 }
 
 a {
-  font-weight: 500;
-  color: #00ffff;
+  color: #fff;
 }
 
 a.light {
@@ -153,14 +153,14 @@ input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
   height: 2px;
   border-radius: 2px;
-  background: #ffffff;
+  background: #fff;
 }
 
 input[type=range]::-moz-range-track {
   width: 100%;
   height: 2px;
   border-radius: 2px;
-  background: #ffffff;
+  background: #fff;
 }
 
 select {
