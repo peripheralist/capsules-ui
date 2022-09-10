@@ -34,6 +34,14 @@ export default function Edit() {
     args: useMemo(() => [id], [id]),
   });
 
+  const stringText = useContractReader<BytesText>({
+    contract: contracts?.CapsulesToken,
+    functionName: "stringTextOf",
+    args: useMemo(() => [id], [id]),
+  });
+
+  console.log({ stringText });
+
   const capsuleFont = useContractReader<{ weight: BigNumber }>({
     contract: contracts?.CapsulesToken,
     functionName: "fontOf",
