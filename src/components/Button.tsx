@@ -126,7 +126,11 @@ export default function Button({
   }
 
   return (
-    <button onClick={onClick} style={{ ...defaultStyle, ...style }}>
+    <button
+      disabled={isDisabled}
+      onClick={onClick}
+      style={{ ...defaultStyle, ...style }}
+    >
       {child}
 
       {underline && (

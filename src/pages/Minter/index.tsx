@@ -7,6 +7,7 @@ import TextEditor from "../../components/TextEditor";
 import { colorStringToBytes } from "../../constants/colors";
 import { isMobile } from "../../constants/isMobile";
 import { mintPrice } from "../../constants/mintPrice";
+import { CapsulesContext } from "../../contexts/capsulesContext";
 import { EditingContext } from "../../contexts/editingContext";
 import { NetworkContext } from "../../contexts/networkContext";
 import { WalletContext } from "../../contexts/walletContext";
@@ -21,6 +22,7 @@ export default function Minter() {
   const { text, setText, color, setColor, weight, setWeight } =
     useContext(EditingContext);
   const { connectedWallet, selectWallet } = useContext(NetworkContext);
+  const { paused } = useContext(CapsulesContext);
   const { transactor, contracts } = useContext(WalletContext);
   const [selectedTab, setSelectedTab] = useState<TabKey>("edit");
   const [loadingTx, setLoadingTx] = useState<boolean>();
@@ -130,8 +132,11 @@ export default function Minter() {
           <Capsule text={text} color={color} width={320} square />
 
           <Button
+            isDisabled={paused}
             text={
-              connectedWallet
+              paused
+                ? "Minting paused"
+                : connectedWallet
                 ? `Mint Capsule (Ξ${formatEther(mintPrice)})`
                 : "Connect wallet"
             }

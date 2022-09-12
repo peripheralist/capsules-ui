@@ -8,7 +8,7 @@ export default function Contracts() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          CapsulesTypeface
+          Capsules Typeface
         </a>
         : CapsulesTypeface contract
         <br />
@@ -38,7 +38,7 @@ export default function Contracts() {
         <br />
         <br />
         <a
-          href="https://github.com/asdf"
+          href="https://github.com/peripheralist/typeface"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -52,9 +52,9 @@ export default function Contracts() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          CapsuleToken
+          Capsule Token
         </a>
-        : Capsules NFT contract.
+        : Capsule NFT contract.
         <br />
         <br />
         <a
@@ -62,7 +62,7 @@ export default function Contracts() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          CapsulesMetadata
+          Capsule Metadata
         </a>
         : Generates metadata for Capsule NFTs. (Can be upgraded)
         <br />
@@ -72,10 +72,9 @@ export default function Contracts() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          DefaultCapsuleRenderer
+          Capsule Renderer
         </a>
-        : Renders images for Capsule NFTs. (Can be upgraded). Capsule owners may
-        choose any renderer for a Capsule.
+        : Renders images for Capsule NFTs. (Can be upgraded)
       </div>
     </div>
   );

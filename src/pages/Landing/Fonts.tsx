@@ -2,6 +2,7 @@ import { useCallback, useContext, useState } from "react";
 import Button from "../../components/Button";
 import FormattedAddress from "../../components/FormattedAddress";
 import { isMobile } from "../../constants/isMobile";
+import { CapsulesContext } from "../../contexts/capsulesContext";
 import { WalletContext } from "../../contexts/walletContext";
 import { FONTS } from "../../fonts/fonts";
 import { useFonts } from "../../hooks/fonts";
@@ -9,6 +10,7 @@ import { Weight } from "../../models/weight";
 
 export default function Fonts() {
   const { transactor, contracts } = useContext(WalletContext);
+  const { paused } = useContext(CapsulesContext);
 
   const [loadingTxForWeight, setLoadingTxForWeight] = useState<Weight>();
 
@@ -71,6 +73,7 @@ export default function Fonts() {
           ) : (
             <Button
               text="Store"
+              isDisabled={paused}
               onClick={minter ? undefined : () => unlockFont(weight)}
               loading={loadingTxForWeight === weight}
             />
@@ -88,7 +91,7 @@ export default function Fonts() {
           height: "100%",
           cursor: minter ? "default" : "pointer",
         }}
-        onClick={minter ? undefined : () => unlockFont(weight)}
+        onClick={minter || paused ? undefined : () => unlockFont(weight)}
       >
         <h1 style={{ fontWeight: weight }}>{weight}</h1>
         <div
@@ -112,7 +115,11 @@ export default function Fonts() {
             <FormattedAddress address={minter} />
           </div>
         ) : (
-          <Button text="STORE" loading={loadingTxForWeight === weight} />
+          <Button
+            text="STORE"
+            isDisabled={paused}
+            loading={loadingTxForWeight === weight}
+          />
         )}
       </div>
     );
