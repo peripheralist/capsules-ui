@@ -205,7 +205,7 @@ export default function TextEditor({
         <option
           key={f.weight}
           value={f.weight}
-          label={f.weight.toString() + (!f.minter ? " - locked" : "")}
+          label={f.weight.toString() + (!f.minter ? " - N/A" : "")}
           disabled={!f.minter}
         />
       )),

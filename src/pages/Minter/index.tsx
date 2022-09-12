@@ -61,7 +61,7 @@ export default function Minter() {
   // }, [spectrumSize, window.innerWidth]);
 
   return (
-    <div style={{ height: "100vh" }}>
+    <div style={{ height: "100vh", paddingBottom: tabBarHeight + 20 }}>
       {selectedTab === "edit" && (
         <div
           style={{

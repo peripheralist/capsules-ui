@@ -39,10 +39,10 @@ export default function Fonts() {
         key={weight}
         style={{
           display: "flex",
-          justifyContent: "space-around",
           alignItems: "center",
           paddingTop: "2rem",
           paddingBottom: "2rem",
+          gap: "1rem",
         }}
       >
         <div>
@@ -54,7 +54,6 @@ export default function Fonts() {
             fontWeight: 500,
             color,
             lineHeight: 0.9,
-            textAlign: "center",
             flex: 1,
           }}
         >
@@ -124,10 +123,10 @@ export default function Fonts() {
         style={{
           maxWidth: isMobile ? "90vw" : 600,
           margin: "0 auto",
-          paddingTop: 100,
+          paddingTop: isMobile ? 50 : 100,
           paddingBottom: 50,
           fontWeight: 500,
-          fontSize: "1.4rem",
+          fontSize: isMobile ? "1rem" : "1.4rem",
           textAlign: "center",
         }}
       >

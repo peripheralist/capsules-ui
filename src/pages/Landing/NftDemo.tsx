@@ -42,12 +42,12 @@ export default function NftDemo() {
             <span style={{ fontWeight: 200 }}>ɴꜰᴛs</span>
           </h1>
         </div>
-        <div style={{ fontSize: "1.4rem" }}>
+        <div style={{ fontSize: isMobile ? "1rem" : "1.4rem" }}>
           <b>7,957 total</b>
           <br />
           <br />
           Each Capsule has <b>1 unique color</b> + <b>128 text characters</b>{" "}
-          rendered as an on-chain SVG in the Capsules typeface.
+          rendered as an on-chain SVG in a Capsules font.
         </div>
       </div>
       <div
