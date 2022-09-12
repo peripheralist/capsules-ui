@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { isMobile } from "../constants/isMobile";
 import { charGroups } from "../constants/orderedUnicodes";
 import { unicodeNames } from "../fonts/unicode";
@@ -37,6 +37,8 @@ export default function GlyphPicker({
       ]);
   }, [searchText]);
 
+  const gap: CSSProperties["padding"] = isMobile ? "1rem" : "2rem";
+
   return (
     <div>
       <div style={{ cursor: "pointer" }} onClick={() => setModalVisible(true)}>
@@ -52,14 +54,14 @@ export default function GlyphPicker({
         <div
           style={{
             background: "black",
-            width: "32rem",
-            maxWidth: "90vw",
+            width: "36rem",
+            maxWidth: "96vw",
             boxSizing: "border-box",
             height: "80vh",
             maxHeight: 600,
             overflow: "auto",
             margin: "0 auto",
-            padding: "2rem",
+            padding: gap,
             border: "1px solid white",
           }}
         >
@@ -70,7 +72,7 @@ export default function GlyphPicker({
               padding: "1rem",
               width: "100%",
               boxSizing: "border-box",
-              marginBottom: "2rem",
+              marginBottom: gap,
               fontSize: "1.25rem",
             }}
             placeholder="Search glyphs"
@@ -81,15 +83,20 @@ export default function GlyphPicker({
             style={{
               display: "flex",
               flexWrap: "wrap",
-              gap: "0.5rem",
+              gap: "0.25rem",
               justifyContent: "center",
-              fontWeight: 400
+              fontWeight: 400,
             }}
           >
             {results.map((x) => (
               <GlyphElem
                 key={x}
+                style={{
+                  fontSize: isMobile ? "1rem" : "2rem",
+                  width: isMobile ? "1.5rem" : "3rem",
+                }}
                 charCode={x}
+                includeCode={!!searchText || !isMobile}
                 onClickGlyph={(glyph) => {
                   setTimeout(
                     () => {

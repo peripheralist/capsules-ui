@@ -14,13 +14,13 @@ export default function Colors() {
     >
       <h1
         style={{
-          lineHeight: 6 / 10,
+          lineHeight: 1.1,
           fontWeight: 500,
           textAlign: "center",
           fontSize: isMobile ? "3rem" : "6rem",
         }}
       >
-        <ColorHeader text="7,957 COLORS" style={{ margin: 0 }} />
+        <ColorHeader text="7957 COLORS" style={{ margin: 0 }} />
       </h1>
       <div
         style={{

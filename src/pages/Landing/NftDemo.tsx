@@ -37,10 +37,6 @@ export default function NftDemo() {
               marginBottom: "3rem",
             }}
           >
-            {/* <ColorHeader
-              text="CAPSULES"
-              style={{ margin: 0, fontSize: isMobile ? "3rem" : "6rem" }}
-            /> */}
             CAPSULES
             <br />
             <span style={{ fontWeight: 200 }}>ɴꜰᴛs</span>

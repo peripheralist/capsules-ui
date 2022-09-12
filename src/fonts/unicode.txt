@@ -320,7 +320,7 @@ uniE005 322 terminal
 uniE006 323 tree
 uniE007 324 verticalBars
 uniE008 325 droplet
-uniE009 326 ser
+uniE009 326 grid
 uniE00A 327 coffee
 uniE00B 328 martini
 uniE00C 329 rocket

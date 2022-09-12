@@ -56,7 +56,10 @@ function writeUnicode() {
     .forEach((curr, i) => {
       const prev = unicodes[i - 1];
       const formatted = `0x${curr.toString(16)}`;
-      if (prev && parseInt(curr, 16) - parseInt(prev, 16) > 1) {
+      if (i === unicodes.length - 1) {
+        temp.push(formatted);
+        groups.push(temp);
+      } else if (prev && parseInt(curr, 16) - parseInt(prev, 16) > 1) {
         groups.push(temp);
         temp = [formatted];
       } else {
@@ -103,20 +106,20 @@ function writeUnicode() {
     return `0x${char.toString().split("0x")[1].padStart(6, "0")}`;
   }
   const varName = "cp";
-  let bytes4Comparison = "(";
+  let bytes2Comparison = "(";
   groups.forEach((g, i) => {
     if (g.length === 1) {
-      bytes4Comparison += ` ${varName} == ${padBytes3(g)}`;
+      bytes2Comparison += ` ${varName} == ${padBytes3(g)}`;
     } else {
-      bytes4Comparison += ` (${varName} >= ${padBytes3(
+      bytes2Comparison += ` (${varName} >= ${padBytes3(
         g[0]
       )} && ${varName} <= ${padBytes3(g[g.length - 1])})`;
     }
 
-    if (i < groups.length - 1) bytes4Comparison += " ||";
+    if (i < groups.length - 1) bytes2Comparison += " ||";
   });
-  bytes4Comparison += ")";
-  bytes4Comparison = bytes4Comparison.toLowerCase();
+  bytes2Comparison += ")";
+  bytes2Comparison = bytes2Comparison.toLowerCase();
 
   fs.writeFileSync(
     dir + "/unicode.ts",
@@ -124,7 +127,7 @@ function writeUnicode() {
   
 export const unicodeGroups = [${groups.map((g) => `[${g}]`)}];
 
-export const bytes4Comparison = '${bytes4Comparison}';
+export const bytes2Comparison = '${bytes2Comparison}';
   
 export const unicodeNames: Record<string, string> = ${JSON.stringify(charMap)};`
   );

@@ -1,8 +1,7 @@
-import { CSSProperties, useContext, useState } from "react";
+import { CSSProperties, useState } from "react";
 import GlyphPicker from "../../components/GlyphPicker";
 import WeightSelector from "../../components/WeightSelector";
 import { isMobile } from "../../constants/isMobile";
-import { EditingContext } from "../../contexts/editingContext";
 import { unicodes } from "../../fonts/unicode";
 import { Weight } from "../../models/weight";
 
@@ -13,7 +12,6 @@ export default function AboveFold({
   weight: number;
   setWeight: (w: Weight) => void;
 }) {
-  const { color } = useContext(EditingContext);
   const [text, setText] = useState<string>();
 
   const textAreaStyle: CSSProperties = {

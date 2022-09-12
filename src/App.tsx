@@ -11,12 +11,8 @@ import Minter from "./pages/Minter";
 import Pause from "./pages/Pause";
 import Withdraw from "./pages/Withdraw";
 import Typeface from "./pages/Typeface";
-import { unicodes } from "./fonts/unicode";
-import { charToBytes2 } from "./utils/text";
 
 export default function App() {
-  console.log(unicodes.map((code) => charToBytes2(String.fromCharCode(code))));
-
   return (
     <div>
       <Navbar />

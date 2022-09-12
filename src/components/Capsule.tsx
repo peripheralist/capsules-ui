@@ -188,7 +188,6 @@ export default function Capsule({
 @font-face {
   font-family: 'Capsule';
   font-style: normal;
-  font-weight: normal;
   src: url(data:font/truetype;charset=utf-8;base64,${FONTS[weight ?? 400]})
 }`}
         </style>

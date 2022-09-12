@@ -1,9 +1,4 @@
-import { useContext } from "react";
-import { WalletContext } from "../contexts/walletContext";
-
 export default function Contracts() {
-  const { contracts } = useContext(WalletContext);
-
   return (
     <div style={{ maxWidth: 800, margin: "0 auto", padding: 30 }}>
       <h1>Contracts</h1>

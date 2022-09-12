@@ -2,10 +2,8 @@ import { BigNumber, utils } from "ethers";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-import Capsule from "../components/Capsule";
 import FormattedAddress from "../components/FormattedAddress";
 import SVGURIRenderer from "../components/SVGURIRenderer";
-import { bytesToColorString } from "../constants/colors";
 import { isMobile } from "../constants/isMobile";
 import { WalletContext } from "../contexts/walletContext";
 import useContractReader from "../hooks/ContractReader";
@@ -27,7 +25,7 @@ export default function Capsules() {
   const capsules = useSubgraphQuery({
     entity: "capsule",
     first: 25,
-    keys: ["owner", "text", "fontWeight", "color", "id", "locked", "svg"],
+    keys: ["id", "svg"],
     orderBy: "mintedAt",
     orderDirection: "desc",
     where: _wallet
@@ -75,18 +73,19 @@ export default function Capsules() {
           padding: isMobile ? "0 0 5rem 0" : "5rem",
         }}
       >
-        {capsules.data?.capsules?.map((c) => (
-          <a key={c.id} href={`/#/c/${c.id}`}>
-            <SVGURIRenderer
-              uri={c.svg}
-              style={{
-                fontWeight: "initial",
-                cursor: "pointer",
-                height: isMobile ? undefined : "10rem",
-                width: isMobile ? "90vw" : undefined,
-              }}
-            />
-            {/* <div>
+        {capsules.data?.capsules?.length ? (
+          capsules.data.capsules.map((c) => (
+            <a key={c.id} href={`/#/c/${c.id}`}>
+              <SVGURIRenderer
+                uri={c.svg}
+                style={{
+                  fontWeight: "initial",
+                  cursor: "pointer",
+                  height: isMobile ? undefined : "10rem",
+                  width: isMobile ? "90vw" : undefined,
+                }}
+              />
+              {/* <div>
               <Capsule
                 height={isMobile ? undefined : "10rem"}
                 width={isMobile ? "90vw" : undefined}
@@ -97,8 +96,20 @@ export default function Capsules() {
                 style={{ fontWeight: "initial", cursor: "pointer" }}
               />
             </div> */}
-          </a>
-        ))}
+            </a>
+          ))
+        ) : _wallet ? (
+          <div
+            style={{
+              padding: "2rem",
+              margin: "0 auto",
+              fontWeight: 200,
+              fontSize: "1.4rem",
+            }}
+          >
+            0 Capsules owned by <FormattedAddress address={_wallet} />
+          </div>
+        ) : null}
       </div>
     </div>
   );
