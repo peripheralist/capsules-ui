@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import FormattedAddress from "../components/FormattedAddress";
+import Spinner from "../components/Spinner";
 import SVGURIRenderer from "../components/SVGURIRenderer";
 import { isMobile } from "../constants/isMobile";
 import { WalletContext } from "../contexts/walletContext";
@@ -42,6 +43,8 @@ export default function Capsules() {
     };
   };
 
+  const _capsules = capsules.data?.capsules;
+
   return (
     <div style={{ padding: 20 }}>
       <h1
@@ -65,52 +68,54 @@ export default function Capsules() {
           `${supply?.toString() ?? "--"} Capsules Minted`
         )}
       </h1>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "0.5rem",
-          padding: isMobile ? "0 0 5rem 0" : "5rem",
-        }}
-      >
-        {capsules.data?.capsules?.length ? (
-          capsules.data.capsules.map((c) => (
-            <a key={c.id} href={`/#/c/${c.id}`}>
-              <SVGURIRenderer
-                uri={c.svg}
-                style={{
-                  fontWeight: "initial",
-                  cursor: "pointer",
-                  height: isMobile ? undefined : "10rem",
-                  width: isMobile ? "90vw" : undefined,
-                }}
-              />
-              {/* <div>
-              <Capsule
-                height={isMobile ? undefined : "10rem"}
-                width={isMobile ? "90vw" : undefined}
-                text={c.text}
-                weight={c.fontWeight}
-                color={bytesToColorString(c.color)}
-                locked={c.locked}
-                style={{ fontWeight: "initial", cursor: "pointer" }}
-              />
-            </div> */}
-            </a>
-          ))
-        ) : _wallet ? (
-          <div
-            style={{
-              padding: "2rem",
-              margin: "0 auto",
-              fontWeight: 200,
-              fontSize: "1.4rem",
-            }}
-          >
-            0 Capsules owned by <FormattedAddress address={_wallet} />
-          </div>
-        ) : null}
-      </div>
+      {_capsules ? (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.5rem",
+            padding: isMobile ? "0 0 5rem 0" : "5rem",
+          }}
+        >
+          {_capsules.length ? (
+            _capsules.map((c) => (
+              <a key={c.id} href={`/#/c/${c.id}`}>
+                <SVGURIRenderer
+                  uri={c.svg}
+                  style={{
+                    fontWeight: "initial",
+                    cursor: "pointer",
+                    height: isMobile ? undefined : "10rem",
+                    width: isMobile ? "90vw" : undefined,
+                  }}
+                />
+              </a>
+            ))
+          ) : _wallet ? (
+            <div
+              style={{
+                padding: "2rem",
+                margin: "0 auto",
+                fontWeight: 200,
+                fontSize: "1.4rem",
+              }}
+            >
+              0 Capsules owned by <FormattedAddress address={_wallet} />
+            </div>
+          ) : null}
+        </div>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "3rem",
+            fontSize: "3rem",
+          }}
+        >
+          <Spinner />
+        </div>
+      )}
     </div>
   );
 }

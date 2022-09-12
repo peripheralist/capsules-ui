@@ -14,6 +14,7 @@ import {
   isAllowedChar,
   isEmptyText,
   randPlaceholders,
+  toSmallCaps,
 } from "../utils/text";
 import { bytesToColorString } from "../constants/colors";
 
@@ -232,19 +233,26 @@ export default function TextEditor({
               fontWeight: 600,
             }}
           >
-            <div>Color:</div>
-            <span
-              style={{ color, cursor: "pointer" }}
+            <div>COLOR:</div>
+            <div
+              style={{
+                flex: 1,
+                color,
+                cursor: "pointer",
+                textAlign: "right",
+                paddingRight: "0.5rem",
+              }}
               onClick={() => setColorPickerVisible(true)}
             >
               {color} ▶
-            </span>
+            </div>
           </div>
         )}
 
         {setWeight && (
           <div
             style={{
+              position: "relative",
               display: "flex",
               gap: 20,
               alignItems: "baseline",
@@ -253,12 +261,19 @@ export default function TextEditor({
           >
             <div>FONT:</div>
             <select
-              style={{ flex: 1, fontSize: "1rem", fontWeight: 600 }}
+              style={{
+                flex: 1,
+                fontSize: "1rem",
+                fontWeight: 600,
+                textAlign: "right",
+                paddingRight: "1.75rem",
+              }}
               value={weight}
               onChange={(e) => setWeight(parseInt(e.target.value) as Weight)}
             >
               {options}
             </select>
+            <span style={{ position: "absolute", right: "0.5rem" }}>⌄</span>
           </div>
         )}
 

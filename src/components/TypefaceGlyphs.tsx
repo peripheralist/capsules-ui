@@ -44,6 +44,12 @@ export default function TypefaceGlyphs({
     >
       <h1>{unicodes.length} Capsules glyphs</h1>
 
+      <div style={{ textAlign: "center" }}>
+        <a href="/CapsulesTypeface.zip" download="CapsulesTypeface">
+           Download
+        </a>
+      </div>
+
       <div
         style={{
           position: "sticky",
@@ -58,12 +64,6 @@ export default function TypefaceGlyphs({
         <div style={{ margin: "0 auto" }}>
           <WeightSelector selectedWeight={weight} onSelectWeight={setWeight} />
         </div>
-      </div>
-
-      <div style={{ textAlign: "center" }}>
-        <a href="/CapsulesTypeface.zip" download="CapsulesTypeface">
-           Download
-        </a>
       </div>
 
       <div

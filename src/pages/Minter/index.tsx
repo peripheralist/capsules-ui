@@ -63,14 +63,21 @@ export default function Minter() {
   // }, [spectrumSize, window.innerWidth]);
 
   return (
-    <div style={{ height: "100vh", paddingBottom: tabBarHeight + 20 }}>
+    <div
+      style={{
+        height: "100vh",
+        paddingTop: "3rem",
+        paddingBottom: tabBarHeight,
+        boxSizing: "border-box",
+      }}
+    >
       {selectedTab === "edit" && (
         <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: isMobile ? "initial" : "center",
-            overflow: "auto",
+            overflow: isMobile ? "auto" : undefined,
             height: "100%",
             padding: 20,
             boxSizing: "border-box",

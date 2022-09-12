@@ -80,7 +80,7 @@ export default function FormattedAddress({
               target="_blank"
               rel="noopener noreferrer"
             >
-              Etherscan
+              Etherscan ↗
             </a>
           </div>
         </div>

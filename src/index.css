@@ -168,6 +168,8 @@ select {
   color: white;
   font-family: 'Capsules';
   border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 ul {

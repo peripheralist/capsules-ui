@@ -1,4 +1,4 @@
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { isMobile } from "../constants/isMobile";
 
 import { FONTS } from "../fonts/fonts";
@@ -14,6 +14,12 @@ export default function WeightSelector({
   style?: CSSProperties;
 }) {
   const [useVariableWeight, setUseVariableWeight] = useState<boolean>();
+
+  useEffect(() => {
+    if (selectedWeight % 100 !== 0) {
+      setUseVariableWeight(true);
+    }
+  }, [selectedWeight]);
 
   return (
     <div
@@ -65,7 +71,7 @@ export default function WeightSelector({
       {useVariableWeight ? (
         <div
           style={{
-            paddingTop: 8,
+            paddingTop: 10,
             maxWidth: 600,
             margin: "0 auto",
             position: "relative",
