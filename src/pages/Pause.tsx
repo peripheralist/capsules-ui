@@ -9,7 +9,7 @@ export default function Pause() {
   const [loadingTx, setLoadingTx] = useState<boolean>();
 
   const paused = useContractReader<boolean>({
-    contract: contracts?.CapsulesToken,
+    contract: contracts?.CapsuleToken,
     functionName: "paused",
   });
 
@@ -18,7 +18,7 @@ export default function Pause() {
 
     setLoadingTx(true);
 
-    transactor(contracts.CapsulesToken, "pause", [], {
+    transactor(contracts.CapsuleToken, "pause", [], {
       onDone: () => setLoadingTx(false),
     });
   }, [transactor, contracts]);
@@ -26,7 +26,7 @@ export default function Pause() {
   const unpause = useCallback(() => {
     if (!transactor || !contracts) return;
 
-    transactor(contracts.CapsulesToken, "unpause", []);
+    transactor(contracts.CapsuleToken, "unpause", []);
   }, [transactor, contracts]);
 
   return (

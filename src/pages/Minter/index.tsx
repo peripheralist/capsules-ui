@@ -44,7 +44,7 @@ export default function Minter() {
     const bytesText = textToBytesText(text);
 
     transactor(
-      contracts.CapsulesToken,
+      contracts.CapsuleToken,
       isEmptyBytesText(bytesText) ? "mint" : "mintWithText",
       isEmptyBytesText(bytesText)
         ? [colorStringToBytes(color), { weight, style: "normal" }]

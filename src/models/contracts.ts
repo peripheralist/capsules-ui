@@ -1,7 +1,7 @@
 import { Contract } from "@ethersproject/contracts";
 
 export enum ContractName {
-  CapsulesToken = "CapsulesToken",
+  CapsuleToken = "CapsuleToken",
   CapsulesTypeface = "CapsulesTypeface",
 }
 

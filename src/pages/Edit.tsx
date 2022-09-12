@@ -29,31 +29,31 @@ export default function Edit() {
   const { id } = useParams<{ id: string }>();
 
   const capsuleText = useContractReader<BytesText>({
-    contract: contracts?.CapsulesToken,
+    contract: contracts?.CapsuleToken,
     functionName: "textOf",
     args: useMemo(() => [id], [id]),
   });
 
   const capsuleFont = useContractReader<{ weight: BigNumber }>({
-    contract: contracts?.CapsulesToken,
+    contract: contracts?.CapsuleToken,
     functionName: "fontOf",
     args: useMemo(() => [id], [id]),
   });
 
   const capsuleColor = useContractReader<string>({
-    contract: contracts?.CapsulesToken,
+    contract: contracts?.CapsuleToken,
     functionName: "colorOf",
     args: useMemo(() => [id], [id]),
   });
 
   const owner = useContractReader<string>({
-    contract: contracts?.CapsulesToken,
+    contract: contracts?.CapsuleToken,
     functionName: "ownerOf",
     args: useMemo(() => [id], [id]),
   });
 
   const isLocked = useContractReader<boolean>({
-    contract: contracts?.CapsulesToken,
+    contract: contracts?.CapsuleToken,
     functionName: "isLocked",
     args: useMemo(() => [id], [id]),
   });
@@ -72,7 +72,7 @@ export default function Edit() {
     setLoadingTx(true);
 
     transactor(
-      contracts.CapsulesToken,
+      contracts.CapsuleToken,
       "editCapsule",
       [id, textToBytesText(text), { weight, style: "normal" }, shouldLock],
       {

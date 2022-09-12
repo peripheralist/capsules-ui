@@ -15,7 +15,7 @@ export default function Withdraw() {
   useEffect(() => {
     if (!contracts) return;
 
-    readProvider.getBalance(contracts.CapsulesToken.address).then(setBalance);
+    readProvider.getBalance(contracts.CapsuleToken.address).then(setBalance);
   }, [contracts]);
 
   const withdraw = useCallback(() => {
@@ -23,13 +23,13 @@ export default function Withdraw() {
 
     setLoadingTx(true);
 
-    transactor(contracts.CapsulesToken, "withdraw", [], {
+    transactor(contracts.CapsuleToken, "withdraw", [], {
       onDone: () => setLoadingTx(false),
     });
   }, [transactor, contracts]);
 
   const feeReceiver = useContractReader<string>({
-    contract: contracts?.CapsulesToken,
+    contract: contracts?.CapsuleToken,
     functionName: "creatorFeeReceiver",
   });
 

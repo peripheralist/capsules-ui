@@ -14,7 +14,7 @@ export default function CapsulesContextProvider({
   const { contracts } = useContext(WalletContext);
 
   const paused = useContractReader<boolean>({
-    contract: contracts?.CapsulesToken,
+    contract: contracts?.CapsuleToken,
     functionName: "paused",
   });
 

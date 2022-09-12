@@ -19,7 +19,7 @@ export default function Capsules() {
   const _wallet = wallet && utils.isAddress(wallet) ? wallet : undefined;
 
   const supply = useContractReader<BigNumber>({
-    contract: contracts?.CapsulesToken,
+    contract: contracts?.CapsuleToken,
     functionName: _wallet ? undefined : "totalSupply",
   });
 
