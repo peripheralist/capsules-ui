@@ -6,11 +6,12 @@ export default function Spinner({ style }: { style?: CSSProperties }) {
   // const charOpts = useMemo(() => ["", "☰", "", ""], []); // lines
   // const charOpts = useMemo(() => ["", "", "", ""], []); // corners
   const charOpts = useMemo(() => ["", "", "", ""], []); // orbital
+  // const charOpts = useMemo(() => ["", "", "", ""], []); // orbital
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCharIdx((idx) => (idx + 1) % charOpts.length);
-    }, 190);
+    }, 500);
 
     return () => {
       if (interval) clearInterval(interval);
