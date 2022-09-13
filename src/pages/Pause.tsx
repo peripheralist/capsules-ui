@@ -1,17 +1,13 @@
 import { useCallback, useContext, useState } from "react";
 
 import Button from "../components/Button";
+import { CapsulesContext } from "../contexts/capsulesContext";
 import { WalletContext } from "../contexts/walletContext";
-import useContractReader from "../hooks/ContractReader";
 
 export default function Pause() {
+  const { paused } = useContext(CapsulesContext);
   const { contracts, transactor } = useContext(WalletContext);
   const [loadingTx, setLoadingTx] = useState<boolean>();
-
-  const paused = useContractReader<boolean>({
-    contract: contracts?.CapsuleToken,
-    functionName: "paused",
-  });
 
   const pause = useCallback(() => {
     if (!transactor || !contracts) return;

@@ -14,7 +14,6 @@ import {
   isAllowedChar,
   isEmptyText,
   randPlaceholders,
-  toSmallCaps,
 } from "../utils/text";
 import { bytesToColorString } from "../constants/colors";
 
