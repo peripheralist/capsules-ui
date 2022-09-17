@@ -9,7 +9,6 @@ import { EditingContext } from "../../contexts/editingContext";
 export default function NftDemo() {
   const { color, setColor, text, setText, weight, setWeight } =
     useContext(EditingContext);
-  const [locked, setLocked] = useState<boolean>(false);
 
   const setRandomColor = useCallback(
     () => setColor?.(ALL_COLORS[Math.floor(Math.random() * ALL_COLORS.length)]),
@@ -93,13 +92,6 @@ export default function NftDemo() {
               >
                 <span style={{ color }}>{color}</span> ↻
               </span>
-
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() => setLocked((l) => !l)}
-              >
-                {locked ? " Locked" : " Unlocked"}
-              </div>
             </div>
 
             <Capsule
@@ -107,7 +99,6 @@ export default function NftDemo() {
               color={color}
               width={isMobile ? 320 : 400}
               weight={weight}
-              locked={locked}
               square
             />
           </div>
@@ -119,12 +110,6 @@ export default function NftDemo() {
       <div style={{ margin: "0 auto", maxWidth, textAlign: "center" }}>
         Text and font can be changed anytime by the owner. Leave the text blank
         for a default image.
-        <br />
-        <br />
-        Capsules can also be locked. Locked Capsules <b>
-          can never be edited
-        </b>{" "}
-        and their images have sharp corners.
       </div>
     </div>
   );

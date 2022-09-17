@@ -1,5 +1,6 @@
 import { CSSProperties, useState } from "react";
 import GlyphPicker from "../../components/GlyphPicker";
+import Spinner from "../../components/Spinner";
 import WeightSelector from "../../components/WeightSelector";
 import { isMobile } from "../../constants/isMobile";
 import { unicodes } from "../../fonts/unicode";
@@ -57,6 +58,19 @@ export default function AboveFold({
           <br />
           <span style={{ fontWeight: 200 }}>ᴛʏᴘᴇꜰᴀcᴇ</span>
         </h1>
+
+        {/* <br />
+        <br />
+        <br />
+        <br />
+        <div style={{ display: "flex", justifyContent: 'space-evenly' }}>
+          <Spinner style={{ fontSize: "3rem" }} type="lineL" />
+          <Spinner style={{ fontSize: "3rem" }} type="orbitalR" />
+          <Spinner style={{ fontSize: "3rem" }} type="bars" />
+          <Spinner style={{ fontSize: "3rem" }} type="hourglass" />
+          <Spinner style={{ fontSize: "3rem" }} type="orbitalL" />
+          <Spinner style={{ fontSize: "3rem" }} type="lineR" />
+        </div> */}
       </div>
 
       <div

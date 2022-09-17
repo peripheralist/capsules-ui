@@ -27,10 +27,13 @@ export default function GlyphPicker({
       setResults([
         ...charGroups.uppercase,
         ...charGroups.lowercase,
+        ...charGroups.smallCaps,
         ...charGroups.digits,
         ...charGroups.punctuationSymbols,
         ...charGroups.math,
+        ...charGroups.geometry,
         ...charGroups.currencies,
+        ...charGroups.specials,
         ...charGroups.arrows,
         ...charGroups.custom,
         ...charGroups.others,

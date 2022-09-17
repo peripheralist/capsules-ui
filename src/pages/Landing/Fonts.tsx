@@ -17,7 +17,7 @@ export default function Fonts() {
 
   const _fonts = useFonts();
 
-  const unlockFont = useCallback(
+  const storeFont = useCallback(
     (weight: Weight) => {
       if (!contracts || !transactor) return;
 
@@ -75,7 +75,7 @@ export default function Fonts() {
             <Button
               text="Store"
               isDisabled={paused}
-              onClick={minter ? undefined : () => unlockFont(weight)}
+              onClick={minter ? undefined : () => storeFont(weight)}
               loading={loadingTxForWeight === weight}
             />
           )}
@@ -92,7 +92,7 @@ export default function Fonts() {
           height: "100%",
           cursor: minter ? "default" : "pointer",
         }}
-        onClick={minter || paused ? undefined : () => unlockFont(weight)}
+        onClick={minter || paused ? undefined : () => storeFont(weight)}
       >
         <h1 style={{ fontWeight: weight }}>{weight}</h1>
         <div

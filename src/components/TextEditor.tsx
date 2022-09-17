@@ -27,8 +27,6 @@ export default function TextEditor({
   setColor,
   weight,
   setWeight,
-  locked,
-  setLocked,
   autofocus,
 }: {
   text: Text;
@@ -37,8 +35,6 @@ export default function TextEditor({
   setColor?: React.Dispatch<React.SetStateAction<string>>;
   weight: Weight;
   setWeight?: React.Dispatch<React.SetStateAction<Weight>>;
-  locked?: boolean;
-  setLocked?: (locked: boolean | ((locked: boolean) => boolean)) => void;
   autofocus?: boolean;
 }) {
   const [colorPickerVisible, setColorPickerVisible] = useState<boolean>();

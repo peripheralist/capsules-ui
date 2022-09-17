@@ -61,7 +61,7 @@ export const charToBytes2 = (char?: string) =>
       char.charCodeAt(0).toString(16).padStart(4, "0")
     : "0000");
 
-export const parseBytesText = (text: BytesText): string[] =>
+export const parseBytesText = (text: BytesText): Text =>
   isEmptyBytesText(text)
     ? []
     : trimText(

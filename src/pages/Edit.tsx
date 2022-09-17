@@ -22,7 +22,6 @@ import {
 
 export default function Edit() {
   const { text, setText, weight, setWeight } = useContext(EditingContext);
-  const [shouldLock, setShouldLock] = useState<boolean>(false);
   const [loadingTx, setLoadingTx] = useState<boolean>();
   const { contracts, transactor } = useContext(WalletContext);
   const { connectedWallet } = useContext(NetworkContext);
@@ -52,12 +51,6 @@ export default function Edit() {
     args: useMemo(() => [id], [id]),
   });
 
-  const isLocked = useContractReader<boolean>({
-    contract: contracts?.CapsuleToken,
-    functionName: "isLocked",
-    args: useMemo(() => [id], [id]),
-  });
-
   const isOwner =
     owner && connectedWallet?.toLowerCase() === owner?.toLowerCase();
 
@@ -73,14 +66,14 @@ export default function Edit() {
 
     transactor(
       contracts.CapsuleToken,
-      "editCapsule",
-      [id, textToBytesText(text), { weight, style: "normal" }, shouldLock],
+      "setTextAndFont",
+      [id, textToBytesText(text), { weight, style: "normal" }],
       {
         onDone: () => setLoadingTx(false),
         txTitle: `Edit ${bytesToColorString(capsuleColor)}`,
       }
     );
-  }, [transactor, contracts, id, text, weight, shouldLock, capsuleColor]);
+  }, [transactor, contracts, id, text, weight, capsuleColor]);
 
   if (!capsuleText || !capsuleColor || !capsuleFont) return null;
 
@@ -123,7 +116,7 @@ export default function Edit() {
             minHeight: isMobile ? 750 : 0,
           }}
         >
-          {isOwner && isLocked === false && setText && setWeight && (
+          {isOwner && setText && setWeight && (
             <TextEditor
               text={text}
               setText={setText}
@@ -137,40 +130,22 @@ export default function Edit() {
             <Capsule
               text={text}
               color={capsuleColor}
-              width={isMobile ? 320 : isLocked || !isOwner ? 420 : 320}
+              width={320}
               weight={weight}
               square
-              locked={shouldLock || isLocked}
             />
-
-            {!isLocked && isOwner && (
-              <div
-                style={{ cursor: "pointer", fontWeight: 500 }}
-                onClick={() => setShouldLock((l) => !l)}
-              >
-                {shouldLock ? " Don't lock" : " Lock"}
-              </div>
-            )}
           </div>
         </div>
       </div>
 
-      {isLocked && <div></div>}
-
-      {!isLocked && isOwner && (
+      {isOwner && (
         <Button
-          text={shouldLock ? "Save and lock Capsule" : "Save Capsule"}
+          text={"Save Capsule"}
           onClick={save}
           loading={loadingTx ? "Transaction pending..." : false}
-          isDisabled={
-            isLocked ||
-            (deepEqBytesTexts(textToBytesText(text), capsuleText) &&
-              !shouldLock)
-          }
+          isDisabled={deepEqBytesTexts(textToBytesText(text), capsuleText)}
         />
       )}
-      <br />
-      {shouldLock && "This Capsule can never be edited again!"}
     </div>
   );
 }

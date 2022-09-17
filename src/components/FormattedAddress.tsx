@@ -50,7 +50,7 @@ export default function FormattedAddress({
   return (
     <span
       className="address-container"
-      style={{ position: "relative", cursor: "default" }}
+      style={{ position: "relative", cursor: "crosshair" }}
     >
       {ensName ?? formattedAddress}
       <div style={{ borderTop: "5px solid transparent" }}>
@@ -59,19 +59,23 @@ export default function FormattedAddress({
           style={{
             fontWeight: 400,
             lineHeight: 1.5,
+            textAlign: "right",
             ...(align === "right" ? { right: 0 } : { left: 0 }),
           }}
           onClick={(e) => e.stopPropagation()}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            style={{ userSelect: "all", cursor: "crosshair" }}
+            style={{
+              userSelect: "all",
+              cursor: "crosshair",
+              fontSize: "0.7rem",
+            }}
           >
             {address}
-          </div>
+          </div>{" "}
           <div>
             <a
-              style={{ marginLeft: 10 }}
               href={`https://${
                 readNetwork.name !== NetworkName.mainnet
                   ? readNetwork.name + "."

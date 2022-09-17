@@ -1,4 +1,4 @@
-import { Text } from "./text";
+import { BytesText } from "./text";
 import { Weight } from "./weight";
 
 export type Capsule = {
@@ -6,8 +6,9 @@ export type Capsule = {
   color: string;
   owner: string;
   fontWeight: Weight;
-  text: Text;
+  text: BytesText;
   locked: boolean;
   tokenUri: string;
   svg: string;
+  lastEdited: number;
 };

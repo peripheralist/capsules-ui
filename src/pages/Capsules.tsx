@@ -1,10 +1,10 @@
 import { BigNumber, utils } from "ethers";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
+import CapsulePreview from "../components/CapsulePreview";
 
 import FormattedAddress from "../components/FormattedAddress";
 import Spinner from "../components/Spinner";
-import SVGURIRenderer from "../components/SVGURIRenderer";
 import { isMobile } from "../constants/isMobile";
 import { WalletContext } from "../contexts/walletContext";
 import useContractReader from "../hooks/ContractReader";
@@ -25,9 +25,9 @@ export default function Capsules() {
 
   const capsules = useSubgraphQuery({
     entity: "capsule",
-    first: 25,
-    keys: ["id", "svg"],
-    orderBy: "mintedAt",
+    first: 1000,
+    keys: ["id", "svg", "lastEdited", "owner", "color", "text"],
+    orderBy: "lastEdited",
     orderDirection: "desc",
     where: _wallet
       ? [
@@ -44,6 +44,20 @@ export default function Capsules() {
   };
 
   const _capsules = capsules.data?.capsules;
+
+  const col1: CapsuleType[] = [];
+  const col2: CapsuleType[] = [];
+  const col3: CapsuleType[] = [];
+
+  _capsules?.forEach((c, i) => {
+    if (i % 3 === 0) {
+      col3.push(c);
+    } else if (i % 2 === 0) {
+      col2.push(c);
+    } else {
+      col1.push(c);
+    }
+  });
 
   return (
     <div style={{ padding: 20 }}>
@@ -68,19 +82,44 @@ export default function Capsules() {
           `${supply?.toString() ?? "--"} Capsules Minted`
         )}
       </h1>
+
       {_capsules ? (
         <div
           style={{
             display: "flex",
-            flexWrap: "wrap",
-            gap: "0.5rem",
-            padding: isMobile ? "0 0 5rem 0" : "5rem",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: "2rem",
+            padding: isMobile ? "5rem 0 5rem 0" : "5rem 0 5rem 0",
+            width: isMobile ? "90vw" : "32rem",
+            margin: "0 auto",
           }}
         >
           {_capsules.length ? (
             _capsules.map((c) => (
               <a key={c.id} href={`/#/c/${c.id}`}>
-                <SVGURIRenderer
+                <CapsulePreview
+                  uri={c.svg}
+                  color={c.color}
+                  owner={c.owner}
+                  lastEditedTimestamp={c.lastEdited * 1000}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    height: "100%",
+                  }}
+                  imgStyle={{
+                    fontWeight: "initial",
+                    cursor: "pointer",
+                    // maxHeight: isMobile
+                    //   ? undefined
+                    //   : // : trimText(parseBytesText(c.text)).length > 4
+                    //     // ? "14rem"
+                    //     "12rem",
+                  }}
+                />
+                {/* <SVGURIRenderer
                   uri={c.svg}
                   style={{
                     fontWeight: "initial",
@@ -88,7 +127,7 @@ export default function Capsules() {
                     height: isMobile ? undefined : "10rem",
                     width: isMobile ? "90vw" : undefined,
                   }}
-                />
+                /> */}
               </a>
             ))
           ) : _wallet ? (

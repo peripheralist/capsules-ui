@@ -1,8 +1,18 @@
 import { unicodes } from "../fonts/unicode";
 
+// Some codes map to the same glyph, we don't need to show duplicates so we filter them out
+const _unicodes = unicodes.filter(
+  (x) =>
+    ![
+      0x254b, 0x253c, 0x254c, 0x254e, 0x2577, 2510, 0x250c, 0x2574, 0x2576,
+      0x2575, 0x2534, 0x2518, 0x2514, 0x2524, 0x251c, 0x2506, 0xfe69, 0xff04,
+      0xffe1, 0xffe6, 0xffe5, 0xffe0, 0x2795, 0x2797,
+    ].includes(x)
+);
+
 export const charGroups = {
   punctuationSymbols: [
-    ...unicodes.filter(
+    ..._unicodes.filter(
       (x) =>
         (x >= 0x21 && x <= 0x2f) ||
         (x >= 0x3a && x <= 0x40) ||
@@ -13,15 +23,14 @@ export const charGroups = {
     0x00bf,
     0x203c,
   ],
-  digits: unicodes.filter((x) => x >= 0x30 && x <= 0x39),
-  uppercase: unicodes.filter((x) => x >= 0x41 && x <= 0x5a),
-  lowercase: unicodes.filter((x) => x >= 0x61 && x <= 0x7a),
-  toSmallCaps: [
+  digits: _unicodes.filter((x) => x >= 0x30 && x <= 0x39),
+  uppercase: _unicodes.filter((x) => x >= 0x41 && x <= 0x5a),
+  lowercase: _unicodes.filter((x) => x >= 0x61 && x <= 0x7a),
+  smallCaps: [
     0x1d00, 0x1d01, 0x0299, 0x1d05, 0x1d07, 0xa730, 0x0262, 0x029c, 0x026a,
-    0x1d0a, 0x1d0b, 0x029f, 0x1d0d, 0x0274, 0x1d0e, 0x1d18, 0xa7af, 0x0280,
-    0x1d19, 0x0281, 0x1d1b, 0x028f,
+    0x1d0a, 0x1d0b, 0x029f, 0x1d0d, 0x0274, 0x1d18, 0xa7af, 0x0280, 0x1d1b,
+    0x028f,
   ],
-  // specials: unicodes.filter((x) => x >= 0xc0 && x <= 0x0178),
   specials: [
     0x00c0, 0x00c1, 0x00c2, 0x00c3, 0x00c4, 0x00c7, 0x00c8, 0x00c9, 0x00ca,
     0x00cb, 0x00d1, 0x00d2, 0x00d3, 0x00d4, 0x00d5, 0x00d6, 0x00d9, 0x00da,
@@ -32,26 +41,51 @@ export const charGroups = {
     0x0178, 0x0128, 0x0129, 0x012b, 0x0168, 0x0169, 0x00cc, 0x00cd, 0x00ce,
     0x00cf,
   ],
+  geometry: _unicodes.filter(
+    (x) =>
+      (x >= 0x2506 && x <= 0x25ff) ||
+      (x >= 0x2630 && x <= 0x2637) ||
+      (x >= 0x2b16 && x <= 0x2b19) ||
+      (x >= 0x268a && x <= 0x268f)
+  ),
   arrows: [
-    ...unicodes.filter(
+    ..._unicodes.filter(
       (x) => (x >= 0x2190 && x <= 0x2199) || (x >= 0x2b05 && x <= 0x2b0d)
     ),
     0x2b95,
+    0x02c2,
+    0x02c3,
+    0x2b90,
+    0x2b91,
+    0x21ba,
+    0x21bb,
   ],
   spaces: [0x20, 0xa0],
   math: [
-    0x00d7, 0x2212, 0x00b1, 0x00f7, 0x2265, 0x2264, 0x03c0, 0x2211, 0x220f,
-    0x221a, 0x222b, 0x2260, 0x2248, 0x221e, 0x2206, 0x2044, 0x2030,
+    0x00d7, 0x2212, 0x002b, 0x00d7, 0x00b1, 0x00f7, 0x2265, 0x2264, 0x03c0,
+    0x2211, 0x220f, 0x221a, 0x222b, 0x2260, 0x2248, 0x221e, 0x2206, 0x2044,
+    0x2030,
   ],
   currencies: [
-    0x039e, 0x20bf, 0x00a3, 0x00a2, 0x00a4, 0x00a5, 0x20ac, 0x0192, 0x0e3f,
-    0x20b4, 0x20bd, 0x20a8,
+    0x039e,
+    0x20bf,
+    0x00a3,
+    0x00a2,
+    0x00a4,
+    0x00a5,
+    0x20ac,
+    0x0192,
+    0x0e3f,
+    0x20b4,
+    0x20bd,
+    0x20a8,
+    ..._unicodes.filter((x) => x >= 0x20a3 && x <= 0x20bc),
   ],
-  custom: unicodes.filter((x) => x >= 0xe000),
+  custom: _unicodes.filter((x) => x >= 0xe000 && x <= 0xe421),
   others: [] as number[],
 };
 
-charGroups.others = unicodes.filter(
+charGroups.others = _unicodes.filter(
   (x) => !Object.values(charGroups).flat().includes(x)
 );
 
@@ -62,13 +96,13 @@ if (process.env.NODE_ENV !== "production") {
     .flat()
     .map((x) => (charOccurences[x] = (charOccurences[x] ?? 0) + 1));
 
-  // Make sure no characters are included twice
-  Object.entries(charOccurences).forEach(([k, v]) => {
-    if (v > 1) console.log("u fucked up", k, v);
-  });
+  // // Make sure no characters are included twice
+  // Object.entries(charOccurences).forEach(([k, v]) => {
+  //   if (v > 1) console.log("u fucked up", k, v);
+  // });
 
   // Make sure all characters are included
-  if (Object.entries(charOccurences).length !== unicodes.length) {
+  if (Object.entries(charOccurences).length !== _unicodes.length) {
     console.log("u missed some");
   }
 }

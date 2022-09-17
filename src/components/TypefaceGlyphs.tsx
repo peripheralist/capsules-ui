@@ -78,7 +78,7 @@ export default function TypefaceGlyphs({
       >
         {GlyphSection(charGroups.uppercase)}
         {GlyphSection(charGroups.lowercase)}
-        {GlyphSection(charGroups.toSmallCaps)}
+        {GlyphSection(charGroups.smallCaps)}
         {GlyphSection(charGroups.specials)}
         {GlyphSection(charGroups.digits)}
         {GlyphSection(charGroups.punctuationSymbols)}
@@ -86,6 +86,7 @@ export default function TypefaceGlyphs({
         {GlyphSection(charGroups.currencies)}
         {GlyphSection(charGroups.arrows)}
         {GlyphSection(charGroups.custom)}
+        {GlyphSection(charGroups.geometry)}
         {GlyphSection(charGroups.others)}
       </div>
     </div>
