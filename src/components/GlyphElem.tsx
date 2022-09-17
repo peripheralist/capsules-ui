@@ -102,7 +102,6 @@ export default function GlyphElem({
               textOverflow: "ellipsis",
             }}
           >
-            {charCode.toString(16)} -{" "}
             {unicodeNames[charCode.toString(16).padStart(4, "0")]}
           </div>
         )}
