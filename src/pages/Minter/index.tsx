@@ -198,7 +198,13 @@ export default function Minter() {
             boxSizing: "border-box",
           }}
         >
-          <Capsule text={text} color={color} width={320} square />
+          <Capsule
+            text={text}
+            color={color}
+            width={320}
+            weight={weight}
+            square
+          />
 
           {isOwner ? (
             <Button
