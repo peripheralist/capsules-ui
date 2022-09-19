@@ -28,6 +28,10 @@ export default function CapsulePreview({
 }) {
   const _color = bytesToColorString(color);
 
+  let formattedDate = formatHistoricalDate(lastEditedTimestamp);
+  if (formattedDate.toLowerCase() === "now") formattedDate = "just now";
+  else formattedDate += " ago";
+
   return (
     <div style={{ color: _color, ...style }}>
       {uri.length ? (
@@ -45,7 +49,7 @@ export default function CapsulePreview({
           // fontWeight: 300,
         }}
       >
-        <span>{formatHistoricalDate(lastEditedTimestamp)} ago</span>
+        <span>{formattedDate}</span>
         <span style={{ display: "flex", gap: "1rem" }}>
           <FormattedAddress address={owner} align="right" />
           {_color}
