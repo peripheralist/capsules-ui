@@ -11,6 +11,7 @@ import { CapsulesContext } from "../../contexts/capsulesContext";
 import { EditingContext } from "../../contexts/editingContext";
 import { NetworkContext } from "../../contexts/networkContext";
 import { WalletContext } from "../../contexts/walletContext";
+import useSubgraphQuery from "../../hooks/SubgraphQuery";
 import { isEmptyBytesText, textToBytesText } from "../../utils/text";
 import TabBar, { Tab } from "./TabBar";
 
@@ -22,7 +23,7 @@ export default function Minter() {
   const { text, setText, color, setColor, weight, setWeight } =
     useContext(EditingContext);
   const { connectedWallet, selectWallet } = useContext(NetworkContext);
-  const { paused } = useContext(CapsulesContext);
+  const { paused, owner } = useContext(CapsulesContext);
   const { transactor, contracts } = useContext(WalletContext);
   const [selectedTab, setSelectedTab] = useState<TabKey>("edit");
   const [loadingTx, setLoadingTx] = useState<boolean>();
@@ -35,6 +36,27 @@ export default function Minter() {
     },
     { key: "mint", title: "2. Mint" },
   ];
+
+  const giftRecipients = useSubgraphQuery({
+    entity: "giftRecipient",
+    keys: ["giftCount"],
+    where: connectedWallet
+      ? [
+          {
+            key: "id",
+            value: connectedWallet.toLowerCase(),
+          },
+        ]
+      : [],
+  }) as {
+    data?: {
+      giftRecipients?: { giftCount: number }[];
+    };
+  };
+
+  const giftCount = giftRecipients.data?.giftRecipients?.[0].giftCount;
+
+  const isOwner = owner && connectedWallet?.toLowerCase() === owner;
 
   const mint = useCallback(() => {
     if (!contracts || !transactor || !color) return;
@@ -54,6 +76,47 @@ export default function Minter() {
       }
     );
   }, [contracts, transactor, color, text, weight]);
+
+  const mintGift = useCallback(() => {
+    if (!contracts || !transactor || !color) return;
+
+    setLoadingTx(true);
+
+    const bytesText = textToBytesText(text);
+
+    transactor(
+      contracts.CapsuleToken,
+      "mintGift",
+      [colorStringToBytes(color), { weight, style: "normal" }, bytesText],
+      {
+        onDone: () => setLoadingTx(false),
+        txTitle: `Mint ${color}`,
+      }
+    );
+  }, [contracts, transactor, color, text, weight]);
+
+  const mintAsOwner = useCallback(() => {
+    if (!contracts || !transactor || !color) return;
+
+    setLoadingTx(true);
+
+    const bytesText = textToBytesText(text);
+
+    transactor(
+      contracts.CapsuleToken,
+      "mintAsOwner",
+      [
+        connectedWallet,
+        colorStringToBytes(color),
+        { weight, style: "normal" },
+        bytesText,
+      ],
+      {
+        onDone: () => setLoadingTx(false),
+        txTitle: `Mint ${color}`,
+      }
+    );
+  }, [connectedWallet, contracts, transactor, color, text, weight]);
 
   // const scrollSpectrumContainer = useCallback(() => {
   //   const x = Math.max(spectrumSize - window.innerWidth, 0) / -2
@@ -136,20 +199,39 @@ export default function Minter() {
         >
           <Capsule text={text} color={color} width={320} square />
 
-          <Button
-            isDisabled={paused}
-            text={
-              paused
-                ? "Minting paused"
-                : connectedWallet
-                ? `Mint Capsule (Ξ${formatEther(mintPrice)})`
-                : "Connect wallet"
-            }
-            size="large"
-            onClick={connectedWallet ? mint : selectWallet}
-            style={{ margin: "0 auto", color: "white" }}
-            loading={loadingTx ? "Transaction pending..." : false}
-          />
+          {isOwner ? (
+            <Button
+              text="Mint as Owner"
+              size="large"
+              onClick={mintAsOwner}
+              style={{ margin: "0 auto", color: "white" }}
+              loading={loadingTx ? "Transaction pending..." : false}
+            />
+          ) : !!giftCount ? (
+            <Button
+              isDisabled={paused}
+              text={`♥ Mint Gift ♥ (${giftCount} left)`}
+              size="large"
+              onClick={mintGift}
+              style={{ margin: "0 auto", color: "white" }}
+              loading={loadingTx ? "Transaction pending..." : false}
+            />
+          ) : (
+            <Button
+              isDisabled={paused}
+              text={
+                paused
+                  ? "Minting paused"
+                  : connectedWallet
+                  ? `Mint Capsule (Ξ${formatEther(mintPrice)})`
+                  : "Connect wallet"
+              }
+              size="large"
+              onClick={connectedWallet ? mint : selectWallet}
+              style={{ margin: "0 auto", color: "white" }}
+              loading={loadingTx ? "Transaction pending..." : false}
+            />
+          )}
         </div>
       )}
 

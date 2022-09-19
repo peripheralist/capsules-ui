@@ -91,7 +91,7 @@ export default function Capsules() {
             flexDirection: "column",
             gap: "2rem",
             padding: isMobile ? "5rem 0 5rem 0" : "5rem 0 5rem 0",
-            width: isMobile ? "90vw" : "32rem",
+            width: isMobile ? "90vw" : "30rem",
             margin: "0 auto",
           }}
         >
@@ -112,22 +112,8 @@ export default function Capsules() {
                   imgStyle={{
                     fontWeight: "initial",
                     cursor: "pointer",
-                    // maxHeight: isMobile
-                    //   ? undefined
-                    //   : // : trimText(parseBytesText(c.text)).length > 4
-                    //     // ? "14rem"
-                    //     "12rem",
                   }}
                 />
-                {/* <SVGURIRenderer
-                  uri={c.svg}
-                  style={{
-                    fontWeight: "initial",
-                    cursor: "pointer",
-                    height: isMobile ? undefined : "10rem",
-                    width: isMobile ? "90vw" : undefined,
-                  }}
-                /> */}
               </a>
             ))
           ) : _wallet ? (

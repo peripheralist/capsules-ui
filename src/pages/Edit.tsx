@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 
 import Button from "../components/Button";
 import Capsule from "../components/Capsule";
+import CapsulePreview from "../components/CapsulePreview";
 import FormattedAddress from "../components/FormattedAddress";
 import TextEditor from "../components/TextEditor";
 import { bytesToColorString } from "../constants/colors";
@@ -81,7 +82,7 @@ export default function Edit() {
     <div
       style={{
         textAlign: "center",
-        padding: isMobile ? "20px 20px 40px 20px" : 20,
+        padding: isMobile && isOwner ? "20px 20px 40px 20px" : 0,
       }}
     >
       <h1 style={{ color: bytesToColorString(capsuleColor) }}>
@@ -113,7 +114,7 @@ export default function Edit() {
             alignItems: "center",
             flexWrap: "wrap-reverse",
             gap: isMobile ? 30 : 50,
-            minHeight: isMobile ? 750 : 0,
+            minHeight: isMobile && isOwner ? 750 : 0,
           }}
         >
           {isOwner && setText && setWeight && (
@@ -130,7 +131,7 @@ export default function Edit() {
             <Capsule
               text={text}
               color={capsuleColor}
-              width={320}
+              width={isOwner ? 320 : isMobile ? "100%" : "30rem"}
               weight={weight}
               square
             />

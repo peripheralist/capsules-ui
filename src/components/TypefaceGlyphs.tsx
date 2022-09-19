@@ -45,7 +45,7 @@ export default function TypefaceGlyphs({
       <h1>{unicodes.length} Capsules glyphs</h1>
 
       <div style={{ textAlign: "center" }}>
-        <a href="/CapsulesTypeface.zip" download="CapsulesTypeface">
+        <a href="/Capsules.zip" download="Capsules">
            Download
         </a>
       </div>

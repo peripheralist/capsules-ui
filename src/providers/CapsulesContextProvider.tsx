@@ -18,11 +18,17 @@ export default function CapsulesContextProvider({
     functionName: "paused",
   });
 
+  const owner = useContractReader<string>({
+    contract: contracts?.CapsuleToken,
+    functionName: "owner",
+  });
+
   const mintedColors = useMintedColors();
 
   return (
     <CapsulesContext.Provider
       value={{
+        owner: owner?.toLowerCase(),
         paused,
         unmintedColors: ALL_COLORS.filter((c) => !mintedColors.includes(c)),
         mintedColors,
