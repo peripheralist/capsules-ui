@@ -4,7 +4,6 @@ import { isMobile } from "../constants/isMobile";
 import { readNetwork } from "../constants/networks";
 
 import { readProvider } from "../constants/readProvider";
-import { NetworkName } from "../models/networkName";
 
 export default function FormattedAddress({
   address,

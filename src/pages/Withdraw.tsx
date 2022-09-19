@@ -30,7 +30,7 @@ export default function Withdraw() {
 
   const feeReceiver = useContractReader<string>({
     contract: contracts?.CapsuleToken,
-    functionName: "creatorFeeReceiver",
+    functionName: "feeReceiver",
   });
 
   return (

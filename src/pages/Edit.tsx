@@ -8,7 +8,6 @@ import FormattedAddress from "../components/FormattedAddress";
 import TextEditor from "../components/TextEditor";
 import { bytesToColorString } from "../constants/colors";
 import { isMobile } from "../constants/isMobile";
-import { CapsulesContext } from "../contexts/capsulesContext";
 import { EditingContext } from "../contexts/editingContext";
 import { NetworkContext } from "../contexts/networkContext";
 import { WalletContext } from "../contexts/walletContext";
@@ -27,7 +26,6 @@ export default function Edit() {
   const [loadingTx, setLoadingTx] = useState<boolean>();
   const { contracts, transactor } = useContext(WalletContext);
   const { connectedWallet } = useContext(NetworkContext);
-  const { owner } = useContext(CapsulesContext);
   const { id } = useParams<{ id: string }>();
 
   const isOwner = useIsOwner();

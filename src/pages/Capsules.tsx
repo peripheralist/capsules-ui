@@ -1,7 +1,6 @@
 import { BigNumber, utils } from "ethers";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
-import Capsule from "../components/Capsule";
 import CapsulePreview from "../components/CapsulePreview";
 
 import FormattedAddress from "../components/FormattedAddress";
