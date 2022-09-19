@@ -10,6 +10,7 @@ import { bytesToColorString } from "../constants/colors";
 import { isMobile } from "../constants/isMobile";
 import { CapsulesContext } from "../contexts/capsulesContext";
 import { EditingContext } from "../contexts/editingContext";
+import { NetworkContext } from "../contexts/networkContext";
 import { WalletContext } from "../contexts/walletContext";
 import useContractReader from "../hooks/ContractReader";
 import { useIsOwner } from "../hooks/isOwner";
@@ -25,10 +26,21 @@ export default function Edit() {
   const { text, setText, weight, setWeight } = useContext(EditingContext);
   const [loadingTx, setLoadingTx] = useState<boolean>();
   const { contracts, transactor } = useContext(WalletContext);
+  const { connectedWallet } = useContext(NetworkContext);
   const { owner } = useContext(CapsulesContext);
   const { id } = useParams<{ id: string }>();
 
   const isOwner = useIsOwner();
+
+  const capsuleOwner = useContractReader<string>({
+    contract: contracts?.CapsuleToken,
+    functionName: "ownerOf",
+    args: useMemo(() => [id], [id]),
+  });
+
+  const isCapsuleOwner =
+    connectedWallet &&
+    connectedWallet?.toLowerCase() === capsuleOwner?.toLowerCase();
 
   const capsuleText = useContractReader<BytesText>({
     contract: contracts?.CapsuleToken,
@@ -87,7 +99,7 @@ export default function Edit() {
         {bytesToColorString(capsuleColor)}
       </h1>
 
-      {isOwner ? (
+      {isCapsuleOwner ? (
         "Owned by you"
       ) : (
         <span>
@@ -115,7 +127,7 @@ export default function Edit() {
             minHeight: isMobile && isOwner ? 750 : 0,
           }}
         >
-          {isOwner && setText && setWeight && (
+          {isCapsuleOwner && setText && setWeight && (
             <TextEditor
               text={text}
               setText={setText}
@@ -137,7 +149,7 @@ export default function Edit() {
         </div>
       </div>
 
-      {isOwner && (
+      {isCapsuleOwner && (
         <Button
           text={"Save Capsule"}
           onClick={save}
