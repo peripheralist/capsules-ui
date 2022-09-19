@@ -60,8 +60,8 @@ export default function Transactions({ style }: { style?: CSSProperties }) {
                   gap: "1rem",
                   color: "white",
                 }}
-                href={`https://${readNetwork.name}${
-                  readNetwork.name !== NetworkName.mainnet ? "." : ""
+                href={`https://${
+                  readNetwork.chainId !== 1 ? readNetwork.name + "." : ""
                 }etherscan.io/tx/${tx.tx.hash}`}
                 target="_blank"
                 rel="noopener noreferrer"
