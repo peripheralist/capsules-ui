@@ -88,6 +88,8 @@ export default function Edit() {
 
   if (!capsuleText || !capsuleColor || !capsuleFont) return null;
 
+  console.log(capsuleText, parseBytesText(capsuleText));
+
   return (
     <div
       style={{
