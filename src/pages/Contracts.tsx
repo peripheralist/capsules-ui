@@ -58,7 +58,7 @@ export default function Contracts() {
         <br />
         <br />
         <a
-          href="https://etherscan.io/address/0xCf58FEF11b494De046E30831c5a2bC364C83F811"
+          href="https://etherscan.io/address/0x46776d1aFd88e215D3241343790496e48D2d46da"
           target="_blank"
           rel="noopener noreferrer"
         >
