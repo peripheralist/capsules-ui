@@ -4,7 +4,7 @@ export default function Contracts() {
       <h1>Contracts</h1>
       <div>
         <a
-          href="https://etherscan.io/address/0xe160e47928907894f97a0dc025c61d64e862feaa"
+          href="https://etherscan.io/address/0x7E3764691e25911A591D782E9baE6AF2b5A0Fa95"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -48,7 +48,7 @@ export default function Contracts() {
         <br />
         <br />
         <a
-          href="https://etherscan.io/address/0xb8e45dd8297e90d645a51d2e128ca92fdc5a8bc6"
+          href="https://etherscan.io/address/0x2FD677b4867ACA09505b3FC518C6B7C1BFf45f90"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -58,7 +58,7 @@ export default function Contracts() {
         <br />
         <br />
         <a
-          href="https://etherscan.io/address/0xdf82cd70fe7f493f6c3bd240f5b7ad0f6db5b324"
+          href="https://etherscan.io/address/0xeee2680B635a56527114c3a4846cc178Af88683B"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -68,7 +68,7 @@ export default function Contracts() {
         <br />
         <br />
         <a
-          href="https://etherscan.io/address/0x3e924f602e5262fd0e1b844f9fdd95e1667b7b6f"
+          href="https://etherscan.io/address/0xf57cfCb23a765EfD4d183962aa5587E6A392E73F"
           target="_blank"
           rel="noopener noreferrer"
         >
