@@ -68,7 +68,7 @@ export const parseBytesText = (text: BytesText): Text =>
         text.map((line) => {
           line = line.split("0x")[1];
           let str = "";
-          for (let i = 0; i < 64; i += 4) {
+          for (let i = 0; i <= 64; i += 4) {
             str += String.fromCharCode(parseInt(line.substring(i, i + 4), 16));
           }
           return str;
