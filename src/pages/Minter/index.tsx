@@ -11,8 +11,9 @@ import { CapsulesContext } from "../../contexts/capsulesContext";
 import { EditingContext } from "../../contexts/editingContext";
 import { NetworkContext } from "../../contexts/networkContext";
 import { WalletContext } from "../../contexts/walletContext";
+import { useIsOwner } from "../../hooks/isOwner";
 import useSubgraphQuery from "../../hooks/SubgraphQuery";
-import { isEmptyBytesText, textToBytesText } from "../../utils/text";
+import { textToBytesText } from "../../utils/text";
 import TabBar, { Tab } from "./TabBar";
 
 const tabBarHeight = Math.max(window.innerHeight * 0.1, 60);
@@ -23,7 +24,7 @@ export default function Minter() {
   const { text, setText, color, setColor, weight, setWeight } =
     useContext(EditingContext);
   const { connectedWallet, selectWallet } = useContext(NetworkContext);
-  const { paused, owner } = useContext(CapsulesContext);
+  const { paused } = useContext(CapsulesContext);
   const { transactor, contracts } = useContext(WalletContext);
   const [selectedTab, setSelectedTab] = useState<TabKey>("edit");
   const [loadingTx, setLoadingTx] = useState<boolean>();
@@ -54,9 +55,9 @@ export default function Minter() {
     };
   };
 
-  const giftCount = giftRecipients.data?.giftRecipients?.[0].giftCount;
+  const giftCount = giftRecipients.data?.giftRecipients?.[0]?.giftCount || 0;
 
-  const isOwner = owner && connectedWallet?.toLowerCase() === owner;
+  const isOwner = useIsOwner();
 
   const mint = useCallback(() => {
     if (!contracts || !transactor || !color) return;

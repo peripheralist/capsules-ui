@@ -4,15 +4,15 @@ import { useParams } from "react-router-dom";
 
 import Button from "../components/Button";
 import Capsule from "../components/Capsule";
-import CapsulePreview from "../components/CapsulePreview";
 import FormattedAddress from "../components/FormattedAddress";
 import TextEditor from "../components/TextEditor";
 import { bytesToColorString } from "../constants/colors";
 import { isMobile } from "../constants/isMobile";
+import { CapsulesContext } from "../contexts/capsulesContext";
 import { EditingContext } from "../contexts/editingContext";
-import { NetworkContext } from "../contexts/networkContext";
 import { WalletContext } from "../contexts/walletContext";
 import useContractReader from "../hooks/ContractReader";
+import { useIsOwner } from "../hooks/isOwner";
 import { BytesText } from "../models/text";
 import { Weight } from "../models/weight";
 import {
@@ -25,8 +25,10 @@ export default function Edit() {
   const { text, setText, weight, setWeight } = useContext(EditingContext);
   const [loadingTx, setLoadingTx] = useState<boolean>();
   const { contracts, transactor } = useContext(WalletContext);
-  const { connectedWallet } = useContext(NetworkContext);
+  const { owner } = useContext(CapsulesContext);
   const { id } = useParams<{ id: string }>();
+
+  const isOwner = useIsOwner();
 
   const capsuleText = useContractReader<BytesText>({
     contract: contracts?.CapsuleToken,
@@ -45,15 +47,6 @@ export default function Edit() {
     functionName: "colorOf",
     args: useMemo(() => [id], [id]),
   });
-
-  const owner = useContractReader<string>({
-    contract: contracts?.CapsuleToken,
-    functionName: "ownerOf",
-    args: useMemo(() => [id], [id]),
-  });
-
-  const isOwner =
-    owner && connectedWallet?.toLowerCase() === owner?.toLowerCase();
 
   useEffect(() => {
     if (!capsuleText || !setText) return;
