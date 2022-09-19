@@ -53,6 +53,11 @@ export default function Edit() {
     setText(parseBytesText(capsuleText));
   }, [capsuleText, setText]);
 
+  useEffect(() => {
+    if (!capsuleFont || !setWeight) return;
+    setWeight(capsuleFont.weight.toNumber() as Weight);
+  }, [capsuleFont, setWeight]);
+
   const save = useCallback(() => {
     if (!transactor || !contracts) return;
 
