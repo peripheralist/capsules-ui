@@ -77,9 +77,7 @@ export default function FormattedAddress({
           <div>
             <a
               href={`https://${
-                readNetwork.name !== NetworkName.mainnet
-                  ? readNetwork.name + "."
-                  : ""
+                readNetwork.chainId !== 1 ? readNetwork.name + "." : ""
               }etherscan.io/address/${address}`}
               target="_blank"
               rel="noopener noreferrer"

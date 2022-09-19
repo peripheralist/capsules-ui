@@ -1,6 +1,5 @@
 import { CSSProperties, useState } from "react";
 import GlyphPicker from "../../components/GlyphPicker";
-import Spinner from "../../components/Spinner";
 import WeightSelector from "../../components/WeightSelector";
 import { isMobile } from "../../constants/isMobile";
 import { unicodes } from "../../fonts/unicode";

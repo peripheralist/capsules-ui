@@ -12,6 +12,8 @@ import Pause from "./pages/Pause";
 import Withdraw from "./pages/Withdraw";
 import Typeface from "./pages/Typeface";
 import Gifts from "./pages/Gifts";
+import Renderer from "./pages/Renderer";
+import Metadata from "./pages/Metadata";
 
 export default function App() {
   return (
@@ -28,6 +30,8 @@ export default function App() {
           <Route path="/withdraw" component={Withdraw} />
           <Route path="/gifts" component={Gifts} />
           <Route path="/typeface" component={Typeface} />
+          <Route path="/renderer" component={Renderer} />
+          <Route path="/metadata" component={Metadata} />
           <Route path="/c/:id" component={Edit} />
         </Switch>
       </HashRouter>
