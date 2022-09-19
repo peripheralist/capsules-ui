@@ -87,10 +87,11 @@ export const trimText = (text: Text): Text => {
 
 // Remove trailing
 export const trimLine = (line: string) => {
-  while (line.length && line.endsWith(`\x00`)) {
-    line = line.substring(0, line.length - 4);
+  let _line = line;
+  while (_line.length > 0 && _line.endsWith(`\x00`)) {
+    _line = _line.substring(0, _line.length - 1);
   }
-  return line;
+  return _line;
 };
 
 export const textWidth = (text: Text) =>
