@@ -88,8 +88,6 @@ export default function Edit() {
 
   if (!capsuleText || !capsuleColor || !capsuleFont) return null;
 
-  console.log(capsuleText, parseBytesText(capsuleText));
-
   return (
     <div
       style={{
@@ -105,7 +103,7 @@ export default function Edit() {
         "Owned by you"
       ) : (
         <span>
-          Owned by <FormattedAddress address={owner} />
+          Owned by <FormattedAddress address={capsuleOwner} />
         </span>
       )}
 
