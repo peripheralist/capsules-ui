@@ -122,12 +122,12 @@ export default function ColorPicker({
           top: 0,
           left: 0,
           right: 0,
-          padding: isMobile ? "2rem" : "2rem",
           width: "100%",
           boxSizing: "border-box",
+          height: 0,
         }}
       >
-        <div>
+        <div style={{ marginTop: "5rem" }}>
           <div
             style={{ cursor: "pointer" }}
             onClick={() => setMode("spectrum")}
@@ -147,13 +147,14 @@ export default function ColorPicker({
               fontSize: "3rem",
               fontWeight: 600,
               lineHeight: "3rem",
+              marginTop: "4rem",
             }}
           >
             <div onClick={() => onDone(color)}>×</div>
             <div onClick={() => onDone(_color)}>✓</div>
           </div>
         ) : (
-          <div>
+          <div style={{ marginTop: "5rem" }}>
             <div
               style={{ cursor: "pointer", fontWeight: 600 }}
               onClick={() => onDone(_color)}
