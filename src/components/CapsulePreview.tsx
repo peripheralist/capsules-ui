@@ -1,20 +1,27 @@
 import { CSSProperties } from "react";
 import { bytesToColorString } from "../constants/colors";
+import { Text } from "../models/text";
+import { Weight } from "../models/weight";
 import { formatHistoricalDate } from "../utils/date";
+import Capsule from "./Capsule";
 import FormattedAddress from "./FormattedAddress";
 import SVGURIRenderer from "./SVGURIRenderer";
 
 export default function CapsulePreview({
   uri,
   color,
+  weight,
   owner,
+  text,
   lastEditedTimestamp,
   imgStyle,
   style,
 }: {
   uri: string;
   color: CSSProperties["color"];
+  weight: Weight;
   owner: string;
+  text: Text;
   lastEditedTimestamp: number;
   style?: CSSProperties;
   imgStyle?: CSSProperties;
@@ -23,7 +30,11 @@ export default function CapsulePreview({
 
   return (
     <div style={{ color: _color, ...style }}>
-      <SVGURIRenderer uri={uri} style={imgStyle} />
+      {uri.length ? (
+        <SVGURIRenderer uri={uri} style={imgStyle} />
+      ) : (
+        <Capsule color={color} weight={weight} text={text} />
+      )}
 
       <div
         style={{

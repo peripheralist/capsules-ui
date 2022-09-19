@@ -5,7 +5,6 @@ import {
   TxHistoryContext,
   TxStatus,
 } from "../contexts/txHistoryContext";
-import { NetworkName } from "../models/networkName";
 import { formatHistoricalDate } from "../utils/date";
 import Spinner from "./Spinner";
 

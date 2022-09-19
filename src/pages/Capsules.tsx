@@ -1,6 +1,7 @@
 import { BigNumber, utils } from "ethers";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
+import Capsule from "../components/Capsule";
 import CapsulePreview from "../components/CapsulePreview";
 
 import FormattedAddress from "../components/FormattedAddress";
@@ -10,6 +11,7 @@ import { WalletContext } from "../contexts/walletContext";
 import useContractReader from "../hooks/ContractReader";
 import useSubgraphQuery from "../hooks/SubgraphQuery";
 import { Capsule as CapsuleType } from "../models/Capsule";
+import { parseBytesText } from "../utils/text";
 
 export default function Capsules() {
   const { contracts } = useContext(WalletContext);
@@ -102,6 +104,8 @@ export default function Capsules() {
                   uri={c.svg}
                   color={c.color}
                   owner={c.owner}
+                  text={parseBytesText(c.text)}
+                  weight={c.fontWeight}
                   lastEditedTimestamp={c.lastEdited * 1000}
                   style={{
                     display: "flex",
