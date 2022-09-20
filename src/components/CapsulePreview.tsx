@@ -5,6 +5,7 @@ import FormattedAddress from "./FormattedAddress";
 import SVGURIRenderer from "./SVGURIRenderer";
 
 export default function CapsulePreview({
+  id,
   uri,
   color,
   owner,
@@ -13,6 +14,7 @@ export default function CapsulePreview({
   imgStyle,
   style,
 }: {
+  id: string;
   uri: string;
   color: string;
   owner: string;

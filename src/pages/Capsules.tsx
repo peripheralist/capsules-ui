@@ -214,6 +214,7 @@ export default function Capsules() {
                     width: "16rem",
                   }
             }
+            id={c.id}
             key={c.id}
             href={`/#/c/${c.id}`}
             uri={c.svg}
