@@ -22,6 +22,7 @@ import {
 } from "../utils/text";
 
 export default function Edit() {
+  const [isEditing, setIsEditing] = useState<boolean>();
   const { text, setText, weight, setWeight } = useContext(EditingContext);
   const [loadingTx, setLoadingTx] = useState<boolean>();
   const { contracts, transactor } = useContext(WalletContext);
@@ -115,46 +116,67 @@ export default function Edit() {
           boxSizing: "border-box",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexWrap: "wrap-reverse",
-            gap: isMobile ? 30 : 50,
-            minHeight: isMobile && isOwner ? 750 : 0,
-          }}
-        >
-          {isCapsuleOwner && setText && setWeight && (
-            <TextEditor
-              text={text}
-              setText={setText}
-              color={capsuleColor}
-              weight={capsuleFont.weight.toNumber() as Weight}
-              setWeight={setWeight}
-            />
-          )}
+        {isEditing ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexWrap: "wrap-reverse",
+              gap: isMobile ? 30 : 50,
+              minHeight: isMobile && isOwner ? 750 : 0,
+            }}
+          >
+            {setText && setWeight && (
+              <TextEditor
+                text={text}
+                setText={setText}
+                color={capsuleColor}
+                weight={capsuleFont.weight.toNumber() as Weight}
+                setWeight={setWeight}
+              />
+            )}
 
-          <div style={{ padding: isMobile ? 10 : 0 }}>
-            <Capsule
-              text={text}
-              color={capsuleColor}
-              width={isOwner ? 320 : isMobile ? "100%" : "30rem"}
-              weight={capsuleFont.weight.toNumber() as Weight}
-              square
-            />
+            <div style={{ padding: isMobile ? 10 : 0 }}>
+              <Capsule
+                text={text}
+                color={capsuleColor}
+                width={320}
+                weight={capsuleFont.weight.toNumber() as Weight}
+                square
+              />
+            </div>
           </div>
-        </div>
+        ) : (
+          <Capsule
+            text={text}
+            color={capsuleColor}
+            width={isMobile ? "100%" : "30rem"}
+            weight={capsuleFont.weight.toNumber() as Weight}
+            square
+          />
+        )}
       </div>
 
-      {isCapsuleOwner && (
-        <Button
-          text={"Save Capsule"}
-          onClick={save}
-          loading={loadingTx ? "Transaction pending..." : false}
-          isDisabled={deepEqBytesTexts(textToBytesText(text), capsuleText)}
-        />
-      )}
+      {isCapsuleOwner &&
+        (isEditing ? (
+          <div>
+            <Button
+              text="Save Capsule"
+              onClick={save}
+              loading={loadingTx ? "Transaction pending..." : false}
+              isDisabled={deepEqBytesTexts(textToBytesText(text), capsuleText)}
+            />
+            <br />
+            <Button
+              text="Cancel"
+              style={{ fontSize: "1rem" }}
+              onClick={() => setIsEditing(false)}
+            />
+          </div>
+        ) : (
+          <Button text={"Edit"} onClick={() => setIsEditing(true)} />
+        ))}
     </div>
   );
 }
