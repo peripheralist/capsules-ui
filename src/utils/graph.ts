@@ -110,17 +110,19 @@ const subgraphUrl = process.env.REACT_APP_SUBGRAPH_URL;
 
 export const trimHexZero = (hexStr: string) => hexStr.replace("0x0", "0x");
 
-export async function querySubgraph<E>(opts: GraphQueryOpts | null) {
+export async function querySubgraph<E, K extends string = string>(
+  opts: GraphQueryOpts | null
+) {
   if (!subgraphUrl) {
     // This should _only_ happen in development
     throw new Error("env.REACT_APP_SUBGRAPH_URL is missing");
   }
 
-  if (!opts) return [];
+  if (!opts) return undefined;
 
   const response = await axios.post<{
     errors?: SubgraphError | SubgraphError[];
-    data: E[];
+    data: Record<K, E[]>;
   }>(
     opts.url ?? subgraphUrl,
     {

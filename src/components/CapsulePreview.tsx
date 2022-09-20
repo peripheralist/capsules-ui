@@ -1,27 +1,22 @@
-import { CSSProperties } from "react";
+import { CSSProperties, useMemo } from "react";
 import { bytesToColorString } from "../constants/colors";
-import { Text } from "../models/text";
-import { Weight } from "../models/weight";
 import { formatHistoricalDate } from "../utils/date";
-import Capsule from "./Capsule";
 import FormattedAddress from "./FormattedAddress";
 import SVGURIRenderer from "./SVGURIRenderer";
 
 export default function CapsulePreview({
   uri,
   color,
-  weight,
   owner,
-  text,
+  href,
   lastEditedTimestamp,
   imgStyle,
   style,
 }: {
   uri: string;
-  color: CSSProperties["color"];
-  weight: Weight;
+  color: string;
   owner: string;
-  text: Text;
+  href?: string;
   lastEditedTimestamp: number;
   style?: CSSProperties;
   imgStyle?: CSSProperties;
@@ -32,12 +27,19 @@ export default function CapsulePreview({
   if (formattedDate.toLowerCase() === "now") formattedDate = "just now";
   else formattedDate += " ago";
 
+  const ImgElem = useMemo(
+    () => <SVGURIRenderer uri={uri} style={imgStyle} />,
+    [uri, imgStyle]
+  );
+
   return (
     <div style={{ color: _color, ...style }}>
-      {uri.length ? (
-        <SVGURIRenderer uri={uri} style={imgStyle} />
+      {href ? (
+        <a href={href} target="_blank" rel="noopener noreferrer">
+          {ImgElem}
+        </a>
       ) : (
-        <Capsule color={color} weight={weight} text={text} />
+        ImgElem
       )}
 
       <div
@@ -46,7 +48,7 @@ export default function CapsulePreview({
           justifyContent: "space-between",
           gap: "1rem",
           fontSize: ".8rem",
-          // fontWeight: 300,
+          cursor: "crosshair",
         }}
       >
         <span>{formattedDate}</span>

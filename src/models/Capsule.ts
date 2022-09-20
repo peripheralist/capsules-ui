@@ -11,4 +11,5 @@ export type Capsule = {
   tokenUri: string;
   svg: string;
   lastEdited: number;
+  mintedAt: number;
 };

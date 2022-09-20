@@ -109,45 +109,48 @@ export const isAllowedChar = (char: string) =>
 export const isAllowedCode = (code?: number) => code && unicodes.includes(code);
 
 export const toSmallCaps = (str: string) =>
-  str.split("").map((x) => {
-    switch (x.toLowerCase()) {
-      case "a":
-        return "ᴀ";
-      case "b":
-        return "ʙ";
-      case "d":
-        return "ᴅ";
-      case "e":
-        return "ᴇ";
-      case "f":
-        return "ꜰ";
-      case "g":
-        return "ɢ";
-      case "h":
-        return "ʜ";
-      case "i":
-        return "ɪ";
-      case "j":
-        return "ᴊ";
-      case "k":
-        return "ᴋ";
-      case "l":
-        return "ʟ";
-      case "m":
-        return "ᴍ";
-      case "n":
-        return "ɴ";
-      case "p":
-        return "ᴘ";
-      case "q":
-        return "ꞯ";
-      case "r":
-        return "ʀ";
-      case "t":
-        return "ᴛ";
-      case "y":
-        return "ʏ";
-      default:
-        return x.toLowerCase();
-    }
-  });
+  str
+    .split("")
+    .map((x) => {
+      switch (x.toLowerCase()) {
+        case "a":
+          return "ᴀ";
+        case "b":
+          return "ʙ";
+        case "d":
+          return "ᴅ";
+        case "e":
+          return "ᴇ";
+        case "f":
+          return "ꜰ";
+        case "g":
+          return "ɢ";
+        case "h":
+          return "ʜ";
+        case "i":
+          return "ɪ";
+        case "j":
+          return "ᴊ";
+        case "k":
+          return "ᴋ";
+        case "l":
+          return "ʟ";
+        case "m":
+          return "ᴍ";
+        case "n":
+          return "ɴ";
+        case "p":
+          return "ᴘ";
+        case "q":
+          return "ꞯ";
+        case "r":
+          return "ʀ";
+        case "t":
+          return "ᴛ";
+        case "y":
+          return "ʏ";
+        default:
+          return x.toLowerCase();
+      }
+    })
+    .join("");

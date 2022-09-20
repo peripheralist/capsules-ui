@@ -1,5 +1,5 @@
 import { utils } from "ethers";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { isMobile } from "../constants/isMobile";
 import { readNetwork } from "../constants/networks";
 
@@ -14,7 +14,7 @@ export default function FormattedAddress({
 }) {
   const [ensName, setEnsName] = useState<string>();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const read = async () => {
       if (!address || !utils.isAddress(address)) {
         setEnsName(undefined);
@@ -34,6 +34,7 @@ export default function FormattedAddress({
         if (isValid) setEnsName(name);
       } catch (e) {
         console.log("Error looking up ENS name for address", address, e);
+        setEnsName(undefined);
       }
     };
 
