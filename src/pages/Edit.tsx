@@ -101,9 +101,12 @@ export default function Edit() {
       {isCapsuleOwner ? (
         "Owned by you"
       ) : (
-        <span>
-          Owned by <FormattedAddress address={capsuleOwner} />
-        </span>
+        <div>
+          Owned by: <FormattedAddress address={capsuleOwner} />
+        </div>
+      )}
+      {isCapsuleOwner === false && (
+        <div>Font: {capsuleFont.weight.toString()}</div>
       )}
 
       <div
