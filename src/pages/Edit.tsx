@@ -140,7 +140,7 @@ export default function Edit() {
               text={text}
               color={capsuleColor}
               width={isOwner ? 320 : isMobile ? "100%" : "30rem"}
-              weight={weight}
+              weight={capsuleFont.weight.toNumber() as Weight}
               square
             />
           </div>
