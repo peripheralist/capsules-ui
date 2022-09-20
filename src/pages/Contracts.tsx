@@ -58,7 +58,7 @@ export default function Contracts() {
         <br />
         <br />
         <a
-          href="https://etherscan.io/address/0x46776d1aFd88e215D3241343790496e48D2d46da"
+          href="https://etherscan.io/address/0x172685fe3bE6432d025b07403646c48210f03451"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -68,7 +68,7 @@ export default function Contracts() {
         <br />
         <br />
         <a
-          href="https://etherscan.io/address/0xdB83e9fc46ae05e959C1aeedE606769A01763a1b"
+          href="https://etherscan.io/address/0x74A12DFDA6DF193AEdbb7cd609E6343ED0C2cE12"
           target="_blank"
           rel="noopener noreferrer"
         >
