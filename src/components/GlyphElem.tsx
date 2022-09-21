@@ -30,9 +30,12 @@ export default function GlyphElem({
 
     onClickGlyph?.(char);
 
-    setTimeout(() => {
-      setDidClick(undefined);
-    }, 1500);
+    setTimeout(
+      () => {
+        setDidClick(undefined);
+      },
+      copyOnClick ? 1500 : 100
+    );
   };
 
   const copyToClipboard = () => {
