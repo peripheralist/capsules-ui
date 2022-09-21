@@ -208,7 +208,7 @@ export default function Capsules() {
             style={
               layout === "list"
                 ? {
-                    width: "30rem",
+                    width: isMobile ? "90vw" : "30rem",
                   }
                 : {
                     width: "16rem",
