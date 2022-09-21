@@ -295,7 +295,27 @@ export default function TextEditor({
           <div></div>
         )}
 
-        <GlyphPicker />
+        <GlyphPicker
+          onClickGlyph={{
+            onClick: (char: string) => {
+              console.log(char);
+              setText?.((t) => {
+                if (t.length) {
+                  const lineIndex =
+                    t.length -
+                    1 -
+                    [...t]
+                      .reverse()
+                      .findIndex((_t) => _t.length < maxLineLength); // last line with room at the end
+                  console.log({ t, lineIndex });
+                  return t.map((_t, i) => (i === lineIndex ? _t + char : _t));
+                } else {
+                  return [char];
+                }
+              });
+            },
+          }}
+        />
       </div>
 
       <Modal

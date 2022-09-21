@@ -8,7 +8,11 @@ import Modal from "./Modal";
 export default function GlyphPicker({
   onClickGlyph,
 }: {
-  onClickGlyph?: (char: string) => boolean | void;
+  onClickGlyph?: {
+    onClick?: (glyph: string) => void;
+    copy?: boolean;
+    close?: boolean;
+  };
 }) {
   const [modalVisible, setModalVisible] = useState<boolean>();
   const [searchText, setSearchText] = useState<string>();
@@ -100,15 +104,18 @@ export default function GlyphPicker({
                 }}
                 charCode={x}
                 includeCode={!!searchText || !isMobile}
+                copyOnClick={onClickGlyph?.copy}
                 onClickGlyph={(glyph) => {
-                  setTimeout(
-                    () => {
-                      setModalVisible(false);
-                    },
-                    isMobile ? 750 : 500
-                  );
+                  onClickGlyph?.onClick?.(glyph);
 
-                  return onClickGlyph?.(glyph) ?? false;
+                  if (onClickGlyph?.close) {
+                    setTimeout(
+                      () => {
+                        setModalVisible(false);
+                      },
+                      isMobile ? 750 : 500
+                    );
+                  }
                 }}
               />
             ))}

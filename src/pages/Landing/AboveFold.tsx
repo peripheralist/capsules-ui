@@ -141,9 +141,10 @@ export default function AboveFold({
           }}
         >
           <GlyphPicker
-            onClickGlyph={(glyph) => {
-              setText((t) => (t ?? "") + glyph);
-              return true;
+            onClickGlyph={{
+              onClick: (glyph: string) => {
+                setText((t) => (t ?? "") + glyph);
+              },
             }}
           />
         </div>

@@ -31,6 +31,7 @@ export default function TypefaceGlyphs({
             fontWeight: weight,
           }}
           includeCode={!isMobile}
+          copyOnClick
         />
       ))}
     </div>
