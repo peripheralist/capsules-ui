@@ -10,7 +10,6 @@ import { WalletContext } from "../contexts/walletContext";
 import useContractReader from "../hooks/ContractReader";
 import { Capsule as CapsuleType } from "../models/Capsule";
 import { querySubgraph } from "../utils/graph";
-import { toSmallCaps } from "../utils/text";
 
 type SortBy = "minted" | "edited";
 type Layout = "list" | "grid";
@@ -140,19 +139,21 @@ export default function Capsules() {
             style={{
               fontWeight: sortBy === "edited" ? 600 : 300,
               cursor: "crosshair",
+              fontVariant: "small-caps",
             }}
             onClick={() => _setSortBy("edited")}
           >
-            {toSmallCaps("edited")}
+            edited
           </div>
           <div
             style={{
               fontWeight: sortBy === "minted" ? 600 : 300,
               cursor: "crosshair",
+              fontVariant: "small-caps",
             }}
             onClick={() => _setSortBy("minted")}
           >
-            {toSmallCaps("minted")}
+            minted
           </div>
         </div>
 

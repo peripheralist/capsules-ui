@@ -7,7 +7,6 @@ import { WalletContext } from "../../contexts/walletContext";
 import { FONTS } from "../../fonts/fonts";
 import { useFonts } from "../../hooks/fonts";
 import { Weight } from "../../models/weight";
-import { toSmallCaps } from "../../utils/text";
 
 export default function Fonts() {
   const { transactor, contracts } = useContext(WalletContext);
@@ -168,9 +167,10 @@ export default function Fonts() {
             fontSize: "1.5rem",
             fontWeight: 500,
             textAlign: "center",
+            fontVariant: "small-caps",
           }}
         >
-          {toSmallCaps("⌛ Opening soon ⌛")}
+          ⌛ opening soon ⌛
         </div>
       )}
     </div>
