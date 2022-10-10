@@ -39,7 +39,7 @@ function writeUnicode() {
 
   const unicodes = lines
     .map((x) => x.split(" ")[0].split("uni")[1])
-    .filter((x) => x.toLowerCase() != "ffff" && x != "0000");
+    .filter((x) => x.toLowerCase() !== "ffff" && x !== "0000");
 
   const charMap = unicodes.reduce(
     (acc, curr, i) => ({
