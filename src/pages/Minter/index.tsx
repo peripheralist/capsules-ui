@@ -55,7 +55,10 @@ export default function Minter() {
     };
   };
 
-  const giftCount = giftRecipients.data?.giftRecipients?.[0]?.giftCount || 0;
+  // hacky shit. shouldn't need to have connectedwallet here
+  const giftCount =
+    (connectedWallet && giftRecipients.data?.giftRecipients?.[0]?.giftCount) ||
+    0;
 
   const isOwner = useIsOwner();
 

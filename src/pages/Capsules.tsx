@@ -157,31 +157,33 @@ export default function Capsules() {
           </div>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "1rem",
-          }}
-        >
+        {!isMobile && (
           <div
             style={{
-              fontWeight: layout === "list" ? 600 : 300,
-              cursor: "crosshair",
+              display: "flex",
+              gap: "1rem",
             }}
-            onClick={() => setLayout("list")}
           >
-            ☰
+            <div
+              style={{
+                fontWeight: layout === "list" ? 600 : 300,
+                cursor: "crosshair",
+              }}
+              onClick={() => setLayout("list")}
+            >
+              ☰
+            </div>
+            <div
+              style={{
+                fontWeight: layout === "grid" ? 600 : 300,
+                cursor: "crosshair",
+              }}
+              onClick={() => setLayout("grid")}
+            >
+              
+            </div>
           </div>
-          <div
-            style={{
-              fontWeight: layout === "grid" ? 600 : 300,
-              cursor: "crosshair",
-            }}
-            onClick={() => setLayout("grid")}
-          >
-            
-          </div>
-        </div>
+        )}
       </div>
 
       <div

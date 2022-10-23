@@ -1,4 +1,4 @@
-import { CSSProperties, useCallback, useContext, useState } from "react";
+import { CSSProperties, useCallback, useContext } from "react";
 import Button from "../../components/Button";
 import Capsule from "../../components/Capsule";
 import TextEditor from "../../components/TextEditor";

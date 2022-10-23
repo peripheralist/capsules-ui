@@ -8,18 +8,22 @@ export const formatDate = (
 ) => moment(BigNumber.from(dateMillis).toNumber()).format(format);
 
 export function formatHistoricalDate(dateMillis: BigNumberish): string {
-  return `${moment(BigNumber.from(dateMillis).toNumber()).fromNow(true)}`
-    .replaceAll("a day", "1d")
-    .replaceAll("an hour", "1h")
-    .replaceAll("a minute", "1m")
-    .replaceAll("a few seconds", "now")
-    .replaceAll(" minutes", "m")
-    .replaceAll(" minute", "m")
-    .replaceAll(" seconds", "s")
-    .replaceAll(" second", "s")
-    .replaceAll(" hours", "h")
-    .replaceAll(" hour", "h")
-    .replaceAll(" day", "d");
+  return (
+    `${moment(BigNumber.from(dateMillis).toNumber()).fromNow(true)}`
+      // lol dumb sry not sry
+      .replaceAll("a day", "1d")
+      .replaceAll("an hour", "1h")
+      .replaceAll("a minute", "1m")
+      .replaceAll("a few seconds", "now")
+      .replaceAll(" minutes", "m")
+      .replaceAll(" minute", "m")
+      .replaceAll(" seconds", "s")
+      .replaceAll(" second", "s")
+      .replaceAll(" hours", "h")
+      .replaceAll(" hour", "h")
+      .replaceAll(" days", "d")
+      .replaceAll(" day", "d")
+  );
 }
 
 /**
